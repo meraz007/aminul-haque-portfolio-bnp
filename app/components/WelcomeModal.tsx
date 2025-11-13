@@ -7,11 +7,18 @@ export default function WelcomeModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Show modal on initial load
-    setIsOpen(true);
+    // Check if user has seen the modal before
+    const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
+    
+    if (!hasSeenModal) {
+      // Show modal only if user hasn't seen it before
+      setIsOpen(true);
+    }
   }, []);
 
   const closeModal = () => {
+    // Mark that user has seen the modal
+    localStorage.setItem('hasSeenWelcomeModal', 'true');
     setIsOpen(false);
   };
 
