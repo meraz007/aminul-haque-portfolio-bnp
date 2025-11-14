@@ -1,20 +1,287 @@
 "use client";
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FaGraduationCap, FaSeedling, FaPalette, FaUsers, FaArrowRight, FaChartLine, FaHeart, FaTrophy } from 'react-icons/fa';
-import Hero from './components/Hero';
-import TestimonialCarousel from './components/TestimonialCarousel';
-import WelcomeModal from './components/WelcomeModal';
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useRef } from "react";
+import {
+  FaGraduationCap,
+  FaSeedling,
+  FaPalette,
+  FaUsers,
+  FaArrowRight,
+  FaChartLine,
+  FaHeart,
+  FaTrophy,
+  FaQuoteLeft,
+  FaPlay,
+} from "react-icons/fa";
+import Hero from "./components/Hero";
+import TestimonialCarousel from "./components/TestimonialCarousel";
+import WelcomeModal from "./components/WelcomeModal";
+import ParticleBackground from "./components/ParticleBackground";
+import MagneticCursor from "./components/MagneticCursor";
+import Link from "next/link";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true });
 
   return (
-    <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
+    <main className="relative bg-slate-950">
+      {/* Particle Background */}
+      <ParticleBackground />
+
+      {/* Magnetic Cursor */}
+      <MagneticCursor />
+
       <WelcomeModal />
-      
+
       {/* Hero Section */}
       <Hero />
+
+      {/* Stats Section - Floating Cards */}
+      <section className="relative py-32 px-4 -mt-32 z-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: FaUsers,
+                label: "জনগণ সেবায়",
+                value: "৫০,০০০+",
+                color: "from-emerald-500 to-green-500",
+                delay: 0,
+              },
+              {
+                icon: FaGraduationCap,
+                label: "ছাত্র উপকৃত",
+                value: "১৫,০০০+",
+                color: "from-blue-500 to-cyan-500",
+                delay: 0.1,
+              },
+              {
+                icon: FaSeedling,
+                label: "কৃষক সহায়তা",
+                value: "৮,০০০+",
+                color: "from-amber-500 to-orange-500",
+                delay: 0.2,
+              },
+              {
+                icon: FaTrophy,
+                label: "সফল প্রকল্প",
+                value: "৫০+",
+                color: "from-purple-500 to-pink-500",
+                delay: 0.3,
+              },
+            ].map((stat, idx) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 50, rotateX: -20 }}
+                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.6,
+                  delay: stat.delay,
+                  type: "spring",
+                }}
+                whileHover={{ y: -10, scale: 1.05 }}
+                className="group relative perspective-1000"
+              >
+                {/* Glow Effect */}
+                <motion.div
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: idx * 0.5,
+                  }}
+                  className={`absolute -inset-2 bg-linear-to-r ${stat.color} rounded-3xl blur-2xl`}
+                />
+
+                {/* Card */}
+                <div className="relative glass-dark backdrop-blur-xl rounded-3xl p-8 border border-white/10 transform-3d hover-lift">
+                  <div
+                    className={`inline-flex p-5 bg-linear-to-br ${stat.color} rounded-2xl mb-6 shadow-2xl`}
+                  >
+                    <stat.icon className="text-4xl text-white" />
+                  </div>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.5,
+                      delay: stat.delay + 0.3,
+                      type: "spring",
+                    }}
+                    className="text-5xl font-black bg-linear-to-r from-white to-emerald-200 bg-clip-text text-transparent mb-3"
+                  >
+                    {stat.value}
+                  </motion.div>
+                  <div className="text-slate-300 font-bold text-lg">
+                    {stat.label}
+                  </div>
+
+                  {/* Shine Effect */}
+                  <div className="absolute inset-0 rounded-3xl overflow-hidden">
+                    <motion.div
+                      animate={{
+                        x: ["-100%", "200%"],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatDelay: 2,
+                      }}
+                      className="absolute inset-0 w-1/2 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-12"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Vision Section - Cinematic Reveal */}
+      <section className="relative py-32 px-4 overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-3xl animate-blob" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-3xl animate-blob animation-delay-2000" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl" ref={containerRef}>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <motion.span
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.6 }}
+              className="inline-block px-8 py-3 glass-dark backdrop-blur-xl text-emerald-400 rounded-full font-bold text-sm uppercase tracking-wider mb-6 border border-emerald-500/30"
+            >
+              আমাদের রূপকল্প
+            </motion.span>
+            <h2 className="text-6xl md:text-8xl font-black mb-8">
+              <span className="block text-white text-3d">একটি উন্নত</span>
+              <motion.span
+                initial={{ opacity: 0, x: -50 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="block bg-linear-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent text-glow"
+              >
+                বাংলাদেশ
+              </motion.span>
+            </h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed"
+            >
+              শিক্ষা, কৃষি, শিল্প ও সংস্কৃতিতে টেকসই উন্নয়নের মাধ্যমে একটি
+              সমৃদ্ধ ও ন্যায়সংগত সমাজ গড়ে তোলা আমাদের লক্ষ্য।
+            </motion.p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: FaGraduationCap,
+                title: "শিক্ষা বিপ্লব",
+                description:
+                  "প্রতিটি শিশুর জন্য বিশ্বমানের শিক্ষা নিশ্চিত করা এবং ডিজিটাল সাক্ষরতা বৃদ্ধি",
+                color: "from-emerald-500 to-green-500",
+                delay: 0.2,
+              },
+              {
+                icon: FaSeedling,
+                title: "কৃষি আধুনিকীকরণ",
+                description:
+                  "আধুনিক প্রযুক্তি ও স্মার্ট ফার্মিং এর মাধ্যমে কৃষকদের ক্ষমতায়ন",
+                color: "from-blue-500 to-cyan-500",
+                delay: 0.4,
+              },
+              {
+                icon: FaPalette,
+                title: "সংস্কৃতি সংরক্ষণ",
+                description:
+                  "আমাদের ঐতিহ্য রক্ষা করে শিল্পী ও সাংস্কৃতিক কর্মীদের সহায়তা প্রদান",
+                color: "from-purple-500 to-pink-500",
+                delay: 0.6,
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 50, rotateY: -20 }}
+                whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: item.delay }}
+                whileHover={{ y: -15, rotateY: 5 }}
+                className="group perspective-1000"
+              >
+                <div className="relative glass-dark backdrop-blur-xl rounded-3xl p-8 border border-white/10 transform-3d h-full">
+                  {/* Icon with Glow */}
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="relative inline-block mb-6"
+                  >
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.5, 0.8, 0.5],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: idx * 0.3,
+                      }}
+                      className={`absolute inset-0 bg-linear-to-r ${item.color} rounded-2xl blur-xl`}
+                    />
+                    <div
+                      className={`relative p-6 bg-linear-to-br ${item.color} rounded-2xl shadow-2xl`}
+                    >
+                      <item.icon className="text-5xl text-white" />
+                    </div>
+                  </motion.div>
+
+                  <h3 className="text-3xl font-black text-white mb-4 group-hover:text-glow transition-all">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-300 text-lg leading-relaxed">
+                    {item.description}
+                  </p>
+
+                  {/* Read More Link */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1, x: 5 }}
+                    className="flex items-center gap-2 mt-6 text-emerald-400 font-bold"
+                  >
+                    <span>আরও জানুন</span>
+                    <FaArrowRight className="text-sm" />
+                  </motion.div>
+
+                  {/* Card Glow on Hover */}
+                  <motion.div
+                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{
+                      background: `linear-gradient(45deg, ${item.color}, transparent)`,
+                      filter: "blur(20px)",
+                    }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Stats Section */}
       {/* <section className="py-20 px-4 -mt-20 relative z-10">
@@ -118,46 +385,132 @@ export default function Home() {
         </div>
       </section> */}
 
-      {/* Video Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="mx-auto max-w-6xl">
+      {/* Video/Manifesto Section - Cinematic */}
+      <section className="relative py-32 px-4 overflow-hidden">
+        {/* Animated Background */}
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.1, 0.2, 0.1],
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute inset-0 bg-linear-to-br from-rose-900 via-slate-900 to-purple-900"
+        />
+
+        <div className="relative mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <span className="inline-block px-6 py-2 bg-green-100 text-green-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
+            <motion.span
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              className="inline-block px-8 py-3 glass-dark backdrop-blur-xl text-rose-400 rounded-full font-bold text-sm uppercase tracking-wider mb-6 border border-rose-500/30"
+            >
               আমাদের ইশতেহার
-            </span>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              উন্নত আগামীর রূপকল্প
+            </motion.span>
+            <h2 className="text-6xl md:text-8xl font-black mb-6">
+              <span className="block text-white text-3d mb-4">
+                উন্নত আগামীর
+              </span>
+              <span className="block bg-linear-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent text-glow">
+                রূপকল্প
+              </span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-              আমাদের বিস্তৃত নির্বাচনী ইশতেহার দেখুন এবং জানুন কীভাবে আমরা একটি সমৃদ্ধ, অন্তর্ভুক্তিমূলক বাংলাদেশ গড়ছি
+            <p className="text-xl text-slate-300 max-w-4xl mx-auto leading-relaxed">
+              আমাদের বিস্তৃত নির্বাচনী ইশতেহার দেখুন এবং জানুন কীভাবে আমরা একটি
+              সমৃদ্ধ, অন্তর্ভুক্তিমূলক বাংলাদেশ গড়ছি
             </p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, scale: 0.9, rotateX: 20 }}
+            whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative group perspective-1000"
+          >
+            {/* Glow Effect */}
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute -inset-8 bg-linear-to-r from-rose-500 via-pink-500 to-purple-500 rounded-[3rem] blur-3xl"
+            />
+
+            {/* Video Container */}
+            <div className="relative glass-dark backdrop-blur-xl rounded-[3rem] p-3 border-2 border-white/10 transform-3d group-hover:scale-[1.02] transition-transform duration-500">
+              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl">
+                <div className="relative pb-[56.25%] h-0">
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube.com/embed/AyL-WF3Uryo"
+                    title="আমিনুল হকের নির্বাচনী প্রচারণা"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+
+              {/* Play Button Overlay Effect */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+              >
+                <motion.div
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.5, 0.8, 0.5],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-24 h-24 rounded-full bg-emerald-500/20 blur-xl"
+                />
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Call to Action Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-wrap justify-center gap-6 mt-12"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-rose-600 rounded-3xl blur-2xl opacity-20"></div>
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-              <div className="relative pb-[56.25%] h-0">
-                <iframe
-                  className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/AyL-WF3Uryo"
-                  title="আমিনুল হকের নির্বাচনী প্রচারণা"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/manifesto"
+                className="group px-10 py-5 bg-linear-to-r from-rose-500 via-pink-500 to-purple-500 text-white font-black text-lg rounded-2xl shadow-2xl overflow-hidden relative"
+              >
+                <motion.div
+                  animate={{
+                    x: ["-100%", "200%"],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+                  className="absolute inset-0 w-1/2 bg-linear-to-r from-transparent via-white/20 to-transparent skew-x-12"
+                />
+                <span className="relative flex items-center gap-3">
+                  <FaPlay />
+                  সম্পূর্ণ ইশতেহার পড়ুন
+                </span>
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/programs"
+                className="px-10 py-5 glass-dark backdrop-blur-xl text-white font-black text-lg rounded-2xl border-2 border-white/20 hover:border-white/40 transition-all"
+              >
+                কর্মসূচি দেখুন
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -231,53 +584,92 @@ export default function Home() {
         </div>
       </section> */}
 
-      {/* Testimonials */}
-      <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
+      {/* Testimonials - Immersive */}
+      <section className="relative py-32 px-4 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 bg-linear-to-br from-purple-950 via-slate-900 to-pink-950" />
+
+        {/* Animated Orbs */}
+        <div className="absolute inset-0">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+            }}
+            transition={{ duration: 15, repeat: Infinity }}
+            className="absolute top-20 left-20 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, -100, 0],
+              y: [0, 50, 0],
+            }}
+            transition={{ duration: 20, repeat: Infinity }}
+            className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-pink-500/30 rounded-full blur-3xl"
+          />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <span className="inline-block px-6 py-2 bg-purple-100 text-purple-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
+            <motion.span
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              className="inline-block px-8 py-3 glass-dark backdrop-blur-xl text-purple-400 rounded-full font-bold text-sm uppercase tracking-wider mb-6 border border-purple-500/30"
+            >
               জনগণের মতামত
-            </span>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              সাফল্যের <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">গল্প</span>
+            </motion.span>
+            <h2 className="text-6xl md:text-8xl font-black mb-6">
+              <span className="block text-white text-3d mb-4">সাফল্যের</span>
+              <span className="block bg-linear-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent text-glow">
+                গল্প
+              </span>
             </h2>
           </motion.div>
-          <TestimonialCarousel 
+
+          <TestimonialCarousel
             testimonials={[
               {
-                quote: 'আমিনুল হক আমাদের এলাকায় শিক্ষার মান উন্নয়নে অসাধারণ কাজ করেছেন। তার বৃত্তি কর্মসূচির কারণে আমার সন্তান উচ্চশিক্ষা গ্রহণ করতে পারছে।',
-                author: 'করিম উদ্দিন',
-                role: 'গ্রামীণ শিক্ষক',
-                rating: 5
+                quote:
+                  "আমিনুল হক আমাদের এলাকায় শিক্ষার মান উন্নয়নে অসাধারণ কাজ করেছেন। তার বৃত্তি কর্মসূচির কারণে আমার সন্তান উচ্চশিক্ষা গ্রহণ করতে পারছে।",
+                author: "করিম উদ্দিন",
+                role: "গ্রামীণ শিক্ষক",
+                rating: 5,
               },
               {
-                quote: 'কৃষি সমবায় প্রকল্পের মাধ্যমে আমরা আমাদের ফসলের ন্যায্য মূল্য পাচ্ছি। আমিনুল হকের নেতৃত্বে আমরা সংগঠিত হয়েছি এবং আমাদের জীবনযাত্রা উন্নত হয়েছে।',
-                author: 'রহিমা খাতুন',
-                role: 'কৃষক',
-                rating: 5
+                quote:
+                  "কৃষি সমবায় প্রকল্পের মাধ্যমে আমরা আমাদের ফসলের ন্যায্য মূল্য পাচ্ছি। আমিনুল হকের নেতৃত্বে আমরা সংগঠিত হয়েছি এবং আমাদের জীবনযাত্রা উন্নত হয়েছে।",
+                author: "রহিমা খাতুন",
+                role: "কৃষক",
+                rating: 5,
               },
               {
-                quote: 'যুব নেতৃত্ব প্রশিক্ষণ প্রোগ্রাম আমার জীবন বদলে দিয়েছে। আজ আমি নিজের একটি সামাজিক উদ্যোগ চালাচ্ছি এবং সমাজে অবদান রাখতে পারছি।',
-                author: 'সাকিব হাসান',
-                role: 'উদ্যোক্তা',
-                rating: 5
+                quote:
+                  "যুব নেতৃত্ব প্রশিক্ষণ প্রোগ্রাম আমার জীবন বদলে দিয়েছে। আজ আমি নিজের একটি সামাজিক উদ্যোগ চালাচ্ছি এবং সমাজে অবদান রাখতে পারছি।",
+                author: "সাকিব হাসান",
+                role: "উদ্যোক্তা",
+                rating: 5,
               },
               {
-                quote: 'সাংস্কৃতিক কর্মসূচির মাধ্যমে আমাদের ঐতিহ্যবাহী শিল্পকলা রক্ষা পাচ্ছে। স্থানীয় শিল্পীরা এখন তাদের প্রতিভা প্রদর্শনের সুযোগ পাচ্ছেন।',
-                author: 'নাসিমা আক্তার',
-                role: 'লোক শিল্পী',
-                rating: 5
+                quote:
+                  "সাংস্কৃতিক কর্মসূচির মাধ্যমে আমাদের ঐতিহ্যবাহী শিল্পকলা রক্ষা পাচ্ছে। স্থানীয় শিল্পীরা এখন তাদের প্রতিভা প্রদর্শনের সুযোগ পাচ্ছেন।",
+                author: "নাসিমা আক্তার",
+                role: "লোক শিল্পী",
+                rating: 5,
               },
               {
-                quote: 'আমিনুল হকের দূরদর্শী নেতৃত্বে আমাদের অঞ্চলে অনেক উন্নয়ন হয়েছে। তিনি সাধারণ মানুষের কথা শোনেন এবং তাদের সমস্যার সমাধান করেন।',
-                author: 'আব্দুল করিম',
-                role: 'সমাজসেবক',
-                rating: 5
+                quote:
+                  "আমিনুল হকের দূরদর্শী নেতৃত্বে আমাদের অঞ্চলে অনেক উন্নয়ন হয়েছে। তিনি সাধারণ মানুষের কথা শোনেন এবং তাদের সমস্যার সমাধান করেন।",
+                author: "আব্দুল করিম",
+                role: "সমাজসেবক",
+                rating: 5,
               },
             ]}
           />
@@ -297,7 +689,10 @@ export default function Home() {
               ক্যাম্পেইন গ্যালারি
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              মুহূর্ত <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">ক্যাপচার</span>
+              মুহূর্ত{" "}
+              <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                ক্যাপচার
+              </span>
             </h2>
           </motion.div>
 
@@ -312,7 +707,11 @@ export default function Home() {
                 className="group relative aspect-square rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
               >
                 <img
-                  src={idx % 2 === 0 ? '/aminul_haque.jpg' : '/aminul_nomination_post.webp'}
+                  src={
+                    idx % 2 === 0
+                      ? "/aminul_haque.jpg"
+                      : "/aminul_nomination_post.webp"
+                  }
                   alt={`গ্যালারি ছবি ${idx}`}
                   className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
                 />
@@ -342,15 +741,30 @@ export default function Home() {
               সর্বশেষ আপডেট
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              খবর ও <span className="bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent">গল্প</span>
+              খবর ও{" "}
+              <span className="bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent">
+                গল্প
+              </span>
             </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: 'গ্রামীণ শিক্ষা উন্নয়ন', category: 'শিক্ষা', color: 'from-emerald-500 to-green-600' },
-              { title: 'কৃষক সমবায় সাফল্য', category: 'কৃষি', color: 'from-blue-500 to-cyan-600' },
-              { title: 'সাংস্কৃতিক উৎসব', category: 'সংস্কৃতি', color: 'from-purple-500 to-pink-600' },
+              {
+                title: "গ্রামীণ শিক্ষা উন্নয়ন",
+                category: "শিক্ষা",
+                color: "from-emerald-500 to-green-600",
+              },
+              {
+                title: "কৃষক সমবায় সাফল্য",
+                category: "কৃষি",
+                color: "from-blue-500 to-cyan-600",
+              },
+              {
+                title: "সাংস্কৃতিক উৎসব",
+                category: "সংস্কৃতি",
+                color: "from-purple-500 to-pink-600",
+              },
             ].map((post, idx) => (
               <motion.div
                 key={post.title}
@@ -360,18 +774,26 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 className="group relative"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${post.color} rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-all`}></div>
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${post.color} rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-all`}
+                ></div>
                 <div className="relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all overflow-hidden border border-slate-200">
                   <div className={`h-48 bg-gradient-to-br ${post.color}`}></div>
                   <div className="p-6">
-                    <span className={`inline-block px-3 py-1 bg-gradient-to-r ${post.color} text-white text-xs font-bold rounded-full mb-3`}>
+                    <span
+                      className={`inline-block px-3 py-1 bg-gradient-to-r ${post.color} text-white text-xs font-bold rounded-full mb-3`}
+                    >
                       {post.category}
                     </span>
-                    <h3 className="text-xl font-black text-slate-900 mb-3">{post.title}</h3>
+                    <h3 className="text-xl font-black text-slate-900 mb-3">
+                      {post.title}
+                    </h3>
                     <p className="text-slate-600 mb-4">
                       আমাদের সর্বশেষ উদ্যোগ এবং সফলতার গল্প পড়ুন...
                     </p>
-                    <button className={`inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r ${post.color} bg-clip-text text-transparent`}>
+                    <button
+                      className={`inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r ${post.color} bg-clip-text text-transparent`}
+                    >
                       আরও পড়ুন <FaArrowRight />
                     </button>
                   </div>
@@ -397,7 +819,8 @@ export default function Home() {
                 একসাথে পরিবর্তন আনি
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                আপনার সহযোগিতায় আমরা আরও বেশি মানুষের জীবনে ইতিবাচক পরিবর্তন আনতে পারি
+                আপনার সহযোগিতায় আমরা আরও বেশি মানুষের জীবনে ইতিবাচক পরিবর্তন
+                আনতে পারি
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-2xl transition-all transform hover:scale-105">
