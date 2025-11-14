@@ -152,7 +152,7 @@ export default function Navbar() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/contact"
-                className="group relative px-6 py-3 bg-linear-to-r from-emerald-500 via-cyan-500 to-blue-500 text-white font-bold rounded-full shadow-2xl overflow-hidden"
+                className="group relative inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-emerald-500 via-cyan-500 to-blue-500 text-white font-bold rounded-full shadow-2xl overflow-hidden"
               >
                 {/* Animated Background */}
                 <motion.div
@@ -164,10 +164,8 @@ export default function Navbar() {
                   style={{ backgroundSize: "200% 200%" }}
                 />
 
-                <span className="relative z-10 flex items-center gap-2">
-                  <FaRocket className="group-hover:translate-x-1 transition-transform" />
-                  যোগাযোগ
-                </span>
+                <FaRocket className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                <span className="relative z-10">যোগাযোগ</span>
 
                 {/* Shimmer Effect */}
                 <motion.div

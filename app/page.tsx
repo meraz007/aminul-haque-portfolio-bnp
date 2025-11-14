@@ -487,7 +487,7 @@ export default function Home() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/manifesto"
-                className="group px-10 py-5 bg-linear-to-r from-rose-500 via-pink-500 to-purple-500 text-white font-black text-lg rounded-2xl shadow-2xl overflow-hidden relative"
+                className="group relative inline-flex items-center gap-3 px-10 py-5 bg-linear-to-r from-rose-500 via-pink-500 to-purple-500 text-white font-black text-lg rounded-2xl shadow-2xl overflow-hidden"
               >
                 <motion.div
                   animate={{
@@ -496,17 +496,15 @@ export default function Home() {
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
                   className="absolute inset-0 w-1/2 bg-linear-to-r from-transparent via-white/20 to-transparent skew-x-12"
                 />
-                <span className="relative flex items-center gap-3">
-                  <FaPlay />
-                  সম্পূর্ণ ইশতেহার পড়ুন
-                </span>
+                <FaPlay className="relative z-10" />
+                <span className="relative z-10">সম্পূর্ণ ইশতেহার পড়ুন</span>
               </Link>
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/programs"
-                className="px-10 py-5 glass-dark backdrop-blur-xl text-white font-black text-lg rounded-2xl border-2 border-white/20 hover:border-white/40 transition-all"
+                className="inline-flex items-center gap-2 px-10 py-5 glass-dark backdrop-blur-xl text-white font-black text-lg rounded-2xl border-2 border-white/20 hover:border-white/40 transition-all"
               >
                 কর্মসূচি দেখুন
               </Link>

@@ -171,7 +171,7 @@ export default function Hero() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/about"
-                className="group relative px-8 py-5 bg-linear-to-r from-emerald-500 to-cyan-500 text-white font-bold rounded-2xl shadow-2xl overflow-hidden"
+                className="group relative inline-flex items-center gap-2 px-8 py-5 bg-linear-to-r from-emerald-500 to-cyan-500 text-white font-bold text-lg rounded-2xl shadow-2xl overflow-hidden"
               >
                 <motion.div
                   className="absolute inset-0 bg-linear-to-r from-emerald-600 to-cyan-600"
@@ -179,10 +179,8 @@ export default function Hero() {
                   whileHover={{ x: 0 }}
                   transition={{ duration: 0.3 }}
                 />
-                <span className="relative z-10 flex items-center gap-2 text-lg">
-                  আরও জানুন
-                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                </span>
+                <span className="relative z-10">আরও জানুন</span>
+                <FaArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform" />
                 <motion.div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
                   style={{
@@ -196,12 +194,10 @@ export default function Hero() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/programs"
-                className="group px-8 py-5 glass text-white font-bold rounded-2xl border-2 border-emerald-400/50 hover:border-emerald-400 transition-all backdrop-blur-xl"
+                className="group inline-flex items-center gap-2 px-8 py-5 glass text-white font-bold text-lg rounded-2xl border-2 border-emerald-400/50 hover:border-emerald-400 transition-all backdrop-blur-xl"
               >
-                <span className="flex items-center gap-2 text-lg">
-                  <FaPlay className="text-emerald-400" />
-                  কর্মসূচি দেখুন
-                </span>
+                <FaPlay className="text-emerald-400" />
+                <span>কর্মসূচি দেখুন</span>
               </Link>
             </motion.div>
           </motion.div>
