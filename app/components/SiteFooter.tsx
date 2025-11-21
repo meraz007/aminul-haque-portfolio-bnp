@@ -29,9 +29,6 @@ export default function SiteFooter() {
             <div className="flex items-center space-x-3 mb-6">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl blur opacity-50"></div>
-                <div className="relative w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-2xl font-black">আহ</span>
-                </div>
               </div>
               <div>
                 <div className="text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
