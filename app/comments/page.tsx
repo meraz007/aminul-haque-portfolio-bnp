@@ -116,8 +116,62 @@ export default function CommentsPage() {
         </div>
       </section>
 
+      {/* Welcome Section with Image */}
+      <section className="py-20 px-4 bg-white">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 rounded-3xl blur-2xl opacity-20"></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                <img
+                  src="/aminul_haque.jpg"
+                  alt="আমিনুল হক"
+                  className="w-full h-[500px] object-cover"
+                />
+              </div>
+            </motion.div>
+
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="text-pink-600 font-bold text-sm uppercase tracking-wider">আপনার কথা শুনি</span>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
+                আপনার মতামত আমার শক্তি
+              </h2>
+              <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
+                <p>
+                  প্রিয় এলাকাবাসী, আপনাদের মতামত, পরামর্শ এবং চিন্তাভাবনা আমার কাছে অত্যন্ত মূল্যবান।
+                </p>
+                <p>
+                  জনগণের প্রতিনিধি হিসেবে আমার দায়িত্ব হলো আপনাদের কথা শোনা এবং সেই অনুযায়ী কাজ করা। আপনাদের প্রতিটি মন্তব্য আমাকে আরও ভালো কাজ করতে অনুপ্রাণিত করে।
+                </p>
+                <p className="font-semibold text-pink-700">
+                  আপনার ছোট একটি মন্তব্যও বড় পরিবর্তন আনতে পারে - তাই নিঃসংকোচে আপনার মতামত জানান।
+                </p>
+              </div>
+              <div className="mt-6 p-6 bg-pink-50 rounded-2xl border-l-4 border-pink-600">
+                <p className="text-slate-700">
+                  <strong className="text-pink-700">আমার প্রতিশ্রুতি:</strong> প্রতিটি মন্তব্য পড়া হবে এবং আপনার পরামর্শগুলি আমাদের কাজে প্রতিফলিত করার চেষ্টা করা হবে।
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="mx-auto max-w-7xl">
           {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             {[
