@@ -57,7 +57,7 @@ export default function Navbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          <Link href="/" className="flex items-center space-x-2 xl:space-x-3 group flex-shrink-0">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-all"></div>
               {/* <div className="relative w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
@@ -65,15 +65,15 @@ export default function Navbar() {
               </div> */}
             </div>
             <div>
-              <div className="text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              <div className="text-lg xl:text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
                 আমিনুল হক
               </div>
-              <div className="text-xs font-semibold text-slate-600">জনগণের সেবায় নিবেদিত</div>
+              <div className="text-[10px] xl:text-xs font-semibold text-slate-600 hidden sm:block">জনগণের সেবায় নিবেদিত</div>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1 flex-wrap">
             {navItems.map((item) => {
               if (item.hasDropdown && item.dropdownItems) {
                 const isDropdownActive = item.dropdownItems.some(dropItem => pathname === dropItem.href);
@@ -85,7 +85,7 @@ export default function Navbar() {
                     onMouseLeave={() => setOpenDropdown(null)}
                   >
                     <button
-                      className={`relative px-4 py-2 font-bold text-sm transition-all rounded-lg flex items-center gap-2 ${
+                      className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg flex items-center gap-1 xl:gap-2 ${
                         isDropdownActive
                           ? 'text-white'
                           : 'text-slate-700 hover:text-emerald-600'
@@ -99,7 +99,7 @@ export default function Navbar() {
                           transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                         />
                       )}
-                      <span className="relative z-10">{item.label}</span>
+                      <span className="relative z-10 whitespace-nowrap">{item.label}</span>
                       <FaChevronDown className={`relative z-10 text-xs transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     
@@ -140,7 +140,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href!}
-                  className={`relative px-4 py-2 font-bold text-sm transition-all rounded-lg ${
+                  className={`relative px-3 xl:px-4 py-2 font-bold text-xs xl:text-sm transition-all rounded-lg whitespace-nowrap ${
                     isActive
                       ? 'text-white'
                       : 'text-slate-700 hover:text-emerald-600'
@@ -161,10 +161,10 @@ export default function Navbar() {
           </div>
 
           {/* CTA Button */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <Link
               href="/contact"
-              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
+              className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
             >
               যোগাযোগ
             </Link>
@@ -173,7 +173,7 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-3 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all"
+            className="lg:hidden p-3 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all"
           >
             {isOpen ? (
               <FaTimes className="h-6 w-6 text-slate-900" />
@@ -190,7 +190,7 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden overflow-hidden"
+              className="lg:hidden overflow-hidden"
             >
               <div className="py-4 space-y-2">
                 {navItems.map((item) => {

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Hero from './components/Hero';
 import { motion } from 'framer-motion';
 import WelcomeModal from './components/WelcomeModal';
-import TestimonialCarousel from './components/TestimonialCarousel';
+// import TestimonialCarousel from './components/TestimonialCarousel';
 import { 
   FaArrowRight, 
   FaMapMarkerAlt, 
@@ -117,57 +117,64 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {manifestos.map((manifesto, idx) => (
-              <motion.div
-                key={manifesto.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="group relative"
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${manifesto.color} rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all`}></div>
-                <Link href={manifesto.link} className="relative block bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full">
-                  <div className={`inline-flex p-5 bg-gradient-to-br ${manifesto.color} rounded-2xl mb-6`}>
-                    <manifesto.icon className="text-4xl text-white" />
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-3">
-                    {manifesto.title}
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed mb-6">
-                    {manifesto.description}
-                  </p>
-                  <div className={`inline-flex items-center gap-2 font-bold bg-gradient-to-r ${manifesto.color} bg-clip-text text-transparent group-hover:gap-3 transition-all`}>
-                    বিস্তারিত দেখুন <FaArrowRight />
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Video Embed */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative max-w-5xl mx-auto"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20"></div>
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-              <div className="relative pb-[56.25%] h-0">
-                <iframe
-                  className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/AyL-WF3Uryo"
-                  title="আমিনুল হকের নির্বাচনী প্রচারণা"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+            {/* Left Side: Manifestos - Vertical Stack */}
+            <div className="space-y-6">
+              {manifestos.map((manifesto, idx) => (
+                <motion.div
+                  key={manifesto.title}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="group relative"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${manifesto.color} rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all`}></div>
+                  <Link href={manifesto.link} className="relative block bg-white rounded-3xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all border border-slate-200 h-full">
+                    <div className="flex items-start gap-4">
+                      <div className={`flex-shrink-0 p-4 md:p-5 bg-gradient-to-br ${manifesto.color} rounded-2xl`}>
+                        <manifesto.icon className="text-3xl md:text-4xl text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-2">
+                          {manifesto.title}
+                        </h3>
+                        <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-4">
+                          {manifesto.description}
+                        </p>
+                        <div className={`inline-flex items-center gap-2 font-bold bg-gradient-to-r ${manifesto.color} bg-clip-text text-transparent group-hover:gap-3 transition-all text-sm md:text-base`}>
+                          বিস্তারিত দেখুন <FaArrowRight />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
+
+            {/* Right Side: Video Embed */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative lg:sticky lg:top-24"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20"></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                <div className="relative pb-[56.25%] h-0">
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube.com/embed/AyL-WF3Uryo"
+                    title="আমিনুল হকের নির্বাচনী প্রচারণা"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
       
