@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রস্তাবনা-০৩: মিনি স্পোর্টস ভিলেজ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .document {
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        h1 {
+            color: #dc2626;
+            font-size: 32px;
+            margin: 0 0 10px 0;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+        }
+        .badge {
+            background: linear-gradient(to right, #10b981, #059669);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .content {
+            line-height: 1.8;
+            font-size: 18px;
+            color: #333;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section-title {
+            color: #dc2626;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #fecaca;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e5e5;
+            color: #666;
+        }
+        .note {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="header">
+            <h1>বিএনপির ১৮ দফা রূপকল্প</h1>
+            <p class="subtitle">ক্রীড়া বিষয়ক উন্নয়ন পরিকল্পনা</p>
+        </div>
+
+        <div class="badge">প্রস্তাবনা-০৩</div>
+
+        <div class="content">
+            <h2 style="color: #059669; font-size: 28px; margin-bottom: 20px;">
+                মিনি স্পোর্টস ভিলেজ
+            </h2>
+
+            <div class="section">
+                <div class="section-title">প্রস্তাবনা</div>
+                <p>
+                    প্রতিটি উপজেলায় ২০ বিঘা জমির উপর ইন্ডোর সুবিধাসম্পন্ন "মিনি স্পোর্টস ভিলেজ" তৈরি করা হবে।
+                </p>
+            </div>
+
+            <div class="section">
+                <div class="section-title">উদ্দেশ্য</div>
+                <ul>
+                    <li>প্রতিটি উপজেলায় আধুনিক ক্রীড়া সুবিধা প্রদান</li>
+                    <li>তৃণমূল পর্যায়ে ক্রীড়া প্রতিভা উন্নয়ন</li>
+                    <li>যুব সমাজকে ক্রীড়া কার্যক্রমে সম্পৃক্ত করা</li>
+                    <li>জাতীয় পর্যায়ে ক্রীড়া মান উন্নয়ন</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <div class="section-title">সুবিধাসমূহ</div>
+                <ul>
+                    <li>ইন্ডোর খেলাধুলার জন্য পর্যাপ্ত স্থান</li>
+                    <li>আধুনিক প্রশিক্ষণ সুবিধা</li>
+                    <li>খেলোয়াড়দের জন্য আবাসিক ব্যবস্থা</li>
+                    <li>চিকিৎসা ও পুষ্টি সেবা</li>
+                    <li>দক্ষ কোচিং স্টাফ</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <strong>বিশেষ দ্রষ্টব্য:</strong> এই প্রকল্প বাস্তবায়নের মাধ্যমে দেশের প্রতিটি উপজেলায় মানসম্পন্ন ক্রীড়া সুবিধা নিশ্চিত করা হবে এবং স্থানীয় পর্যায়ে ক্রীড়া প্রতিভা বিকাশে সহায়তা করা হবে।
+            </div>
+
+            <div class="section">
+                <div class="section-title">বাস্তবায়ন পরিকল্পনা</div>
+                <p>
+                    <strong>প্রথম পর্যায়:</strong> জেলা সদরে পাইলট প্রকল্প চালু<br>
+                    <strong>দ্বিতীয় পর্যায়:</strong> সকল উপজেলায় ক্রমান্বয়ে সম্প্রসারণ<br>
+                    <strong>তৃতীয় পর্যায়:</strong> পরিচালনা ও রক্ষণাবেক্ষণ ব্যবস্থা জোরদারকরণ
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>বাংলাদেশ জাতীয়তাবাদী দল (বিএনপি)</strong></p>
+            <p>ক্রীড়া উন্নয়ন কমিটি</p>
+        </div>
+    </div>
+</body>
+</html>
+

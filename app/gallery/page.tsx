@@ -1,33 +1,37 @@
-import type { Metadata } from 'next';
+"use client";
+import { motion } from 'framer-motion';
+import { FaCamera } from 'react-icons/fa';
 import GalleryClient from './GalleryClient';
-
-export const metadata: Metadata = {
-  title: 'Gallery',
-  description: 'A curated gallery of leadership moments and community work.',
-};
-
-// Client state and filtering moved into GalleryClient
 
 export default function GalleryPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Gallery</h1>
-          <p className="mt-2 text-slate-600">Moments from the journey — events, programs, and people.</p>
+    <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
+      {/* Hero Section */}
+      <section className="relative py-32 px-4 bg-gradient-to-br from-amber-50 via-white to-orange-50">
+        <div className="mx-auto max-w-7xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="inline-block px-6 py-2 bg-amber-100 text-amber-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
+              <FaCamera className="inline mr-2" />
+              ক্যাম্পেইন গ্যালারি
+            </span>
+            <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
+              <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                মুহূর্ত ক্যাপচার
+              </span>
+            </h1>
+            <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
+              আমাদের ক্যাম্পেইন ইভেন্ট এবং সম্প্রদায় পরিদর্শন থেকে স্মৃতি
+            </p>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
+      {/* Gallery Client Component */}
       <GalleryClient />
-
-      <div className="mt-10 rounded-xl border border-slate-200 bg-[url('/bnp-story.avif')] bg-cover bg-center p-8 text-white">
-        <div className="backdrop-blur-sm bg-black/40 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold">Share Your Photos</h2>
-          <p className="mt-2 text-sm text-white/90">Have a moment to feature? Send it to contact@example.com</p>
-        </div>
-      </div>
-    </div>
+    </main>
   );
 }
-
-

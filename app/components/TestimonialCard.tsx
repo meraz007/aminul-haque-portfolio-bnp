@@ -1,4 +1,4 @@
-import { FaQuoteLeft } from 'react-icons/fa';
+import { FaQuoteLeft, FaStar } from 'react-icons/fa';
 
 interface TestimonialCardProps {
   quote: string;
@@ -17,35 +17,43 @@ export default function TestimonialCard({
   rating = 5,
   isActive = false,
 }: TestimonialCardProps) {
-  const quoteIconColor = isActive ? 'text-green-700' : 'text-gray-300';
-  const textColor = isActive ? 'text-slate-900' : 'text-gray-600';
-  const nameColor = isActive ? 'text-slate-900' : 'text-gray-600';
-  const cardShadow = isActive ? 'shadow-lg' : 'shadow-sm';
-  const imageFilter = isActive ? '' : 'grayscale';
-
   return (
-    <div className={`rounded-xl border border-slate-200 bg-white p-6 ${cardShadow} transition-all duration-300`}>
-      {/* Quote Icon */}
-      <div className="mb-4">
-        <FaQuoteLeft className={`text-5xl ${quoteIconColor}`} />
-      </div>
+    <div className={`relative rounded-3xl bg-white p-8 md:p-10 shadow-xl hover:shadow-2xl transition-all duration-300 ${isActive ? 'scale-100' : 'scale-95 opacity-80'}`}>
+      {/* Background Gradient Accent */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500 to-green-700 opacity-10 rounded-full blur-3xl" />
+      
+      <div className="relative z-10">
+        {/* Quote Icon */}
+        <div className="mb-6">
+          <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl flex items-center justify-center">
+            <FaQuoteLeft className="text-2xl text-white" />
+          </div>
+        </div>
 
-      {/* Profile Image */}
-      <div className="flex justify-center mb-4">
-        <img
-          src={image}
-          alt={author}
-          className={`w-20 h-20 rounded-full object-cover ${imageFilter} transition-all duration-300`}
-        />
-      </div>
+        {/* Quote Text */}
+        <p className="text-slate-700 text-lg leading-relaxed mb-6">
+          "{quote}"
+        </p>
 
-      {/* Quote Text */}
-      <p className={`text-center mb-4 leading-relaxed ${textColor}`}>"{quote}"</p>
+        {/* Rating Stars */}
+        <div className="flex gap-1 mb-6">
+          {[...Array(rating)].map((_, idx) => (
+            <FaStar key={idx} className="text-yellow-400 text-lg" />
+          ))}
+        </div>
 
-      {/* Author and Role */}
-      <div className="text-center">
-        <div className={`font-semibold ${nameColor} mb-1`}>{author}</div>
-        <div className={`text-sm ${textColor}`}>{role}</div>
+        {/* Author Section */}
+        <div className="flex items-center gap-4">
+          <img
+            src={image}
+            alt={author}
+            className="w-14 h-14 rounded-full object-cover ring-4 ring-green-100"
+          />
+          <div>
+            <div className="font-bold text-slate-900 text-lg">{author}</div>
+            <div className="text-sm text-slate-600">{role}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

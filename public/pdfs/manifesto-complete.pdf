@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিএনপির ১৮ দফা রূপকল্প - সম্পূর্ণ দলিল</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .document {
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .cover {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            margin: -60px -60px 60px -60px;
+        }
+        .cover h1 {
+            font-size: 48px;
+            margin: 0 0 20px 0;
+        }
+        .cover .subtitle {
+            font-size: 24px;
+            opacity: 0.9;
+        }
+        .toc {
+            background: #fef2f2;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+        .toc h2 {
+            color: #dc2626;
+            margin-top: 0;
+        }
+        .toc-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-left: 4px solid #dc2626;
+            border-radius: 4px;
+        }
+        .toc-item strong {
+            color: #991b1b;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+        .section h3 {
+            color: #dc2626;
+            font-size: 24px;
+            margin-top: 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e5e5;
+            color: #666;
+        }
+        .highlight-box {
+            background: linear-gradient(to right, #fef3c7, #fde68a);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 6px solid #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="cover">
+            <h1>বিএনপির ১৮ দফা রূপকল্প</h1>
+            <p class="subtitle">ক্রীড়া বিষয়ক সম্পূর্ণ উন্নয়ন পরিকল্পনা</p>
+            <p style="margin-top: 40px; font-size: 18px;">বাংলাদেশ জাতীয়তাবাদী দল</p>
+        </div>
+
+        <div class="highlight-box">
+            <h2 style="margin-top: 0; color: #92400e;">ক্রীড়া বিষয়ক</h2>
+            <p style="font-size: 18px; line-height: 1.8; color: #78350f;">
+                বাংলাদেশে মোট <strong>৫৫টি ক্রীড়া ফেডারেশন ও অ্যাসোসিয়েশন</strong> রয়েছে (সূত্র: এনএসসি)। 
+                বিএনপির ১৮ দফা রূপকল্পের আওতায় ক্রীড়া খাতের উন্নয়নে নিম্নলিখিত প্রস্তাবনাসমূহ উপস্থাপন করা হয়েছে।
+            </p>
+        </div>
+
+        <div class="toc">
+            <h2>প্রস্তাবনা সূচিপত্র</h2>
+            
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-০৩:</strong> মিনি স্পোর্টস ভিলেজ<br>
+                <small>প্রতিটি উপজেলায় ২০ বিঘা জমির উপর ইন্ডোর সুবিধাসম্পন্ন স্পোর্টস ভিলেজ</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-০৪:</strong> নতুন কুঁড়ি ক্রীড়া<br>
+                <small>তৃণমূল পর্যায় থেকে প্রতিভাবান খেলোয়াড়দের জাতীয় পর্যায়ে সুযোগ</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-০৬:</strong> শারীরিক শিক্ষা বাধ্যতামূলক<br>
+                <small>প্রতিটি শিক্ষা প্রতিষ্ঠানে শারীরিক শিক্ষার শিক্ষক নিয়োগ</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-০৭:</strong> বি.কে.এস.পি প্রতিষ্ঠা<br>
+                <small>বিভাগীয় পর্যায়ে ৫+৩টি বি.কে.এস.পি প্রতিষ্ঠা</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-০৮:</strong> বাংলাদেশ ক্রীড়া উন্নয়ন ব্যাংক<br>
+                <small>ক্রীড়াঙ্গনের আর্থিক সমৃদ্ধি ও খেলোয়াড়দের সহায়তা</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-০৯:</strong> আন্তর্জাতিক স্পোর্টস ভিলেজ<br>
+                <small>আন্তর্জাতিক মানের সুবিধাসম্পন্ন স্পোর্টস ভিলেজ</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-১০:</strong> ক্রীড়া বিশ্ববিদ্যালয়<br>
+                <small>খেলাধুলা ও ক্রীড়া গবেষণার জন্য আধুনিক বিশ্ববিদ্যালয়</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-১১:</strong> ক্রীড়া সরঞ্জাম ইন্ডাস্ট্রি<br>
+                <small>দেশীয় ক্রীড়া সরঞ্জাম উৎপাদন শিল্প স্থাপন</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-১২:</strong> আন্তর্জাতিক সহযোগিতা<br>
+                <small>বিদেশী ক্রীড়া সংস্থার সাথে চুক্তি ও প্রশিক্ষণ</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-১৩:</strong> ক্রীড়া পত্রিকা<br>
+                <small>দেশীয় ও আন্তর্জাতিক ক্রীড়া সংবাদ প্রকাশ</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-১৪:</strong> স্পোর্টস টিভি চ্যানেল<br>
+                <small>২৪ ঘন্টা ক্রীড়া সম্প্রচারের জন্য টিভি চ্যানেল</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-১৫:</strong> স্পোর্টস রেডিও চ্যানেল<br>
+                <small>নিয়মিত ক্রীড়া সংবাদ প্রচারের জন্য রেডিও চ্যানেল</small>
+            </div>
+
+            <div class="toc-item">
+                <strong>প্রস্তাবনা-১৭:</strong> বেসরকারি একাডেমী সহযোগিতা<br>
+                <small>বেসরকারি ক্রীড়া একাডেমীসমূহকে সরকারি সহায়তা</small>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>আমাদের প্রতিশ্রুতি</h3>
+            <p style="font-size: 18px; line-height: 1.8;">
+                বাংলাদেশের ক্রীড়া খাতকে আন্তর্জাতিক মানে উন্নীত করতে আমরা প্রতিশ্রুতিবদ্ধ। 
+                প্রতিটি খেলোয়াড়ের স্বপ্ন পূরণে আমরা সর্বাত্মক সহযোগিতা করব এবং দেশের 
+                তৃণমূল পর্যায় থেকে জাতীয় পর্যায় পর্যন্ত ক্রীড়া অবকাঠামো উন্নয়নে কাজ করব।
+            </p>
+        </div>
+
+        <div class="footer">
+            <p style="font-size: 18px;"><strong>বাংলাদেশ জাতীয়তাবাদী দল (বিএনপি)</strong></p>
+            <p>ক্রীড়া উন্নয়ন কমিটি</p>
+            <p style="margin-top: 20px; font-size: 14px;">
+                বিস্তারিত তথ্যের জন্য যোগাযোগ করুন<br>
+                ওয়েবসাইট: www.bnp-sports.bd
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

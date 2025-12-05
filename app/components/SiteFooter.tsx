@@ -1,80 +1,152 @@
 import Link from 'next/link';
-
-const recentPosts = [
-  { title: 'Education Reform for All', href: '/blog/education-reform' },
-  { title: 'Empowering Agriculture', href: '/blog/agriculture' },
-  { title: 'Arts & Culture Initiatives', href: '/blog/arts-culture' },
-];
+import { 
+  FaFacebook, 
+  FaTwitter, 
+  FaInstagram, 
+  FaYoutube, 
+  FaEnvelope, 
+  FaPhone, 
+  FaMapMarkerAlt 
+} from 'react-icons/fa';
 
 export default function SiteFooter() {
+  const quickLinks = [
+    { title: 'হোম', href: '/' },
+    { title: 'সম্পর্কে', href: '/about' },
+    { title: 'কর্মসূচি', href: '/programs' },
+    { title: 'রূপকল্প', href: '/manifesto' },
+    { title: 'গ্যালারি', href: '/gallery' },
+    { title: 'মন্তব্য', href: '/comments' },
+    { title: 'যোগাযোগ', href: '/contact' },
+  ];
+
+  const programs = [
+    { title: 'শিক্ষা অগ্রাধিকার', href: '/programs#education' },
+    { title: 'কৃষি উন্নয়ন', href: '/programs#agriculture' },
+    { title: 'শিল্প ও সংস্কৃতি', href: '/programs#culture' },
+    { title: 'যুব নেতৃত্ব', href: '/programs#youth' },
+  ];
+
   return (
-    <footer className="mt-16 bg-[#008000] text-white">
-      <div
-        className="bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/bnp-story.avif)', filter: 'brightness(0.9)' }}
-      >
-        <div className="backdrop-blur-sm bg-green-900/60">
-          <div className="mx-auto max-w-7xl px-4 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
-            <div>
-              <h4 className="text-lg font-semibold mb-4">About</h4>
-              <p className="text-sm text-gray-300 leading-6">
-                A professional, modern and clean political portfolio highlighting vision, programs,
-                achievements and community impact.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Recent Posts</h4>
-              <ul className="space-y-2">
-                {recentPosts.map((p) => (
-                  <li key={p.href}>
-                    <Link href={p.href} className="text-sm text-gray-300 hover:text-green-500">
-                      {p.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Gallery</h4>
-              <div className="grid grid-cols-3 gap-2">
-                {['next.svg', 'vercel.svg', 'globe.svg', 'window.svg', 'file.svg', 'next.svg'].map(
-                  (img, i) => (
-                    <img
-                      key={i}
-                      src={`/${img}`}
-                      alt="gallery"
-                      className="h-16 w-full rounded object-contain bg-white/10 p-2"
-                    />
-                  ),
-                )}
+    <footer className="bg-gradient-to-b from-slate-50 to-slate-100 border-t-4 border-emerald-500">
+      <div className="mx-auto max-w-7xl px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          {/* About Section */}
+          <div>
+            <div className="flex items-center mb-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl blur opacity-50"></div>
+              </div>
+              <div>
+                <div className="text-xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                  আমিনুল হক
+                </div>
+                <div className="text-xs font-semibold text-slate-600">জনগণের সেবায়</div>
               </div>
             </div>
+            <p className="text-slate-700 leading-relaxed mb-6">
+              শিক্ষা, কৃষি, শিল্প ও সংস্কৃতিতে টেকসই উন্নয়নের মাধ্যমে একটি সমৃদ্ধ বাংলাদেশ গড়ার প্রতিশ্রুতি।
+            </p>
+            <div className="flex gap-3">
+              {[
+                { icon: FaFacebook, href: '#', color: 'from-blue-600 to-blue-700' },
+                { icon: FaTwitter, href: '#', color: 'from-sky-500 to-blue-600' },
+                { icon: FaInstagram, href: '#', color: 'from-pink-500 to-purple-600' },
+                { icon: FaYoutube, href: '#', color: 'from-red-600 to-red-700' },
+              ].map((social, idx) => (
+                <a
+                  key={idx}
+                  href={social.href}
+                  className={`p-3 bg-gradient-to-br ${social.color} text-white rounded-xl hover:shadow-xl transition-all transform hover:scale-110`}
+                  aria-label="সোশ্যাল মিডিয়া"
+                >
+                  <social.icon className="text-xl" />
+                </a>
+              ))}
+            </div>
+          </div>
 
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
-              <ul className="text-sm text-gray-300 space-y-2">
-                <li>Email: contact@example.com</li>
-                <li>Phone: +880 1234-567890</li>
-                <li>Address: Dhaka, Bangladesh</li>
-              </ul>
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xl font-black text-slate-900 mb-6 pb-2 border-b-2 border-emerald-500">
+              দ্রুত লিংক
+            </h3>
+            <ul className="space-y-3">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-slate-700 hover:text-emerald-600 font-semibold transition-all hover:translate-x-2 inline-block"
+                  >
+                    → {link.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Programs */}
+          <div>
+            <h3 className="text-xl font-black text-slate-900 mb-6 pb-2 border-b-2 border-blue-500">
+              কর্মসূচি
+            </h3>
+            <ul className="space-y-3">
+              {programs.map((program) => (
+                <li key={program.href}>
+                  <Link
+                    href={program.href}
+                    className="text-slate-700 hover:text-blue-600 font-semibold transition-all hover:translate-x-2 inline-block"
+                  >
+                    → {program.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-xl font-black text-slate-900 mb-6 pb-2 border-b-2 border-purple-500">
+              যোগাযোগ
+            </h3>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg">
+                  <FaMapMarkerAlt className="text-white" />
+                </div>
+                <div>
+                  <p className="text-slate-700 font-semibold">ঢাকা, বাংলাদেশ</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg">
+                  <FaPhone className="text-white" />
+                </div>
+                <div>
+                  <p className="text-slate-700 font-semibold">+৮৮০ ১৭১২-৩৪৫৬৭৮</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg">
+                  <FaEnvelope className="text-white" />
+                </div>
+                <div>
+                  <p className="text-slate-700 font-semibold">info@aminulhaque.bd</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between text-sm">
-          <span className="text-gray-400">© {new Date().getFullYear()} Aminul Haque</span>
-          <div className="flex items-center gap-4">
-            <Link href="/" className="hover:text-green-500">Home</Link>
-            <Link href="/about" className="hover:text-red-500">About</Link>
-            <Link href="/contact" className="hover:text-green-500">Contact</Link>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-slate-300">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-slate-600 font-semibold text-center md:text-left">
+              © {new Date().getFullYear()} আমিনুল হক। সর্বস্বত্ব সংরক্ষিত।
+            </p>
           </div>
         </div>
       </div>
     </footer>
   );
 }
-
-

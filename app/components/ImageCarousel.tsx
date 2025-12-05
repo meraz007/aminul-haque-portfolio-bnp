@@ -92,3 +92,6 @@ export default function ImageCarousel({ images, autoPlay = true, interval = 5000
   );
 }
 
+
+
+

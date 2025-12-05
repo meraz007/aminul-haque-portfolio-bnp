@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রস্তাবনা-১০: ক্রীড়া বিশ্ববিদ্যালয়</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .document {
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        h1 {
+            color: #dc2626;
+            font-size: 32px;
+            margin: 0 0 10px 0;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+        }
+        .badge {
+            background: linear-gradient(to right, #6366f1, #8b5cf6);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .content {
+            line-height: 1.8;
+            font-size: 18px;
+            color: #333;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section-title {
+            color: #dc2626;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #fecaca;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #8b5cf6;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e5e5;
+            color: #666;
+        }
+        .highlight {
+            background: linear-gradient(to right, #ede9fe, #ddd6fe);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 6px solid #8b5cf6;
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="header">
+            <h1>বিএনপির ১৮ দফা রূপকল্প</h1>
+            <p class="subtitle">ক্রীড়া বিষয়ক উন্নয়ন পরিকল্পনা</p>
+        </div>
+
+        <div class="badge">প্রস্তাবনা-১০</div>
+
+        <div class="content">
+            <h2 style="color: #8b5cf6; font-size: 28px; margin-bottom: 20px;">
+                ক্রীড়া বিশ্ববিদ্যালয় / Sports University
+            </h2>
+
+            <div class="section">
+                <div class="section-title">প্রস্তাবনা</div>
+                <p>
+                    খেলাধুলা ও ক্রীড়া গবেষণার জন্য একটি আধুনিক ও পূর্ণাঙ্গ "ক্রীড়া বিশ্ববিদ্যালয়/Sports University" প্রতিষ্ঠা করা হবে।
+                </p>
+            </div>
+
+            <div class="highlight">
+                <h3 style="margin-top: 0; color: #6b21a8;">বিশ্ববিদ্যালয়ের বৈশিষ্ট্য</h3>
+                <p style="font-size: 16px; line-height: 1.8;">
+                    এটি হবে দক্ষিণ এশিয়ার প্রথম পূর্ণাঙ্গ ক্রীড়া বিশ্ববিদ্যালয় যেখানে ক্রীড়া বিজ্ঞান, 
+                    ক্রীড়া ব্যবস্থাপনা, কোচিং, ফিজিওথেরাপি এবং ক্রীড়া গবেষণায় উচ্চশিক্ষা প্রদান করা হবে।
+                </p>
+            </div>
+
+            <div class="section">
+                <div class="section-title">শিক্ষা কার্যক্রম</div>
+                <ul>
+                    <li>ক্রীড়া বিজ্ঞান (Sports Science) বিভাগ</li>
+                    <li>ক্রীড়া ব্যবস্থাপনা (Sports Management) বিভাগ</li>
+                    <li>কোচিং ও ট্রেনিং বিভাগ</li>
+                    <li>ক্রীড়া চিকিৎসা ও ফিজিওথেরাপি বিভাগ</li>
+                    <li>ক্রীড়া সাংবাদিকতা বিভাগ</li>
+                    <li>ক্রীড়া পুষ্টি বিজ্ঞান বিভাগ</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <div class="section-title">গবেষণা কেন্দ্র</div>
+                <ul>
+                    <li>খেলোয়াড়দের পারফরম্যান্স বিশ্লেষণ</li>
+                    <li>আধুনিক প্রশিক্ষণ পদ্ধতি উন্নয়ন</li>
+                    <li>ক্রীড়া আঘাত প্রতিরোধ ও চিকিৎসা</li>
+                    <li>পুষ্টি ও ডায়েট পরিকল্পনা</li>
+                    <li>ক্রীড়া মনোবিজ্ঞান গবেষণা</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <div class="section-title">সুবিধাসমূহ</div>
+                <ul>
+                    <li>আন্তর্জাতিক মানের ল্যাবরেটরি</li>
+                    <li>অত্যাধুনিক স্পোর্টস কমপ্লেক্স</li>
+                    <li>আবাসিক সুবিধা সহ ক্যাম্পাস</li>
+                    <li>বিদেশী প্রশিক্ষক ও অধ্যাপক নিয়োগ</li>
+                    <li>আন্তর্জাতিক বিশ্ববিদ্যালয়ের সাথে সহযোগিতা</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <div class="section-title">ডিগ্রি প্রোগ্রাম</div>
+                <p>
+                    <strong>স্নাতক (অনার্স):</strong> ৪ বছর মেয়াদী<br>
+                    <strong>স্নাতকোত্তর (মাস্টার্স):</strong> ২ বছর মেয়াদী<br>
+                    <strong>পিএইচডি:</strong> গবেষণা কর্মসূচি<br>
+                    <strong>ডিপ্লোমা:</strong> বিভিন্ন মেয়াদী কোর্স
+                </p>
+            </div>
+
+            <div class="highlight">
+                <h3 style="margin-top: 0; color: #6b21a8;">প্রত্যাশিত ফলাফল</h3>
+                <p>
+                    এই বিশ্ববিদ্যালয় থেকে পাস করা শিক্ষার্থীরা দেশের ক্রীড়া খাতে দক্ষ কোচ, 
+                    ম্যানেজার, ফিজিওথেরাপিস্ট, পুষ্টিবিদ এবং ক্রীড়া বিজ্ঞানী হিসেবে কাজ করবেন।
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>বাংলাদেশ জাতীয়তাবাদী দল (বিএনপি)</strong></p>
+            <p>ক্রীড়া উন্নয়ন কমিটি</p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,41 +1,115 @@
-import type { Metadata } from 'next';
-import ProgramCard from '../components/ProgramCard';
-import { FaBookReader, FaSeedling, FaTheaterMasks, FaLandmark } from 'react-icons/fa';
+import ProgramsClient from './ProgramsClient';
 
-export const metadata: Metadata = {
-  title: 'Programs',
-  description: 'List of political programs displayed as cards.',
-};
-
-export default function ProgramsPage() {
-  return (
-    <div className="mx-auto max-w-7xl px-4 py-16">
-      <h1 className="text-3xl font-bold text-slate-900">Programs</h1>
-      <p className="mt-2 text-slate-600">Education, agriculture, arts & culture — and more.</p>
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <ProgramCard
-          icon={<FaBookReader className="h-10 w-10" />}
-          title="Education"
-          description="Scholarships, digital literacy, modernized curriculum and teacher training."
-        />
-        <ProgramCard
-          icon={<FaSeedling className="h-10 w-10" />}
-          title="Agriculture"
-          description="Smart farming, fair pricing, irrigation and farmer cooperatives."
-        />
-        <ProgramCard
-          icon={<FaTheaterMasks className="h-10 w-10" />}
-          title="Arts & Culture"
-          description="Festivals, heritage preservation, youth arts programs and community theaters."
-        />
-        <ProgramCard
-          icon={<FaLandmark className="h-10 w-10" />}
-          title="Good Governance"
-          description="Transparency, accountability, and citizen-first services."
-        />
-      </div>
-    </div>
-  );
+interface Program {
+  id?: string | number;
+  title: string;
+  tagline?: string;
+  description: string;
+  color?: string;
+  image?: string;
 }
 
+// Default color gradients for fallback
+const defaultColors = [
+  'from-red-500 to-rose-600',
+  'from-teal-500 to-cyan-600',
+  'from-pink-500 to-rose-600',
+  'from-indigo-500 to-purple-600',
+  'from-emerald-500 to-green-600',
+  'from-blue-500 to-cyan-600',
+  'from-purple-500 to-pink-600',
+  'from-orange-500 to-red-600',
+];
 
+async function getPrograms(): Promise<{ programs: Program[]; error: string | null }> {
+  try {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api-protfolio.trusttous.com/api/v1';
+    const response = await fetch(`${apiBaseUrl}/programs`, {
+      // Add cache revalidation for SSR
+      next: { revalidate: 60 }, // Revalidate every 60 seconds
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch programs: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    
+    // Handle different response formats
+    // API structure: { success: true, data: { data: [...] } }
+    let programsData: any[] = [];
+    if (Array.isArray(data)) {
+      programsData = data;
+    } else if (data.data && Array.isArray(data.data)) {
+      programsData = data.data;
+    } else if (data.data && data.data.data && Array.isArray(data.data.data)) {
+      // Handle nested structure: data.data.data
+      programsData = data.data.data;
+    } else if (data.programs && Array.isArray(data.programs)) {
+      programsData = data.programs;
+    } else {
+      console.error('API Response:', data);
+      throw new Error('Invalid API response format');
+    }
+    
+    // Map API data to expected format with fallbacks
+    // API fields: main_title, second_title, description, bangla_description, image, icon
+    const mappedPrograms: Program[] = programsData.map((program: any, index: number) => {
+      // Handle image URL - prioritize API image, validate it's a complete URL
+      let imageUrl = '/aminul_haque.jpg'; // default fallback only if no valid image
+      
+      if (program.image) {
+        const image = program.image.trim();
+        
+        // Check if it's a complete HTTP/HTTPS URL
+        if (image.startsWith('http://') || image.startsWith('https://')) {
+          // Validate it's not just the base storage URL (must have additional path)
+          const baseStorageUrl = 'https://api-protfolio.trusttous.com/storage';
+          const baseStorageUrlHttp = 'http://api-protfolio.trusttous.com/storage';
+          
+          if (image !== baseStorageUrl && 
+              image !== baseStorageUrlHttp &&
+              image.length > baseStorageUrl.length) {
+            // It's a valid full URL with a path
+            imageUrl = image;
+          }
+        } else if (image.startsWith('/')) {
+          // Relative path from API
+          imageUrl = image;
+        } else if (image) {
+          // If it's a non-empty string but not a URL, try to construct full URL
+          // This handles cases where API might return just the path
+          imageUrl = image.startsWith('storage/') || image.startsWith('/storage/') 
+            ? `https://api-protfolio.trusttous.com/${image.replace(/^\//, '')}`
+            : image;
+        }
+      }
+      
+      // Use bangla_description if available, otherwise fall back to description
+      const description = program.bangla_description || program.description || program.details || '';
+      
+      return {
+        id: program.id || program.uuid,
+        title: program.main_title || program.title || 'Untitled Program',
+        tagline: program.second_title || program.tagline || program.subtitle || '',
+        description: description,
+        color: program.color || defaultColors[index % defaultColors.length],
+        image: imageUrl,
+      };
+    });
+    
+    return { programs: mappedPrograms, error: null };
+  } catch (err) {
+    console.error('Error fetching programs:', err);
+    return {
+      programs: [],
+      error: err instanceof Error ? err.message : 'Failed to load programs',
+    };
+  }
+}
+
+export default async function ProgramsPage() {
+  const { programs, error } = await getPrograms();
+  
+  return <ProgramsClient programs={programs} error={error} />;
+}
