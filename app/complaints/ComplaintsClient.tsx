@@ -149,7 +149,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-red-50 via-white to-orange-50">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -173,7 +173,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
 
       {/* Welcome Section with Image */}
       <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Image */}
             <motion.div

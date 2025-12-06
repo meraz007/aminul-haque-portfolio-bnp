@@ -8,29 +8,23 @@ import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 const navItems = [
   { href: '/', label: 'হোম' },
   { href: '/about', label: 'সম্পর্কে' },
+  { href: '/aminul-manifesto', label: 'ইশতেহার' },
+  { href: '/programs', label: 'কর্মসূচি' },
   { 
-    label: 'কর্মসূচি ও ইভেন্ট',
+    label: 'পলিসি',
     hasDropdown: true,
     dropdownItems: [
-      { href: '/programs', label: 'কর্মসূচি' },
-      { href: '/events', label: 'ইভেন্ট' },
-    ]
-  },
-  { 
-    label: 'ইশতেহার',
-    hasDropdown: true,
-    dropdownItems: [
-      { href: '/aminul-manifesto', label: 'ইশতেহার' },
+      { href: '/manifesto', label: 'রূপকল্প' },
       { href: '/bnp-31-point', label: 'বিএনপির ৩১ দফা' },
       { href: '/bnp-19-point', label: 'বিএনপির ১৯ দফা' },
     ]
   },
-  { href: '/manifesto', label: 'রূপকল্প' },
   { 
     label: 'তথ্য ও মিডিয়া',
     hasDropdown: true,
     dropdownItems: [
       { href: '/gallery', label: 'গ্যালারি' },
+      { href: '/events', label: 'ইভেন্ট' },
       { href: '/press-release', label: 'প্রেস রিলিজ' },
       { href: '/surveys', label: 'জরিপ' },
     ]
@@ -50,11 +44,12 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg shadow-lg border-b border-slate-200">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 xl:space-x-3 group flex-shrink-0">
@@ -195,28 +190,50 @@ export default function Navbar() {
               <div className="py-4 space-y-2">
                 {navItems.map((item) => {
                   if (item.hasDropdown && item.dropdownItems) {
+                    const isMobileDropdownOpen = openMobileDropdown === item.label;
                     return (
                       <div key={item.label} className="space-y-1">
-                        <div className="px-4 py-2 font-bold text-sm text-emerald-700 bg-emerald-50 rounded-lg">
-                          {item.label}
-                        </div>
-                        {item.dropdownItems.map((dropItem) => {
-                          const isActive = pathname === dropItem.href;
-                          return (
-                            <Link
-                              key={dropItem.href}
-                              href={dropItem.href}
-                              onClick={() => setIsOpen(false)}
-                              className={`block px-6 py-3 font-bold rounded-xl transition-all ml-4 ${
-                                isActive
-                                  ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
-                                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
-                              }`}
+                        <button
+                          onClick={() => setOpenMobileDropdown(isMobileDropdownOpen ? null : item.label)}
+                          className="w-full flex items-center justify-between px-4 py-2 font-bold text-sm text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-all"
+                        >
+                          <span>{item.label}</span>
+                          <FaChevronDown className={`text-xs transition-transform ${isMobileDropdownOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        <AnimatePresence>
+                          {isMobileDropdownOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
                             >
-                              {dropItem.label}
-                            </Link>
-                          );
-                        })}
+                              <div className="space-y-1 ml-4">
+                                {item.dropdownItems.map((dropItem) => {
+                                  const isActive = pathname === dropItem.href;
+                                  return (
+                                    <Link
+                                      key={dropItem.href}
+                                      href={dropItem.href}
+                                      onClick={() => {
+                                        setIsOpen(false);
+                                        setOpenMobileDropdown(null);
+                                      }}
+                                      className={`block px-6 py-3 font-bold rounded-xl transition-all ${
+                                        isActive
+                                          ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
+                                          : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+                                      }`}
+                                    >
+                                      {dropItem.label}
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     );
                   }
@@ -226,7 +243,10 @@ export default function Navbar() {
                     <Link
                       key={item.href}
                       href={item.href!}
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => {
+                        setIsOpen(false);
+                        setOpenMobileDropdown(null);
+                      }}
                       className={`block px-4 py-3 font-bold rounded-xl transition-all ${
                         isActive
                           ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
@@ -239,7 +259,10 @@ export default function Navbar() {
                 })}
                 <Link
                   href="/contact"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setOpenMobileDropdown(null);
+                  }}
                   className="block px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold rounded-xl text-center shadow-lg"
                 >
                   যোগাযোগ করুন

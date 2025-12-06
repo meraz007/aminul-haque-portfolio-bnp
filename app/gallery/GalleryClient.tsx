@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaCalendarAlt, FaMapMarkerAlt, FaImages, FaTimes, FaChevronLeft, FaChevronRight, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaImages, FaTimes, FaChevronLeft, FaChevronRight, FaAngleLeft, FaAngleRight, FaFilter } from 'react-icons/fa';
 
 interface Album {
   id: number;
@@ -24,6 +24,7 @@ interface GalleryEvent {
   id: number;
   uuid: string;
   date: string;
+  originalDate?: string; // Store original date string for filtering
   location: string;
   title: string;
   description: string;
@@ -57,6 +58,48 @@ const formatDate = (dateString: string): string => {
   }
 };
 
+// Parse Bengali formatted date back to Date object
+const parseBengaliDate = (bengaliDate: string, originalDate: string): Date => {
+  try {
+    // Try to use original date string if available
+    if (originalDate) {
+      return new Date(originalDate);
+    }
+    // Fallback: parse Bengali date
+    const months: { [key: string]: number } = {
+      'জানুয়ারি': 0, 'ফেব্রুয়ারি': 1, 'মার্চ': 2, 'এপ্রিল': 3,
+      'মে': 4, 'জুন': 5, 'জুলাই': 6, 'আগস্ট': 7,
+      'সেপ্টেম্বর': 8, 'অক্টোবর': 9, 'নভেম্বর': 10, 'ডিসেম্বর': 11
+    };
+    const parts = bengaliDate.split(' ');
+    if (parts.length >= 3) {
+      const day = parseInt(parts[0]);
+      const month = months[parts[1]];
+      const year = parseInt(parts[2]);
+      if (!isNaN(day) && month !== undefined && !isNaN(year)) {
+        return new Date(year, month, day);
+      }
+    }
+    return new Date();
+  } catch (error) {
+    return new Date();
+  }
+};
+
+// Format date input value (YYYY-MM-DD) to Bengali format
+const formatDateInputToBengali = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  } catch (error) {
+    return dateString;
+  }
+};
+
 interface PaginationMeta {
   current_page: number;
   last_page: number;
@@ -76,6 +119,7 @@ interface PaginationLinks {
 export default function GalleryClient() {
   const [albums, setAlbums] = useState<GalleryEvent[]>([]);
   const [allAlbums, setAllAlbums] = useState<GalleryEvent[]>([]); // Store all albums for client-side pagination
+  const [filteredAlbums, setFilteredAlbums] = useState<GalleryEvent[]>([]); // Filtered albums
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,35 +128,60 @@ export default function GalleryClient() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentEventImages, setCurrentEventImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedDate, setSelectedDate] = useState<string>('');
+
+  // Filter albums by selected date
+  const filterAlbumsByDate = useMemo(() => {
+    if (!selectedDate) {
+      return allAlbums;
+    }
+
+    const filterDate = new Date(selectedDate);
+    const filterDateStart = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate());
+    const filterDateEnd = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate(), 23, 59, 59);
+
+    return allAlbums.filter((album) => {
+      const albumDate = parseBengaliDate(album.date, album.originalDate || '');
+      return albumDate >= filterDateStart && albumDate <= filterDateEnd;
+    });
+  }, [allAlbums, selectedDate]);
+
+  // Update filtered albums when filter changes
+  useEffect(() => {
+    setFilteredAlbums(filterAlbumsByDate);
+    setCurrentPage(1); // Reset to first page when filter changes
+  }, [filterAlbumsByDate]);
 
   // Calculate paginated albums using useMemo for immediate updates
   const paginatedAlbums = useMemo(() => {
-    if (allAlbums.length === 0) return [];
+    if (filteredAlbums.length === 0) return [];
     
     const perPage = 5;
     const startIndex = (currentPage - 1) * perPage;
     const endIndex = startIndex + perPage;
-    return allAlbums.slice(startIndex, endIndex);
-  }, [currentPage, allAlbums]);
+    return filteredAlbums.slice(startIndex, endIndex);
+  }, [currentPage, filteredAlbums]);
 
-  // Update pagination meta and albums when allAlbums or currentPage changes
+  // Update pagination meta and albums when filteredAlbums or currentPage changes
   useEffect(() => {
-    if (allAlbums.length > 0) {
+    if (filteredAlbums.length > 0) {
       const perPage = 5;
-      const totalPages = Math.ceil(allAlbums.length / perPage);
+      const totalPages = Math.ceil(filteredAlbums.length / perPage);
       const startIndex = (currentPage - 1) * perPage;
       const endIndex = startIndex + perPage;
       
       setPaginationMeta({
         current_page: currentPage,
         last_page: totalPages,
-        total: allAlbums.length,
+        total: filteredAlbums.length,
         per_page: perPage,
         from: startIndex + 1,
-        to: Math.min(endIndex, allAlbums.length),
+        to: Math.min(endIndex, filteredAlbums.length),
       });
+    } else {
+      setPaginationMeta(null);
     }
-  }, [currentPage, allAlbums]);
+  }, [currentPage, filteredAlbums]);
 
   // Update albums state when paginatedAlbums changes
   useEffect(() => {
@@ -204,6 +273,7 @@ export default function GalleryClient() {
               id: album.id,
               uuid: album.uuid,
               date: formatDate(album.date),
+              originalDate: album.date, // Store original date for filtering
               location: album.location || '',
               title: album.bang_name || '',
               description: album.bang_description || '',
@@ -259,7 +329,7 @@ export default function GalleryClient() {
   if (loading) {
     return (
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mb-4"></div>
           <p className="text-xl text-slate-600">লোড হচ্ছে...</p>
         </div>
@@ -270,7 +340,7 @@ export default function GalleryClient() {
   if (error) {
     return (
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xl text-red-600 mb-4">ত্রুটি: {error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -287,7 +357,7 @@ export default function GalleryClient() {
   if (!loading && allAlbums.length === 0) {
     return (
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xl text-slate-600">কোনো অ্যালবাম পাওয়া যায়নি</p>
         </div>
       </section>
@@ -297,7 +367,38 @@ export default function GalleryClient() {
   return (
     <>
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl space-y-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-8">
+          {/* Date Filter */}
+          <div className="mb-8 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+              <div className="flex items-center gap-2 text-amber-700 font-bold">
+                <FaFilter />
+                <span>তারিখ ফিল্টার:</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
+                />
+                {selectedDate && (
+                  <button
+                    onClick={() => setSelectedDate('')}
+                    className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition-all shadow-lg"
+                  >
+                    ফিল্টার সরান
+                  </button>
+                )}
+              </div>
+            </div>
+            {selectedDate && (
+              <div className="text-sm text-slate-600 font-medium">
+                {filteredAlbums.length} টি অ্যালবাম পাওয়া গেছে ({formatDateInputToBengali(selectedDate)})
+              </div>
+            )}
+          </div>
+
           {albums.length > 0 ? (
             albums.map((event, idx) => (
             <motion.div
@@ -364,17 +465,27 @@ export default function GalleryClient() {
             </motion.div>
             ))
           ) : (
-            !loading && allAlbums.length > 0 && (
+            !loading && filteredAlbums.length > 0 && (
               <div className="text-center py-20">
                 <p className="text-xl text-slate-600">এই পাতায় কোনো অ্যালবাম নেই</p>
               </div>
             )
           )}
-        </div>
+          {!loading && filteredAlbums.length === 0 && allAlbums.length > 0 && selectedDate && (
+            <div className="text-center py-20">
+              <p className="text-xl text-slate-600">এই তারিখে কোনো অ্যালবাম পাওয়া যায়নি</p>
+              <button
+                onClick={() => setSelectedDate('')}
+                className="mt-4 px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
+              >
+                ফিল্টার সরান
+              </button>
+            </div>
+          )}
 
-        {/* Pagination - Only show if there are more than 5 albums */}
-        {paginationMeta && paginationMeta.total > 5 && paginationMeta.last_page > 1 && (
-          <div className="mt-16 flex items-center justify-center gap-2">
+          {/* Pagination - Only show if there are more than 5 filtered albums */}
+          {paginationMeta && paginationMeta.total > 5 && paginationMeta.last_page > 1 && (
+            <div className="mt-16 flex items-center justify-center gap-2">
             {/* Previous Button */}
             <button
               onClick={() => handlePageChange(currentPage - 1)}
@@ -432,8 +543,8 @@ export default function GalleryClient() {
               <FaAngleRight />
             </button>
           </div>
-        )}
-
+          )}
+        </div>
       </section>
 
       {/* Lightbox */}

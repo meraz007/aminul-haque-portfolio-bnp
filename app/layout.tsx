@@ -5,7 +5,7 @@ import { Poppins } from 'next/font/google';
 import Navbar from './components/Navbar';
 import SiteFooter from './components/SiteFooter';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['300','400','500','600','700'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
 export const metadata: Metadata = {
   title: {
@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-          <html lang="en" data-scroll-behavior="smooth">
-            <body className={`${poppins.className} bg-white text-slate-900 antialiased`} suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth">
+      <body className={`${poppins.className} bg-white text-slate-900 antialiased `} suppressHydrationWarning>
         <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-1">{children}</main>

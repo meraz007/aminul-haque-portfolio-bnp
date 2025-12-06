@@ -164,7 +164,7 @@ export default function ProposalDetailClient({ proposal }: ProposalDetailClientP
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-screen">
       {/* Back Button */}
       <section className="py-8 px-4">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <Link 
             href="/manifesto"
             className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
@@ -177,7 +177,7 @@ export default function ProposalDetailClient({ proposal }: ProposalDetailClientP
 
       {/* PDF Viewer Section */}
       <section className="py-8 px-4 pb-20 bg-slate-100">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           {pdfLoading && (
             <div className="flex items-center justify-center py-20">
               <div className="text-center">

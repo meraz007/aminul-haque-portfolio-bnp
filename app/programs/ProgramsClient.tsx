@@ -107,7 +107,7 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -130,7 +130,7 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
 
       {/* Programs Grid */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl space-y-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
           {error && (
             <div className="flex items-center justify-center py-20">
               <div className="text-center bg-red-50 rounded-2xl p-8 max-w-md">

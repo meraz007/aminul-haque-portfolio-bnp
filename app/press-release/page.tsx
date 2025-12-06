@@ -115,7 +115,7 @@ export default function PressReleasePage() {
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -139,7 +139,7 @@ export default function PressReleasePage() {
 
       {/* Press Releases Grid */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>

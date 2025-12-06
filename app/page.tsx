@@ -213,7 +213,7 @@ export default function Home() {
 
       {/* Manifesto Highlights */}
       <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -294,7 +294,7 @@ export default function Home() {
       
       {/* Gallery Preview */}
       <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -506,7 +506,7 @@ export default function Home() {
 
       {/* Quotes Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -595,7 +595,7 @@ export default function Home() {
       
       {/* Key Programs Section */}
       {/* <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -649,7 +649,7 @@ export default function Home() {
 
       {/* Quick Services Section - Enhanced */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -745,7 +745,7 @@ export default function Home() {
 
       {/* Testimonials */}
       {/* <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -798,7 +798,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

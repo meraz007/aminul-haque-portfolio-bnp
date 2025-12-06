@@ -7,7 +7,7 @@ export default function AboutPage() {
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -31,7 +31,7 @@ export default function AboutPage() {
 
       {/* Personal Info Section */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -97,7 +97,7 @@ export default function AboutPage() {
 
       {/* Biography Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -134,7 +134,7 @@ export default function AboutPage() {
 
       {/* Career Stats */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -177,7 +177,7 @@ export default function AboutPage() {
 
       {/* Career & Honors Timeline */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -193,7 +193,7 @@ export default function AboutPage() {
           </motion.div>
 
           {/* Timeline Container */}
-          <div className="relative max-w-6xl mx-auto">
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Vertical Line */}
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-emerald-200 via-blue-200 to-purple-200 hidden md:block"></div>
 
@@ -305,7 +305,7 @@ export default function AboutPage() {
 
       {/* International Career */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -348,7 +348,7 @@ export default function AboutPage() {
 
       {/* Early Life */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -385,7 +385,7 @@ export default function AboutPage() {
 
       {/* Political Career */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

@@ -138,7 +138,7 @@ export default function SurveysPage() {
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
-        <div className="mx-auto max-w-7xl text-center">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -162,7 +162,7 @@ export default function SurveysPage() {
 
       {/* Surveys Grid */}
       <section className="py-12 px-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           {surveys.length === 0 ? (
             <div className="text-center py-20">
               <FaClipboardList className="text-6xl text-slate-300 mx-auto mb-4" />
