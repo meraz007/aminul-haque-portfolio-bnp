@@ -2,6 +2,27 @@ import EventDetailClient from './EventDetailClient';
 
 export const dynamic = "error";
 
+// Convert Bengali numerals to English numerals
+function convertBengaliToEnglish(bengaliStr: string): string {
+  const bengaliToEnglish: { [key: string]: string } = {
+    '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+    '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+  };
+  
+  return bengaliStr.split('').map(char => bengaliToEnglish[char] || char).join('');
+}
+
+// Parse date string that may contain Bengali numerals
+function parseBengaliDate(dateStr: string): Date {
+  // Convert Bengali numerals to English
+  const englishDateStr = convertBengaliToEnglish(dateStr);
+  
+  // Parse the date - format: "YYYY-MM-DD HH:mm:ss"
+  // Replace any non-standard separators and parse
+  const cleaned = englishDateStr.replace(/\s+/g, ' ').trim();
+  return new Date(cleaned);
+}
+
 interface Event {
   id: number;
   uuid: string;
@@ -120,7 +141,7 @@ async function getEvent(slug: string): Promise<any | null> {
 
     // Check if event is past
     const now = new Date();
-    const eventDateTime = new Date(eventData.event_date_time);
+    const eventDateTime = parseBengaliDate(eventData.event_date_time);
     const isPast = eventDateTime < now;
 
     // Extract location from address

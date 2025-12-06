@@ -13,6 +13,27 @@ interface Event {
   status: string;
 }
 
+// Convert Bengali numerals to English numerals
+function convertBengaliToEnglish(bengaliStr: string): string {
+  const bengaliToEnglish: { [key: string]: string } = {
+    '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+    '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+  };
+  
+  return bengaliStr.split('').map(char => bengaliToEnglish[char] || char).join('');
+}
+
+// Parse date string that may contain Bengali numerals
+function parseBengaliDate(dateStr: string): Date {
+  // Convert Bengali numerals to English
+  const englishDateStr = convertBengaliToEnglish(dateStr);
+  
+  // Parse the date - format: "YYYY-MM-DD HH:mm:ss"
+  // Replace any non-standard separators and parse
+  const cleaned = englishDateStr.replace(/\s+/g, ' ').trim();
+  return new Date(cleaned);
+}
+
 async function getEvents(): Promise<{ upcomingEvents: Event[]; pastEvents: Event[] }> {
   try {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
@@ -60,7 +81,7 @@ async function getEvents(): Promise<{ upcomingEvents: Event[]; pastEvents: Event
         return;
       }
       
-      const eventDateTime = new Date(event.event_date_time);
+      const eventDateTime = parseBengaliDate(event.event_date_time);
       
       // Check if date is valid
       if (isNaN(eventDateTime.getTime())) {
@@ -95,15 +116,15 @@ async function getEvents(): Promise<{ upcomingEvents: Event[]; pastEvents: Event
     
     // Sort upcoming events by date (ascending - earliest first)
     upcoming.sort((a, b) => {
-      const dateA = new Date(a.event_date_time).getTime();
-      const dateB = new Date(b.event_date_time).getTime();
+      const dateA = parseBengaliDate(a.event_date_time).getTime();
+      const dateB = parseBengaliDate(b.event_date_time).getTime();
       return dateA - dateB;
     });
     
     // Sort past events by date (descending - most recent first)
     past.sort((a, b) => {
-      const dateA = new Date(a.event_date_time).getTime();
-      const dateB = new Date(b.event_date_time).getTime();
+      const dateA = parseBengaliDate(a.event_date_time).getTime();
+      const dateB = parseBengaliDate(b.event_date_time).getTime();
       return dateB - dateA;
     });
     

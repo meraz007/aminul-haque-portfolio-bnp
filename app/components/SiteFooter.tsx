@@ -16,15 +16,14 @@ export default function SiteFooter() {
     { title: 'কর্মসূচি', href: '/programs' },
     { title: 'রূপকল্প', href: '/manifesto' },
     { title: 'গ্যালারি', href: '/gallery' },
-    { title: 'মন্তব্য', href: '/comments' },
     { title: 'যোগাযোগ', href: '/contact' },
   ];
 
-  const programs = [
-    { title: 'শিক্ষা অগ্রাধিকার', href: '/programs#education' },
-    { title: 'কৃষি উন্নয়ন', href: '/programs#agriculture' },
-    { title: 'শিল্প ও সংস্কৃতি', href: '/programs#culture' },
-    { title: 'যুব নেতৃত্ব', href: '/programs#youth' },
+  const services = [
+    { title: 'ভোট কেন্দ্র', href: '/voter-center' },
+    { title: 'স্বেচ্ছাসেবক', href: '/volunteer' },
+    { title: 'অভিযোগ', href: '/complaints' },
+    { title: 'মন্তব্য', href: '/comments' },
   ];
 
   return (
@@ -88,16 +87,16 @@ export default function SiteFooter() {
           {/* Programs */}
           <div>
             <h3 className="text-xl font-black text-slate-900 mb-6 pb-2 border-b-2 border-blue-500">
-              কর্মসূচি
+            সেবা
             </h3>
             <ul className="space-y-3">
-              {programs.map((program) => (
-                <li key={program.href}>
+              {services.map((service) => (
+                <li key={service.href}>
                   <Link
-                    href={program.href}
+                    href={service.href}
                     className="text-slate-700 hover:text-blue-600 font-semibold transition-all hover:translate-x-2 inline-block"
                   >
-                    → {program.title}
+                    → {service.title}
                   </Link>
                 </li>
               ))}

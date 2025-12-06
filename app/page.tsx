@@ -16,9 +16,14 @@ import {
   FaFlag,
   FaCalendarAlt,
   FaImages,
-  FaQuoteLeft
+  FaQuoteLeft,
+  FaTimes,
+  FaChevronLeft,
+  FaChevronRight,
+  FaPlus
 } from 'react-icons/fa';
 import Image from 'next/image';
+import { AnimatePresence } from 'framer-motion';
 
 interface Album {
   id: number;
@@ -70,6 +75,10 @@ export default function Home() {
   const [albumsLoading, setAlbumsLoading] = useState(true);
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [quotesLoading, setQuotesLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentEventImages, setCurrentEventImages] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -148,6 +157,30 @@ export default function Home() {
 
     fetchQuotes();
   }, []);
+
+  const openLightbox = (image: string, eventImages: string[]) => {
+    setSelectedImage(image);
+    setCurrentEventImages(eventImages);
+    setCurrentImageIndex(eventImages.indexOf(image));
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    setSelectedImage(null);
+  };
+
+  const navigateImage = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      const newIndex = (currentImageIndex - 1 + currentEventImages.length) % currentEventImages.length;
+      setCurrentImageIndex(newIndex);
+      setSelectedImage(currentEventImages[newIndex]);
+    } else {
+      const newIndex = (currentImageIndex + 1) % currentEventImages.length;
+      setCurrentImageIndex(newIndex);
+      setSelectedImage(currentEventImages[newIndex]);
+    }
+  };
 
   const manifestos = [
     {
@@ -287,11 +320,14 @@ export default function Home() {
               </div>
             ) : albums.length > 0 ? (
               albums.map((album, idx) => {
-                // Get only image media
-                const images = album.media
+                // Get all image media
+                const allImages = album.media
                   .filter((media) => media.type === 'image')
-                  .map((media) => media.path)
-                  .slice(0, 8); // Show max 8 images
+                  .map((media) => media.path);
+                
+                // Show only first 4 images initially
+                const images = allImages.slice(0, 4);
+                const remainingCount = allImages.length - 4;
 
                 const color = defaultColors[idx % defaultColors.length];
                 
@@ -330,7 +366,7 @@ export default function Home() {
                             <div className={`p-2 bg-gradient-to-r ${color} rounded-lg`}>
                               <FaImages className="text-white" />
                             </div>
-                            <span>{images.length} ফটো</span>
+                            <span>{allImages.length} ফটো</span>
                           </div>
                         </div>
                         {album.bang_description && (
@@ -342,28 +378,49 @@ export default function Home() {
 
                       {/* Images Grid */}
                       {images.length > 0 && (
-                        <div className={`grid grid-cols-2 ${images.length <= 4 ? 'md:grid-cols-4' : 'md:grid-cols-4'} gap-4`}>
-                          {images.map((image, imageIdx) => (
-                            <motion.div
-                              key={imageIdx}
-                              initial={{ opacity: 0, scale: 0.9 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 0.4, delay: imageIdx * 0.1 }}
-                              whileHover={{ scale: 1.05 }}
-                              className="group relative cursor-pointer rounded-xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all"
-                            >
-                              <div className={`absolute inset-0 bg-gradient-to-t ${color} opacity-0 group-hover:opacity-75 transition-all z-10`}></div>
-                              <img
-                                src={image}
-                                alt={`${album.bang_name} - ছবি ${imageIdx + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20">
-                                <FaImages className="text-4xl text-white" />
-                              </div>
-                            </motion.div>
-                          ))}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {images.map((image, imageIdx) => {
+                            // Check if this is the 4th image and there are more images
+                            const isLastVisible = imageIdx === 3 && remainingCount > 0;
+                            
+                            return (
+                              <motion.div
+                                key={imageIdx}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: imageIdx * 0.1 }}
+                                whileHover={{ scale: 1.05 }}
+                                onClick={() => openLightbox(image, allImages)}
+                                className="group relative cursor-pointer rounded-xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all"
+                              >
+                                <div className={`absolute inset-0 bg-gradient-to-t ${color} opacity-0 group-hover:opacity-75 transition-all z-10`}></div>
+                                <img
+                                  src={image}
+                                  alt={`${album.bang_name} - ছবি ${imageIdx + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                                
+                                {/* Overlay for 4th image with remaining count */}
+                                {isLastVisible && (
+                                  <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-30 group-hover:bg-black/80 transition-all">
+                                    <div className="text-white text-center">
+                                      {/* <FaPlus className="text-6xl mx-auto mb-3 opacity-90" /> */}
+                                      <div className="text-4xl font-black mb-1">{remainingCount}</div>
+                                      <div className="text-sm font-semibold opacity-90">আরও ছবি</div>
+                                    </div>
+                                  </div>
+                                )}
+                                
+                                {/* Hover effect - only show if not the last visible with overlay */}
+                                {!isLastVisible && (
+                                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20">
+                                    <FaImages className="text-4xl text-white" />
+                                  </div>
+                                )}
+                              </motion.div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -384,6 +441,68 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxOpen && selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+            onClick={closeLightbox}
+          >
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all z-10"
+            >
+              <FaTimes className="text-2xl" />
+            </button>
+
+            {/* Navigation Buttons */}
+            {currentEventImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateImage('prev');
+                  }}
+                  className="absolute left-4 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
+                >
+                  <FaChevronLeft className="text-2xl" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateImage('next');
+                  }}
+                  className="absolute right-4 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
+                >
+                  <FaChevronRight className="text-2xl" />
+                </button>
+              </>
+            )}
+
+            <motion.img
+              key={selectedImage}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              src={selectedImage}
+              alt="Full size"
+              className="max-w-full max-h-full object-contain rounded-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            {/* Image Counter */}
+            {currentEventImages.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-white/10 backdrop-blur-lg text-white rounded-full font-bold">
+                {currentImageIndex + 1} / {currentEventImages.length}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Quotes Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
