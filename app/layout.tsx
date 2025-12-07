@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import Navbar from './components/Navbar';
 import SiteFooter from './components/SiteFooter';
+import { AuthProvider } from './contexts/AuthContext';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
@@ -38,11 +39,13 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${poppins.className} bg-white text-slate-900 antialiased `} suppressHydrationWarning>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </div>
+        <AuthProvider>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

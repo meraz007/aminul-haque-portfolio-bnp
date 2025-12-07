@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
   FaUser, 
@@ -647,6 +648,19 @@ export default function VolunteerPage() {
                   >
                     রিসেট করুন
                   </button>
+                </div>
+                
+                {/* Login Link */}
+                <div className="text-center pt-4">
+                  <p className="text-slate-600">
+                    ইতিমধ্যে নিবন্ধিত?{' '}
+                    <Link
+                      href="/volunteer/login"
+                      className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+                    >
+                      লগইন করুন
+                    </Link>
+                  </p>
                 </div>
               </form>
             </div>
