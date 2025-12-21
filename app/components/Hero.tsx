@@ -51,7 +51,7 @@ export default function Hero() {
           <div className="absolute inset-0 bg-emerald-500 rounded-3xl blur-2xl opacity-20"></div>
           <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
             <img
-              src="/aminul_haque.jpg"
+              src="/aminul Haque/DSC01096.JPG"
               alt="আমিনুল হক"
               className="w-full h-[500px] md:h-[600px] object-cover"
             />
