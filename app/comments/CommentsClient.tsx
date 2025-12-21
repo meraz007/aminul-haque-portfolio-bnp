@@ -230,9 +230,9 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <img
-                  src="/aminul_haque.jpg"
+                  src="/aminul Haque/DSC00973.JPG"
                   alt="আমিনুল হক"
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-auto"
                 />
               </div>
             </motion.div>

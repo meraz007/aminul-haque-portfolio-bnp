@@ -83,11 +83,11 @@ export default function AboutPage() {
               className="relative"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl blur-2xl opacity-20"></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
                 <img
-                  src="/aminul_haque.jpg"
+                  src="/aminul Haque/DSC01131.jpg"
                   alt="আমিনুল হক"
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-auto object-contain"
                 />
               </div>
             </motion.div>

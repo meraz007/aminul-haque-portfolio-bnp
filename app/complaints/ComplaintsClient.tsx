@@ -197,7 +197,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <img
-                  src="/aminul_haque.jpg"
+                  src="/aminul Haque/DSC00988.jpg"
                   alt="আমিনুল হক"
                   className="w-full h-[500px] object-cover"
                 />
