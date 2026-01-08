@@ -550,7 +550,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               <li>• আপনার অভিযোগ গোপনীয় রাখা হবে</li>
               <li>• সঠিক তথ্য প্রদান করুন যাতে আমরা দ্রুত ব্যবস্থা নিতে পারি</li>
               <li>• প্রমাণ হিসেবে ছবি বা ভিডিও সংযুক্ত করলে অভিযোগ আরও কার্যকর হবে</li>
-              <li>• জরুরি বিষয়ে সরাসরি যোগাযোগ করুন: ০১৭১২৩৪৫৬৭৮</li>
+              <li>• জরুরি বিষয়ে সরাসরি যোগাযোগ করুন: +৮৮০ ১৫৫২-১৬১৬১৬</li>
               <li>• মিথ্যা অভিযোগ আইনত দণ্ডনীয় অপরাধ</li>
             </ul>
           </motion.div>
@@ -576,7 +576,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="tel:+8801712345678"
+                  href="tel:+৮৮০ ১৫৫২-১৬১৬১৬"
                   className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
                 >
                   <FaPhone />
