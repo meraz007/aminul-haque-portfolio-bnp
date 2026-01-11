@@ -2,15 +2,20 @@ import ComplaintsClient from './ComplaintsClient';
 
 interface Category {
   id: number;
-  eng_name: string;
-  bang_name: string;
+  name: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  data: Category[];
 }
 
 async function getComplaintCategories(): Promise<Category[]> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     const response = await fetch(`${apiBaseUrl}/complains-category`, {
-      next: { revalidate: 60 }, // Revalidate every 60 seconds
+      next: { revalidate: 60 },
     });
 
     if (!response.ok) {
@@ -18,31 +23,14 @@ async function getComplaintCategories(): Promise<Category[]> {
       return [];
     }
 
-    const data = await response.json();
+    const data: ApiResponse = await response.json();
 
-    // Handle different response formats
-    let categoriesData: any[] = [];
-    if (Array.isArray(data)) {
-      categoriesData = data;
-    } else if (data.data && Array.isArray(data.data)) {
-      categoriesData = data.data;
-    } else if (data.data && data.data.data && Array.isArray(data.data.data)) {
-      categoriesData = data.data.data;
-    } else if (data.categories && Array.isArray(data.categories)) {
-      categoriesData = data.categories;
-    } else {
-      console.error('Invalid API response format:', data);
-      return [];
+    if (data.success && Array.isArray(data.data)) {
+      return data.data;
     }
 
-    // Map API data to Category interface
-    const categories: Category[] = categoriesData.map((category: any) => ({
-      id: category.id,
-      eng_name: category.eng_name || '',
-      bang_name: category.bang_name || '',
-    }));
-
-    return categories;
+    console.error('Invalid API response format:', data);
+    return [];
   } catch (err) {
     console.error('Error fetching complaint categories:', err);
     return [];

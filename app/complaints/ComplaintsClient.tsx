@@ -17,8 +17,7 @@ import Image from 'next/image';
 
 interface Category {
   id: number;
-  eng_name: string;
-  bang_name: string;
+  name: string;
 }
 
 interface ComplaintsClientProps {
@@ -423,7 +422,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                     <option value="">ধরন নির্বাচন করুন</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
-                        {category.bang_name}
+                        {category.name}
                       </option>
                     ))}
                   </select>
