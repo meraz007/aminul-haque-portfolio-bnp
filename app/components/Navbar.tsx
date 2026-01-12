@@ -14,7 +14,7 @@ const navItems = [
     label: 'পলিসি',
     hasDropdown: true,
     dropdownItems: [
-      { href: '/manifesto', label: 'ক্রীড়াউন্নয়ন' },
+      { href: '/manifesto', label: 'ক্রীড়াউন্নয়ন' },
       { href: '/bnp-31-point', label: 'বিএনপির ৩১ দফা' },
       { href: '/bnp-19-point', label: 'বিএনপির ১৯ দফা' },
     ]

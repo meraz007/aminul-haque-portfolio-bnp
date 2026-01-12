@@ -166,7 +166,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map Section (Placeholder) */}
+      {/* Map Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -177,11 +177,28 @@ export default function ContactPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-4 shadow-2xl overflow-hidden border border-slate-200">
-              <div className="w-full h-96 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <FaMapMarkerAlt className="text-6xl text-cyan-600 mx-auto mb-4" />
-                  <p className="text-xl text-slate-700 font-semibold">মানচিত্র শীঘ্রই আসছে</p>
-                </div>
+              <div className="w-full h-96 rounded-2xl overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.0!2d90.352089!3d23.823917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDQ5JzI2LjEiTiA5MMKwMjEnMDcuNSJF!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="rounded-2xl"
+                ></iframe>
+              </div>
+              <div className="mt-4 text-center">
+                <a
+                  href="https://maps.google.com/?q=23.823917,90.352089"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-cyan-600 hover:to-blue-700 transition-all transform hover:scale-105"
+                >
+                  <FaMapMarkerAlt className="text-lg" />
+                  গুগল ম্যাপে দেখুন
+                </a>
               </div>
             </div>
           </motion.div>
