@@ -87,7 +87,7 @@ export default function ContactPage() {
                   <div className={`inline-flex p-4 bg-gradient-to-br ${info.color} rounded-xl mb-4 shadow-lg mx-auto`}>
                     <info.icon className="text-3xl text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{info.title}</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">{t(info.titleKey)}</h3>
                   <p className={`text-2xl font-black mb-1 bg-gradient-to-r ${info.color} bg-clip-text text-transparent`}>
                     {info.value}
                   </p>
