@@ -1,11 +1,49 @@
 "use client";
 import { motion } from 'framer-motion';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import ContactForm from '../components/ContactForm';
 import ChatWidget from '../components/ChatWidget';
+import { useTranslation } from '../i18n/I18nProvider';
 
 export default function ContactPage() {
+  const { t, language } = useTranslation();
+
+  const contactInfo = [
+    {
+      icon: FaPhone,
+      titleKey: 'contact.phone',
+      value: language === 'bd' ? '+৮৮০ ১৫৫২-১৬১৬১৬' : '+880 1552-161616',
+      subtextKey: 'contact.monFri',
+      color: 'from-cyan-500 to-blue-600',
+    },
+    {
+      icon: FaEnvelope,
+      titleKey: 'contact.email',
+      value: <>captainaminulhoque<br />dhaka16@gmail.com</>,
+      subtextKey: 'contact.replyTime',
+      color: 'from-blue-500 to-purple-600',
+    },
+    {
+      icon: FaMapMarkerAlt,
+      titleKey: 'contact.office',
+      value: language === 'bd' 
+        ? 'ডি/১৮৬, রোড- ডব্লিউ ৩, ইস্টার্ন হাউজিং ২য় পর্ব, পল্লবী, ঢাকা-১২১৬'
+        : 'D/186, Road- W 3, Eastern Housing Phase 2, Pallabi, Dhaka-1216',
+      color: 'from-purple-500 to-pink-600',
+    },
+  ];
+
+  const officeHours = language === 'bd' ? [
+    { day: 'সোমবার - শুক্রবার', time: 'সকাল ৯:০০ - বিকাল ৬:০০ টা' },
+    { day: 'শনিবার', time: 'সকাল ১০:০০ - বিকাল ৪:০০ টা' },
+    { day: 'রবিবার', time: 'বন্ধ', closed: true },
+  ] : [
+    { day: 'Monday - Friday', time: '9:00 AM - 6:00 PM' },
+    { day: 'Saturday', time: '10:00 AM - 4:00 PM' },
+    { day: 'Sunday', time: 'Closed', closed: true },
+  ];
+  
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
@@ -17,15 +55,15 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-6 py-2 bg-cyan-100 text-cyan-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
-              যোগাযোগ করুন
+              {t('contact.title')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-                আমাদের সাথে সংযুক্ত হন
+                {t('contact.subtitle')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              আপনার প্রশ্ন, পরামর্শ বা সহযোগিতার জন্য যোগাযোগ করুন
+              {t('contact.description')}
             </p>
           </motion.div>
         </div>
@@ -35,31 +73,9 @@ export default function ContactPage() {
       <section className="py-20 px-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            {[
-              {
-                icon: FaPhone,
-                title: 'ফোন',
-                value: '+৮৮০ ১৫৫২-১৬১৬১৬',
-                subtext: 'সোম-শুক্র, ৯টা-৬টা',
-                color: 'from-cyan-500 to-blue-600',
-              },
-              {
-                icon: FaEnvelope,
-                title: 'ইমেইল',
-                value: <>captainaminulhoque<br />dhaka16@gmail.com</>,
-                subtext: '২৪ ঘণ্টার মধ্যে উত্তর',
-                color: 'from-blue-500 to-purple-600',
-              },
-              {
-                icon: FaMapMarkerAlt,
-                title: 'অফিস',
-                value: 'ডি/১৮৬, রোড- ডব্লিউ ৩, ইস্টার্ন হাউজিং ২য় পর্ব, পল্লবী, ঢাকা-১২১৬',
-                // subtext: 'অ্যাপয়েন্টমেন্ট দ্বারা',
-                color: 'from-purple-500 to-pink-600',
-              },
-            ].map((info, idx) => (
+            {contactInfo.map((info, idx) => (
               <motion.div
-                key={info.title}
+                key={info.titleKey}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -71,11 +87,13 @@ export default function ContactPage() {
                   <div className={`inline-flex p-4 bg-gradient-to-br ${info.color} rounded-xl mb-4 shadow-lg mx-auto`}>
                     <info.icon className="text-3xl text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{info.title}</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">{t(info.titleKey)}</h3>
                   <p className={`text-2xl font-black mb-1 bg-gradient-to-r ${info.color} bg-clip-text text-transparent`}>
                     {info.value}
                   </p>
-                  <p className="text-slate-600 text-sm">{info.subtext}</p>
+                  {info.subtextKey && (
+                    <p className="text-slate-600 text-sm">{t(info.subtextKey)}</p>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -94,7 +112,7 @@ export default function ContactPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative bg-white rounded-3xl p-8 md:p-10 shadow-2xl border border-slate-200">
                 <h2 className="text-3xl font-black text-slate-900 mb-6">
-                  বার্তা পাঠান
+                  {t('contact.sendMessage')}
                 </h2>
                 <ContactForm />
               </div>
@@ -116,21 +134,17 @@ export default function ContactPage() {
                     <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
                       <FaClock className="text-2xl text-white" />
                     </div>
-                    <h3 className="text-2xl font-black text-slate-900">অফিস সময়</h3>
+                    <h3 className="text-2xl font-black text-slate-900">{t('contact.officeHours')}</h3>
                   </div>
                   <div className="space-y-3 text-slate-700">
-                    <div className="flex justify-between">
-                      <span className="font-medium">সোমবার - শুক্রবার</span>
-                      <span className="text-slate-900 font-bold">সকাল ৯:০০ - বিকাল ৬:০০ টা</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-medium">শনিবার</span>
-                      <span className="text-slate-900 font-bold">সকাল ১০:০০ - বিকাল ৪:০০ টা</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-medium">রবিবার</span>
-                      <span className="text-slate-500 font-bold">বন্ধ</span>
-                    </div>
+                    {officeHours.map((hour, idx) => (
+                      <div key={idx} className="flex justify-between">
+                        <span className="font-medium">{hour.day}</span>
+                        <span className={`font-bold ${hour.closed ? 'text-slate-500' : 'text-slate-900'}`}>
+                          {hour.time}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -139,7 +153,7 @@ export default function ContactPage() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-20"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
-                  <h3 className="text-2xl font-black text-slate-900 mb-6">সোশ্যাল মিডিয়া</h3>
+                  <h3 className="text-2xl font-black text-slate-900 mb-6">{t('contact.socialMedia')}</h3>
                   <div className="flex gap-4 flex-wrap">
                     {[
                       { icon: FaFacebook, color: 'from-blue-600 to-blue-700', link: 'https://www.facebook.com/AminulBd07' },
@@ -197,7 +211,7 @@ export default function ContactPage() {
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-cyan-600 hover:to-blue-700 transition-all transform hover:scale-105"
                 >
                   <FaMapMarkerAlt className="text-lg" />
-                  গুগল ম্যাপে দেখুন
+                  {t('contact.viewOnMap')}
                 </a>
               </div>
             </div>

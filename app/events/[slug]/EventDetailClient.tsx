@@ -4,19 +4,22 @@ import { motion } from 'framer-motion';
 import { FaCalendar, FaClock, FaMapMarkerAlt, FaArrowLeft, FaVideo, FaEnvelope, FaSms, FaCheckCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslation } from '@/app/i18n/I18nProvider';
 
 interface EventDetailClientProps {
   event: any;
 }
 
 export default function EventDetailClient({ event }: EventDetailClientProps) {
+  const { t } = useTranslation();
+
   if (!event) {
     return (
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-4xl font-black text-slate-900 mb-4">ইভেন্ট পাওয়া যায়নি</h1>
+          <h1 className="text-4xl font-black text-slate-900 mb-4">{t('eventDetail.eventNotFound')}</h1>
           <Link href="/events" className="text-emerald-600 hover:underline font-bold">
-            ইভেন্ট পেজে ফিরে যান
+            {t('eventDetail.backToEventsPage')}
           </Link>
         </div>
       </main>
@@ -33,7 +36,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
             className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
           >
             <FaArrowLeft />
-            সব ইভেন্টে ফিরে যান
+            {t('eventDetail.backToAllEvents')}
           </Link>
         </div>
       </section>
@@ -58,12 +61,12 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
               />
               {event.isPast && (
                 <div className="absolute top-6 left-6 px-4 py-2 bg-slate-600 text-white rounded-full font-bold shadow-lg">
-                  সম্পন্ন ইভেন্ট
+                  {t('eventDetail.completedEvent')}
                 </div>
               )}
               {!event.isPast && (
                 <div className="absolute top-6 left-6 px-4 py-2 bg-emerald-600 text-white rounded-full font-bold shadow-lg">
-                  আসন্ন ইভেন্ট
+                  {t('eventDetail.upcomingEvent')}
                 </div>
               )}
             </motion.div>
@@ -143,7 +146,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
           >
             <h2 className="text-3xl font-black text-slate-900 mb-6 flex items-center gap-3">
               <FaMapMarkerAlt className="text-red-600" />
-              ইভেন্টের অবস্থান
+              {t('eventDetail.eventLocation')}
             </h2>
             <div className="aspect-video rounded-2xl overflow-hidden shadow-xl">
               <iframe
@@ -173,7 +176,7 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
             >
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-8 flex items-center gap-3">
                 <FaVideo className="text-red-600" />
-                ইভেন্টের ভিডিও ও রেকর্ডিং
+                {t('eventDetail.eventVideos')}
               </h2>
               <div className="space-y-8">
                 {event.videos.map((video: any, idx: number) => (
@@ -250,23 +253,23 @@ export default function EventDetailClient({ event }: EventDetailClientProps) {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                আরও তথ্যের জন্য
+                {t('eventDetail.forMoreInfo')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                ইভেন্ট সম্পর্কে বিস্তারিত জানতে অথবা নিবন্ধনের জন্য যোগাযোগ করুন
+                {t('eventDetail.contactForDetails')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/contact"
                   className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
                 >
-                  যোগাযোগ করুন
+                  {t('eventDetail.contactUs')}
                 </a>
                 <Link
                   href="/events"
                   className="px-10 py-4 bg-white text-emerald-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-emerald-600 hover:bg-emerald-50 transition-all transform hover:scale-105"
                 >
-                  সব ইভেন্ট দেখুন
+                  {t('eventDetail.viewAllEvents')}
                 </Link>
               </div>
             </div>

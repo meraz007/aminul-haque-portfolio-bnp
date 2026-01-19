@@ -1,6 +1,9 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaCalendar, FaMapMarkerAlt, FaClock, FaArrowRight, FaVideo } from 'react-icons/fa';
+import { useTranslation } from '@/app/i18n/I18nProvider';
 
 export default function EventCard({
   title,
@@ -23,6 +26,8 @@ export default function EventCard({
   hasVideo?: boolean;
   image?: string;
 }) {
+  const { t } = useTranslation();
+  
   return (
     <article className="group h-full flex flex-col rounded-2xl overflow-hidden relative">
       <div className={`absolute inset-0 bg-gradient-to-r ${isPast ? 'from-slate-500 to-slate-600' : 'from-emerald-500 to-green-600'} rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300`}></div>
@@ -41,17 +46,17 @@ export default function EventCard({
             {isPast && hasVideo && (
               <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 z-10">
                 <FaVideo />
-                ভিডিও উপলব্ধ
+                {t('eventCard.videoAvailable')}
               </div>
             )}
             {!isPast && (
               <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
-                আসছে শীঘ্রই
+                {t('eventCard.comingSoon')}
               </div>
             )}
             {isPast && (
               <div className="absolute top-4 left-4 px-3 py-1.5 bg-slate-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
-                সম্পন্ন
+                {t('eventCard.completed')}
               </div>
             )}
           </div>
@@ -61,17 +66,17 @@ export default function EventCard({
             {isPast && hasVideo && (
               <div className="absolute top-4 right-4 px-3 py-1.5 bg-red-600 text-white rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 z-10">
                 <FaVideo />
-                ভিডিও উপলব্ধ
+                {t('eventCard.videoAvailable')}
               </div>
             )}
             {!isPast && (
               <div className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
-                আসছে শীঘ্রই
+                {t('eventCard.comingSoon')}
               </div>
             )}
             {isPast && (
               <div className="absolute top-4 left-4 px-3 py-1.5 bg-slate-600 text-white rounded-full text-xs font-bold shadow-lg z-10">
-                সম্পন্ন
+                {t('eventCard.completed')}
               </div>
             )}
           </div>
@@ -112,7 +117,7 @@ export default function EventCard({
             href={`/events/${slug}`}
             className={`inline-flex items-center gap-2 text-sm font-bold ${isPast ? 'text-slate-600 hover:text-slate-800' : 'text-emerald-600 hover:text-emerald-700'} transition-all`}
           >
-            বিস্তারিত দেখুন
+            {t('eventCard.viewDetails')}
             <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

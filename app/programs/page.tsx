@@ -1,5 +1,7 @@
 import ProgramsClient from './ProgramsClient';
 
+export const dynamic = "force-dynamic";
+
 interface Program {
   id?: string | number;
   title: string;
@@ -25,8 +27,7 @@ async function getPrograms(): Promise<{ programs: Program[]; error: string | nul
   try {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
     const response = await fetch(`${apiBaseUrl}/programs`, {
-      // Add cache revalidation for SSR
-      next: { revalidate: 60 }, // Revalidate every 60 seconds
+      cache: 'no-store', // No caching - always fetch fresh data
     });
     
     if (!response.ok) {

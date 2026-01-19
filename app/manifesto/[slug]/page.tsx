@@ -65,6 +65,7 @@ async function getProposal(slug: string): Promise<Proposal | null> {
       (p) => p.uuid === slug || p.id.toString() === slug
     );
 
+    console.log(proposal);
     return proposal || null;
   } catch (err) {
     console.error('Error fetching proposal:', err);

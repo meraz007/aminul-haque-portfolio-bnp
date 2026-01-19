@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useTranslation } from '../i18n/I18nProvider';
 
 interface Program {
   id?: string | number;
@@ -25,6 +26,7 @@ const defaultColors = [
 ];
 
 export default function ProgramsClient({ programs: initialPrograms, error: initialError }: ProgramsClientProps) {
+  const { t } = useTranslation();
   const [programs, setPrograms] = useState<Program[]>(initialPrograms);
   const [error, setError] = useState<string | null>(initialError || null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -115,15 +117,15 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-6 py-2 bg-blue-100 text-blue-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
-              আমাদের প্রোগ্রাম
+              {t('programs.ourPrograms')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                পরিবর্তন তৈরি
+                {t('programs.creatingChange')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              স্থায়ী প্রভাবের জন্য যত্ন সহকারে ডিজাইন করা উদ্যোগ
+              {t('programs.programsDesc')}
             </p>
           </motion.div>
         </div>
@@ -135,12 +137,12 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
           {error && (
             <div className="flex items-center justify-center py-20">
               <div className="text-center bg-red-50 rounded-2xl p-8 max-w-md">
-                <p className="text-red-600 font-bold mb-4">ত্রুটি: {error}</p>
+                <p className="text-red-600 font-bold mb-4">{t('common.error')}: {error}</p>
                 <button
                   onClick={() => window.location.reload()}
                   className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                 >
-                  আবার চেষ্টা করুন
+                  {t('common.retry')}
                 </button>
               </div>
             </div>
@@ -149,7 +151,7 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
           {!error && programs.length === 0 && (
             <div className="flex items-center justify-center py-20">
               <div className="text-center">
-                <p className="text-slate-600 font-bold text-xl">কোনো প্রোগ্রাম পাওয়া যায়নি</p>
+                <p className="text-slate-600 font-bold text-xl">{t('programs.noProgramsFound')}</p>
               </div>
             </div>
           )}
@@ -219,13 +221,13 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                পরিবর্তনের অংশ হন
+                {t('programs.bePartOfChange')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                আমাদের প্রোগ্রামে যোগদান করুন এবং বাংলাদেশে টেকসই প্রভাব তৈরি করতে সাহায্য করুন
+                {t('programs.joinPrograms')}
               </p>
               <button className="px-10 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105">
-                যোগাযোগ করুন
+                {t('nav.contactUs')}
               </button>
             </div>
           </motion.div>
@@ -234,4 +236,3 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
     </main>
   );
 }
-

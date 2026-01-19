@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FaClipboardList, FaArrowRight } from 'react-icons/fa';
 import Image from 'next/image';
+import { useTranslation } from '../i18n/I18nProvider';
 
 interface Survey {
   id: number;
@@ -18,6 +19,7 @@ interface Survey {
 }
 
 export default function SurveysPage() {
+  const { t } = useTranslation();
   const [surveys, setSurveys] = useState<Survey[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -127,7 +129,7 @@ export default function SurveysPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-            <p className="text-slate-600 font-bold">লোড হচ্ছে...</p>
+            <p className="text-slate-600 font-bold">{t('surveysPage.loading')}</p>
           </div>
         </div>
       </main>
@@ -146,15 +148,15 @@ export default function SurveysPage() {
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaClipboardList className="inline mr-2" />
-              জরিপ ও মতামত
+              {t('surveysPage.heroTag')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                জরিপ সমূহ
+                {t('surveysPage.heroTitle')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              আপনার মূল্যবান মতামত দিন এবং পরিবর্তনে অংশ নিন
+              {t('surveysPage.heroSubtitle')}
             </p>
           </motion.div>
         </div>
@@ -167,10 +169,10 @@ export default function SurveysPage() {
             <div className="text-center py-20">
               <FaClipboardList className="text-6xl text-slate-300 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-slate-700 mb-2">
-                কোন জরিপ নেই
+                {t('surveysPage.noSurveys')}
               </h3>
               <p className="text-slate-500">
-                শীঘ্রই নতুন জরিপ যুক্ত করা হবে
+                {t('surveysPage.noSurveysDesc')}
               </p>
             </div>
           ) : (
@@ -213,7 +215,7 @@ export default function SurveysPage() {
                         href={`/surveys/${survey.uuid || survey.id}`}
                         className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 group-hover:gap-3"
                       >
-                        জরিপ দেখুন <FaArrowRight />
+                        {t('surveysPage.viewSurvey')} <FaArrowRight />
                       </Link>
                     </div>
                   </div>
@@ -236,17 +238,17 @@ export default function SurveysPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                আপনার মতামত গুরুত্বপূর্ণ
+                {t('surveysPage.ctaTitle')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                আমাদের জরিপে অংশগ্রহণ করে আপনার মূল্যবান মতামত দিন এবং পরিবর্তনে অংশ নিন
+                {t('surveysPage.ctaText')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/contact"
                   className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
                 >
-                  যোগাযোগ করুন
+                  {t('surveysPage.contactUs')}
                 </Link>
               </div>
             </div>
@@ -256,4 +258,3 @@ export default function SurveysPage() {
     </main>
   );
 }
-

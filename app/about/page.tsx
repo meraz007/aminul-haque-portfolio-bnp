@@ -2,8 +2,87 @@
 import { motion } from 'framer-motion';
 import { FaFutbol, FaTrophy, FaMedal, FaFlag, FaStar, FaAward } from 'react-icons/fa';
 import Image from 'next/image';
+import { useTranslation } from '../i18n/I18nProvider';
 
 export default function AboutPage() {
+  const { t } = useTranslation();
+
+  // Timeline data with translation keys
+  const timelineItems = [
+    {
+      dateKey: 'about.timeline.mohammedan1994.date',
+      titleKey: 'about.timeline.mohammedan1994.title',
+      descriptionKey: 'about.timeline.mohammedan1994.description',
+      badge: 'about.club',
+      badgeColor: 'bg-emerald-100 text-emerald-700',
+      align: 'left' as const,
+    },
+    {
+      dateKey: 'about.timeline.muktijoddha.date',
+      titleKey: 'about.timeline.muktijoddha.title',
+      descriptionKey: 'about.timeline.muktijoddha.description',
+      badge: 'about.club',
+      badgeColor: 'bg-blue-100 text-blue-700',
+      align: 'right' as const,
+    },
+    {
+      dateKey: 'about.timeline.abahani.date',
+      titleKey: 'about.timeline.abahani.title',
+      descriptionKey: 'about.timeline.abahani.description',
+      badge: 'about.club',
+      badgeColor: 'bg-purple-100 text-purple-700',
+      align: 'left' as const,
+    },
+    {
+      dateKey: 'about.timeline.saff2003.date',
+      titleKey: 'about.timeline.saff2003.title',
+      descriptionKey: 'about.timeline.saff2003.description',
+      badge: 'about.honor',
+      badgeColor: 'bg-amber-100 text-amber-700',
+      align: 'right' as const,
+    },
+    {
+      dateKey: 'about.timeline.mohammedan2008.date',
+      titleKey: 'about.timeline.mohammedan2008.title',
+      descriptionKey: 'about.timeline.mohammedan2008.description',
+      badge: 'about.club',
+      badgeColor: 'bg-rose-100 text-rose-700',
+      align: 'left' as const,
+    },
+    {
+      dateKey: 'about.timeline.sagames2010.date',
+      titleKey: 'about.timeline.sagames2010.title',
+      descriptionKey: 'about.timeline.sagames2010.description',
+      badge: 'about.honor',
+      badgeColor: 'bg-yellow-100 text-yellow-700',
+      align: 'right' as const,
+    },
+    {
+      dateKey: 'about.timeline.sheikhjamal.date',
+      titleKey: 'about.timeline.sheikhjamal.title',
+      descriptionKey: 'about.timeline.sheikhjamal.description',
+      badge: 'about.club',
+      badgeColor: 'bg-teal-100 text-teal-700',
+      align: 'left' as const,
+    },
+    {
+      dateKey: 'about.timeline.federationcup.date',
+      titleKey: 'about.timeline.federationcup.title',
+      descriptionKey: 'about.timeline.federationcup.description',
+      badge: 'about.award',
+      badgeColor: 'bg-indigo-100 text-indigo-700',
+      align: 'right' as const,
+    },
+  ];
+
+  // Career stats with translation keys
+  const careerStats = [
+    { icon: FaFlag, labelKey: 'about.internationalMatches', valueKey: 'about.internationalMatchesValue', color: 'from-emerald-500 to-green-600' },
+    { icon: FaTrophy, labelKey: 'about.clubTitles', valueKey: 'about.clubTitlesValue', color: 'from-blue-500 to-cyan-600' },
+    { icon: FaMedal, labelKey: 'about.careerYears', valueKey: 'about.careerYearsValue', color: 'from-purple-500 to-pink-600' },
+    { icon: FaStar, labelKey: 'about.specialHonors', valueKey: 'about.specialHonorsValue', color: 'from-amber-500 to-orange-600' },
+  ];
+  
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
@@ -16,15 +95,15 @@ export default function AboutPage() {
             className="text-center"
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
-              আমাদের সম্পর্কে
+              {t('about.aboutUs')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                আমিনুল হক
+                {t('hero.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              বাংলাদেশের কিংবদন্তি গোলরক্ষক
+              {t('about.legendaryGoalkeeper')}
             </p>
           </motion.div>
         </div>
@@ -40,37 +119,37 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-emerald-600 font-bold text-sm uppercase tracking-wider">ব্যক্তিগত তথ্য</span>
+              <span className="text-emerald-600 font-bold text-sm uppercase tracking-wider">{t('about.personalInfo')}</span>
               <h2 className="text-5xl font-black text-slate-900 mt-3 mb-6">
-                মোহাম্মদ আমিনুল হক
+                {t('about.fullName')}
               </h2>
               <div className="space-y-4 text-lg text-slate-700">
                 <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
                   <FaFlag className="text-2xl text-emerald-600" />
                   <div>
-                    <p className="font-bold text-slate-900">জন্ম তারিখ</p>
-                    <p>৫ অক্টোবর ১৯৮০ (বয়স ৪৫)</p>
+                    <p className="font-bold text-slate-900">{t('about.birthDate')}</p>
+                    <p>{t('about.birthDateValue')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
                   <FaFlag className="text-2xl text-emerald-600" />
                   <div>
-                    <p className="font-bold text-slate-900">জন্মস্থান</p>
-                    <p>ভোলা, বাংলাদেশ</p>
+                    <p className="font-bold text-slate-900">{t('about.birthPlace')}</p>
+                    <p>{t('about.birthPlaceValue')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
                   <FaFutbol className="text-2xl text-emerald-600" />
                   <div>
-                    <p className="font-bold text-slate-900">অবস্থান</p>
-                    <p>গোলরক্ষক</p>
+                    <p className="font-bold text-slate-900">{t('about.position')}</p>
+                    <p>{t('about.positionValue')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
                   <FaMedal className="text-2xl text-emerald-600" />
                   <div>
-                    <p className="font-bold text-slate-900">উচ্চতা</p>
-                    <p>১.৮৫ মিটার (৬ ফুট ১ ইঞ্চি)</p>
+                    <p className="font-bold text-slate-900">{t('about.height')}</p>
+                    <p>{t('about.heightValue')}</p>
                   </div>
                 </div>
               </div>
@@ -87,7 +166,7 @@ export default function AboutPage() {
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
                 <Image
                   src="/aminul Haque/about.jpeg"
-                  alt="আমিনুল হক"
+                  alt={t('about.fullName')}
                   width={600}
                   height={800}
                   className="w-full h-auto object-contain"
@@ -109,7 +188,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              জীবনী
+              {t('about.biography')}
             </h2>
           </motion.div>
 
@@ -121,15 +200,9 @@ export default function AboutPage() {
           >
             <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
               <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
-                <p>
-                  <strong>আমিনুল হক</strong> (জন্ম ৫ অক্টোবর ১৯৮০) একজন প্রাক্তন বাংলাদেশী পেশাদার ফুটবলার যিনি গোলরক্ষক হিসেবে খেলেছেন। তাকে বাংলাদেশের অন্যতম সেরা ফুটবলার হিসেবে বিবেচনা করা হয় এবং <strong>"বাংলাদেশের প্রতিনিধিত্বকারী সর্বশ্রেষ্ঠ গোলরক্ষক"</strong> হিসেবে চিহ্নিত করা হয়েছে।
-                </p>
-                <p>
-                  বাংলাদেশ জাতীয় দলের প্রাক্তন কোচ গিওর্গি কোটানের মতে, আমিনুল তার দেখা সেরা গোলরক্ষকদের একজন। আমিনুলের অবস্থানগত বোধ এবং খেলা বোঝার ক্ষমতা তাকে দক্ষিণ এশিয়ার ফুটবল ইতিহাসের অন্যতম সেরা গোলরক্ষক করে তুলেছে।
-                </p>
-                <p>
-                  ইএসপিএন স্টারের শেবি সিং পরামর্শ দিয়েছিলেন যে আমিনুল সঠিক প্রশিক্ষণের মাধ্যমে ইংল্যান্ডেও আরও ভালো লীগে খেলার যোগ্য। আমিনুল এমএসপিসিসি সিটি ক্লাবের একজন খেলোয়াড় এবং ১৯৯৪ সালে মোহামেডান এসসি-র হয়ে ঢাকা প্রিমিয়ার ডিভিশন লীগে তার ক্যারিয়ার শুরু করেন।
-                </p>
+                <p>{t('about.biographyText1')}</p>
+                <p>{t('about.biographyText2')}</p>
+                <p>{t('about.biographyText3')}</p>
               </div>
             </div>
           </motion.div>
@@ -146,19 +219,14 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              ক্যারিয়ার পরিসংখ্যান
+              {t('about.careerStats')}
             </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: FaFlag, label: 'আন্তর্জাতিক ম্যাচ', value: '৫৬', color: 'from-emerald-500 to-green-600' },
-              { icon: FaTrophy, label: 'ক্লাব শিরোপা', value: '১৫+', color: 'from-blue-500 to-cyan-600' },
-              { icon: FaMedal, label: 'ক্যারিয়ার বছর', value: '২০', color: 'from-purple-500 to-pink-600' },
-              { icon: FaStar, label: 'বিশেষ সম্মাননা', value: '৫+', color: 'from-amber-500 to-orange-600' },
-            ].map((stat, idx) => (
+            {careerStats.map((stat, idx) => (
               <motion.div
-                key={stat.label}
+                key={stat.labelKey}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -170,8 +238,8 @@ export default function AboutPage() {
                   <div className={`inline-flex p-4 bg-gradient-to-br ${stat.color} rounded-xl mb-4`}>
                     <stat.icon className="text-3xl text-white" />
                   </div>
-                  <div className="text-5xl font-black text-slate-900 mb-2">{stat.value}</div>
-                  <div className="text-slate-600 font-medium">{stat.label}</div>
+                  <div className="text-5xl font-black text-slate-900 mb-2">{t(stat.valueKey)}</div>
+                  <div className="text-slate-600 font-medium">{t(stat.labelKey)}</div>
                 </div>
               </motion.div>
             ))}
@@ -189,10 +257,10 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              ক্যারিয়ার ও সম্মাননা
+              {t('about.careerHonors')}
             </h2>
             <p className="text-xl text-slate-600">
-              একজন কিংবদন্তি খেলোয়াড়ের যাত্রা
+              {t('about.legendaryJourney')}
             </p>
           </motion.div>
 
@@ -202,72 +270,7 @@ export default function AboutPage() {
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-emerald-200 via-blue-200 to-purple-200 hidden md:block"></div>
 
             <div className="space-y-12">
-              {[
-                {
-                  date: '১৯৯৪–১৯৯৫',
-                  title: 'মোহামেডান এসসি',
-                  description: 'ঢাকা প্রিমিয়ার ডিভিশন লীগে ক্যারিয়ার শুরু',
-                  badge: 'ক্লাব',
-                  badgeColor: 'bg-emerald-100 text-emerald-700',
-                  align: 'left',
-                },
-                {
-                  date: '১৯৯৭–১৯৯৮',
-                  title: 'মুক্তিযোদ্ধা সংসদ',
-                  description: 'প্রথম লীগ শিরোপা এবং মোহননগরী কাপ জয়',
-                  badge: 'ক্লাব',
-                  badgeColor: 'bg-blue-100 text-blue-700',
-                  align: 'right',
-                },
-                {
-                  date: '১৯৯৯-২০০০',
-                  title: 'ঢাকা আবাহনী',
-                  description: 'ফেডারেশন কাপ এবং জাতীয় লীগ শিরোপা',
-                  badge: 'ক্লাব',
-                  badgeColor: 'bg-purple-100 text-purple-700',
-                  align: 'left',
-                },
-                {
-                  date: '২০০৩',
-                  title: 'SAFF চ্যাম্পিয়নশিপ বিজয়',
-                  description: 'টুর্নামেন্টের সেরা গোলরক্ষক - বাংলাদেশের প্রথম SAFF চ্যাম্পিয়নশিপ জয়ে গুরুত্বপূর্ণ ভূমিকা',
-                  badge: 'সম্মাননা',
-                  badgeColor: 'bg-amber-100 text-amber-700',
-                  align: 'right',
-                },
-                {
-                  date: '২০০৮-২০১০',
-                  title: 'মোহামেডান এসসি',
-                  description: '২০০৯ সুপার কাপ জয় এবং সেরা গোলরক্ষক পুরষ্কার',
-                  badge: 'ক্লাব',
-                  badgeColor: 'bg-rose-100 text-rose-700',
-                  align: 'left',
-                },
-                {
-                  date: '২০১০',
-                  title: 'দক্ষিণ এশীয় গেমস স্বর্ণপদক',
-                  description: 'অধিনায়ক হিসেবে বাংলাদেশ অনূর্ধ্ব-২৩ দলকে স্বর্ণপদক জেতানোর নেতৃত্ব',
-                  badge: 'সম্মাননা',
-                  badgeColor: 'bg-yellow-100 text-yellow-700',
-                  align: 'right',
-                },
-                {
-                  date: '২০১১–২০১২',
-                  title: 'শেখ জামাল ডিসি',
-                  description: 'প্রিমিয়ার লীগ এবং ফেডারেশন কাপ শিরোপা',
-                  badge: 'ক্লাব',
-                  badgeColor: 'bg-teal-100 text-teal-700',
-                  align: 'left',
-                },
-                {
-                  date: '২০০৩-২০১২',
-                  title: 'ফেডারেশন কাপ চ্যাম্পিয়ন',
-                  description: '৫ বার ফেডারেশন কাপ জয় - বিভিন্ন ক্লাবের হয়ে অসাধারণ পারফরম্যান্স',
-                  badge: 'পুরস্কার',
-                  badgeColor: 'bg-indigo-100 text-indigo-700',
-                  align: 'right',
-                },
-              ].map((item, idx) => (
+              {timelineItems.map((item, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, x: item.align === 'left' ? -50 : 50 }}
@@ -287,16 +290,16 @@ export default function AboutPage() {
                   <div className={`w-full md:w-[38%] ${item.align === 'left' ? 'md:ml-[100px]' : 'md:mr-[100px]'}`}>
                     <div className="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all border border-slate-200">
                       <div className="flex items-start justify-between mb-3">
-                        <span className="text-sm text-slate-500 font-semibold">{item.date}</span>
+                        <span className="text-sm text-slate-500 font-semibold">{t(item.dateKey)}</span>
                         <span className={`px-3 py-1 ${item.badgeColor} rounded-full text-xs font-bold uppercase tracking-wider`}>
-                          {item.badge}
+                          {t(item.badge)}
                         </span>
                       </div>
                       <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-2">
-                        {item.title}
+                        {t(item.titleKey)}
                       </h3>
                       <p className="text-slate-700 leading-relaxed">
-                        {item.description}
+                        {t(item.descriptionKey)}
                       </p>
                     </div>
                   </div>
@@ -317,10 +320,10 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              আন্তর্জাতিক ক্যারিয়ার
+              {t('about.internationalCareer')}
             </h2>
             <p className="text-xl text-slate-600">
-              ১৯৯৮ থেকে ২০১০ সাল পর্যন্ত বাংলাদেশ জাতীয় দলের প্রতিনিধিত্ব
+              {t('about.internationalCareerDesc')}
             </p>
           </motion.div>
 
@@ -332,18 +335,10 @@ export default function AboutPage() {
               className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200"
             >
               <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
-                <p>
-                  আমিনুল ১৯৯৮ থেকে ২০১০ সাল পর্যন্ত বাংলাদেশ জাতীয় দলের প্রতিনিধিত্ব করেছেন। তিনি প্রায় <strong>৫৬ বার</strong> ক্যাপিং করেছিলেন, যার মধ্যে তিনি ২০০৬, ২০০৮, ২০০৯ এবং ২০১০ সালে তার দেশের অধিনায়কত্ব করেছিলেন।
-                </p>
-                <p>
-                  <strong>২০০৩ সালের SAFF চ্যাম্পিয়নশিপ:</strong> পেনাল্টি শুটআউটের সময়, তিনি আশরাফ লুথফির একটি গুরুত্বপূর্ণ শট রক্ষা করেন, যার ফলে বাংলাদেশ তাদের প্রথম SAFF চ্যাম্পিয়নশিপ জিততে পারে। আমিনুলকে টুর্নামেন্টের সেরা গোলরক্ষকও মনোনীত করা হয়।
-                </p>
-                <p>
-                  <strong>২০১০ সালের দক্ষিণ এশীয় গেমস:</strong> তিনি বাংলাদেশ অনূর্ধ্ব-২৩ দলকে স্বর্ণপদক জেতানোর নেতৃত্ব দিয়েছিলেন।
-                </p>
-                <p>
-                  আন্তর্জাতিক পর্যায়ে তার পারফরম্যান্স নিউক্যাসল ইউনাইটেড এবং আল হিলাল এসএফসির মতো ক্লাবগুলির কাছ থেকেও আগ্রহ আকর্ষণ করেছিল।
-                </p>
+                <p>{t('about.internationalCareerText1')}</p>
+                <p><strong>{t('about.internationalCareerText2')}</strong></p>
+                <p><strong>{t('about.internationalCareerText3')}</strong></p>
+                <p>{t('about.internationalCareerText4')}</p>
               </div>
             </motion.div>
           </div>
@@ -360,7 +355,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              জীবনের প্রথমার্ধ
+              {t('about.earlyLife')}
             </h2>
           </motion.div>
 
@@ -372,15 +367,9 @@ export default function AboutPage() {
           >
             <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
               <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
-                <p>
-                  ভোলায় জন্মগ্রহণকারী আমিনুল তার শৈশবের বেশিরভাগ সময় ঢাকায় কাটিয়েছেন, মোহাম্মদ এমরান এবং মনওয়ারা বেগমের ছেলে। তিন ভাইয়ের মধ্যে তিনি সবার ছোট। তার ভাই মইনুল হক, যিনি তার চেয়ে দশ বছরের বড়, তিনিও ঢাকা প্রিমিয়ার ডিভিশন ফুটবল লীগে খেলেছেন।
-                </p>
-                <p>
-                  চতুর্থ শ্রেণীতে পড়ার সময়, আমিনুল কোচ ইমতিয়াজের অধীনে এমএসপিসিসি সিটি ক্লাবে প্রশিক্ষণ শুরু করেন। মিরপুরের আলুবদী গ্রামে একটি স্থানীয় টুর্নামেন্টে সিটি ক্লাবের জুনিয়র দলের হয়ে খেলার সময়, আমিনুল তার পারফর্মেন্সের জন্য ১৫০ টাকা পেয়েছিলেন।
-                </p>
-                <p>
-                  ১৯৯৩ সালে, তিনি সিটি ক্লাবের সাথে পাইওনিয়ার ফুটবল লীগে অংশগ্রহণ করেন এবং লীগের প্রথম পর্বে টানা নয়টি ক্লিনশিট ধরে রাখতে সক্ষম হন।
-                </p>
+                <p>{t('about.earlyLifeText1')}</p>
+                <p>{t('about.earlyLifeText2')}</p>
+                <p>{t('about.earlyLifeText3')}</p>
               </div>
             </div>
           </motion.div>
@@ -397,10 +386,10 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              রাজনৈতিক জীবন
+              {t('about.politicalLife')}
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              জনসেবায় নতুন অধ্যায়
+              {t('about.newChapter')}
             </h2>
           </motion.div>
 
@@ -415,26 +404,20 @@ export default function AboutPage() {
               <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
                 <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
                   <p className="text-xl font-semibold text-slate-900">
-                    ফুটবল ক্যারিয়ার শেষে আমিনুল হক রাজনৈতিক অঙ্গনে প্রবেশ করেন এবং জনগণের সেবায় নিজেকে নিয়োজিত করেন।
+                    {t('about.politicalIntro')}
                   </p>
                   <div className="bg-gradient-to-br from-red-50 to-rose-50 p-6 rounded-2xl border-l-4 border-red-600">
                     <h3 className="text-2xl font-black text-slate-900 mb-4 flex items-center gap-3">
                       <FaFlag className="text-red-600" />
-                      বাংলাদেশ জাতীয়তাবাদী দল (বিএনপি)
+                      {t('about.bnpMember')}
                     </h3>
-                    <p>
-                      আমিনুল হক <strong>বাংলাদেশ জাতীয়তাবাদী দলের ঢাকা উত্তর সিটি ইউনিটের সদস্য সচিব</strong> হিসেবে যোগদান করেছেন এবং দলের হয়ে কাজ করছেন।
-                    </p>
+                    <p>{t('about.bnpRole')}</p>
                   </div>
                   <div className="bg-slate-50 p-6 rounded-2xl">
-                    <p className="font-semibold text-slate-900 mb-3">রাজনৈতিক সংগ্রাম:</p>
-                    <p>
-                      ২০০৯-২০২৪ সালের প্রাক্তন প্রধানমন্ত্রী শেখ হাসিনার শাসনামলে, দুটি পৃথক নাশকতার ঘটনার কারণে তাকে <strong>২০২৩ সালের ১ নভেম্বর গ্রেপ্তার</strong> করা হয়েছিল। কয়েক মাস কারাভোগের পর পরে তাকে মুক্তি দেওয়া হয়।
-                    </p>
+                    <p className="font-semibold text-slate-900 mb-3">{t('about.politicalStruggle')}</p>
+                    <p>{t('about.politicalStruggleText')}</p>
                   </div>
-                  <p>
-                    রাজনৈতিক জীবনেও আমিনুল হক তার ফুটবল ক্যারিয়ারের মতোই সাহসী এবং দৃঢ়প্রতিজ্ঞ। তিনি জনগণের অধিকার এবং গণতন্ত্রের জন্য লড়াই চালিয়ে যাচ্ছেন।
-                  </p>
+                  <p>{t('about.politicalConclusion')}</p>
                 </div>
               </div>
             </div>

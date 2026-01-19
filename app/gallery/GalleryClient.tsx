@@ -5,6 +5,7 @@ import { FaCalendarAlt, FaMapMarkerAlt, FaImages, FaTimes, FaAngleLeft, FaAngleR
 import ImageLightbox from '../components/ImageLightbox';
 import Image from 'next/image';
 import { toBanglaNumber } from '@/lib/utils';
+import { useTranslation } from '../i18n/I18nProvider';
 
 interface Album {
   id: number;
@@ -58,12 +59,12 @@ const defaultColors = [
 ];
 
 // Format date - handles both YYYY-MM-DD and already formatted Bangla dates
-const formatDate = (dateString: string): string => {
+const formatDate = (dateString: string, language: 'bd' | 'en'): string => {
   if (!dateString) return '';
   
   // Check if date is already in Bangla format (contains Bangla characters)
   const banglaPattern = /[০-৯]/;
-  if (banglaPattern.test(dateString)) {
+  if (banglaPattern.test(dateString) && language === 'bd') {
     return dateString.trim(); // Already in Bangla, return as-is
   }
   
@@ -72,11 +73,20 @@ const formatDate = (dateString: string): string => {
     if (isNaN(date.getTime())) {
       return dateString; // Invalid date, return original
     }
-    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-    const day = toBanglaNumber(date.getDate());
-    const month = months[date.getMonth()];
-    const year = toBanglaNumber(date.getFullYear());
-    return `${day} ${month} ${year}`;
+    
+    if (language === 'en') {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const day = date.getDate();
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      return `${month} ${day}, ${year}`;
+    } else {
+      const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+      const day = toBanglaNumber(date.getDate());
+      const month = months[date.getMonth()];
+      const year = toBanglaNumber(date.getFullYear());
+      return `${day} ${month} ${year}`;
+    }
   } catch (error) {
     return dateString;
   }
@@ -105,7 +115,9 @@ const parseBengaliDate = (bengaliDate: string, originalDate: string): Date => {
       'জানুয়ারি': 0, 'জানু': 0, 'ফেব্রুয়ারি': 1, 'ফেব': 1, 'মার্চ': 2,
       'এপ্রিল': 3, 'এপ্রি': 3, 'মে': 4, 'জুন': 5, 'জুলাই': 6, 'জুল': 6,
       'আগস্ট': 7, 'আগ': 7, 'সেপ্টেম্বর': 8, 'সেপ্টে': 8, 'সেপ': 8,
-      'অক্টোবর': 9, 'অক্টো': 9, 'নভেম্বর': 10, 'নভে': 10, 'ডিসেম্বর': 11, 'ডিসে': 11
+      'অক্টোবর': 9, 'অক্টো': 9, 'নভেম্বর': 10, 'নভে': 10, 'ডিসেম্বর': 11, 'ডিসে': 11,
+      'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
+      'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
     };
     
     // Clean the date string and split
@@ -129,14 +141,22 @@ const parseBengaliDate = (bengaliDate: string, originalDate: string): Date => {
 };
 
 // Format date input value (YYYY-MM-DD) to Bengali format
-const formatDateInputToBengali = (dateString: string): string => {
+const formatDateInputToBengali = (dateString: string, language: 'bd' | 'en'): string => {
   try {
     const date = new Date(dateString);
-    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-    const day = toBanglaNumber(date.getDate());
-    const month = months[date.getMonth()];
-    const year = toBanglaNumber(date.getFullYear());
-    return `${day} ${month} ${year}`;
+    if (language === 'en') {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const day = date.getDate();
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      return `${month} ${day}, ${year}`;
+    } else {
+      const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+      const day = toBanglaNumber(date.getDate());
+      const month = months[date.getMonth()];
+      const year = toBanglaNumber(date.getFullYear());
+      return `${day} ${month} ${year}`;
+    }
   } catch (error) {
     return dateString;
   }
@@ -159,6 +179,7 @@ interface PaginationLinks {
 }
 
 export default function GalleryClient() {
+  const { t, language } = useTranslation();
   const [albums, setAlbums] = useState<GalleryEvent[]>([]);
   const [allAlbums, setAllAlbums] = useState<GalleryEvent[]>([]); // Store all albums for client-side pagination
   const [filteredAlbums, setFilteredAlbums] = useState<GalleryEvent[]>([]); // Filtered albums
@@ -346,7 +367,7 @@ export default function GalleryClient() {
             return {
               id: album.id,
               uuid: album.uuid,
-              date: formatDate(album.date),
+              date: formatDate(album.date, language),
               originalDate: album.date, // Store original date for filtering
               location: album.location || '',
               title: album.name || '',
@@ -369,7 +390,7 @@ export default function GalleryClient() {
     };
 
     fetchAlbums();
-  }, [allAlbums.length]);
+  }, [allAlbums.length, language]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -424,7 +445,7 @@ export default function GalleryClient() {
       <section className="py-20 px-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mb-4"></div>
-          <p className="text-xl text-slate-600">লোড হচ্ছে...</p>
+          <p className="text-xl text-slate-600">{t('common.loading')}</p>
         </div>
       </section>
     );
@@ -434,12 +455,12 @@ export default function GalleryClient() {
     return (
       <section className="py-20 px-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xl text-red-600 mb-4">ত্রুটি: {error}</p>
+          <p className="text-xl text-red-600 mb-4">{t('common.error')}: {error}</p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
           >
-            আবার চেষ্টা করুন
+            {t('common.retry')}
           </button>
         </div>
       </section>
@@ -451,7 +472,7 @@ export default function GalleryClient() {
     return (
       <section className="py-20 px-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xl text-slate-600">কোনো অ্যালবাম পাওয়া যায়নি</p>
+          <p className="text-xl text-slate-600">{t('gallery.noAlbumsFound')}</p>
         </div>
       </section>
     );
@@ -466,14 +487,14 @@ export default function GalleryClient() {
             <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200">
               <div className="flex items-center gap-2 text-amber-700 font-bold mb-6 text-lg">
                 <FaFilter />
-                <span>ফিল্টার অপশন</span>
+                <span>{t('gallery.filterOptions')}</span>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {/* Date Filter */}
                 <div>
                   <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    তারিখ ফিল্টার
+                    {t('gallery.dateFilter')}
                   </label>
                   <input
                     type="date"
@@ -486,39 +507,25 @@ export default function GalleryClient() {
                 {/* Title Filter */}
                 <div>
                   <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    শিরোনাম ফিল্টার
+                    {t('gallery.titleFilter')}
                   </label>
                   <input
                     type="text"
                     value={titleFilter}
                     onChange={(e) => setTitleFilter(e.target.value)}
-                    placeholder="শিরোনাম অনুসন্ধান করুন..."
+                    placeholder={t('gallery.searchTitle')}
                     className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
                   />
                 </div>
-
-                {/* Data/Description Filter
-                <div>
-                  <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    বিবরণ/স্থান ফিল্টার
-                  </label>
-                  <input
-                    type="text"
-                    value={dataFilter}
-                    onChange={(e) => setDataFilter(e.target.value)}
-                    placeholder="বিবরণ বা স্থান অনুসন্ধান করুন..."
-                    className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
-                  />
-                </div> */}
               </div>
 
               {/* Filter Summary and Clear Button */}
               <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
                 <div className="text-sm text-slate-600 font-medium">
-                  {toBanglaNumber(filteredAlbums.length)} টি অ্যালবাম পাওয়া গেছে
-                  {selectedDate && ` (তারিখ: ${formatDateInputToBengali(selectedDate)})`}
-                  {titleFilter && ` (শিরোনাম: ${titleFilter})`}
-                  {dataFilter && ` (বিবরণ: ${dataFilter})`}
+                  {language === 'bd' ? toBanglaNumber(filteredAlbums.length) : filteredAlbums.length} {t('gallery.albumsFound')}
+                  {selectedDate && ` (${language === 'bd' ? 'তারিখ' : 'Date'}: ${formatDateInputToBengali(selectedDate, language)})`}
+                  {titleFilter && ` (${language === 'bd' ? 'শিরোনাম' : 'Title'}: ${titleFilter})`}
+                  {dataFilter && ` (${language === 'bd' ? 'বিবরণ' : 'Description'}: ${dataFilter})`}
                 </div>
                 {(selectedDate || titleFilter || dataFilter) && (
                   <button
@@ -529,7 +536,7 @@ export default function GalleryClient() {
                     }}
                     className="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition-all shadow-lg"
                   >
-                    সব ফিল্টার সরান
+                    {t('gallery.clearAllFilters')}
                   </button>
                 )}
               </div>
@@ -569,7 +576,7 @@ export default function GalleryClient() {
                       <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
                         <FaImages className="text-white" />
                       </div>
-                      <span>{toBanglaNumber(event.media.length)} মিডিয়া</span>
+                      <span>{language === 'bd' ? toBanglaNumber(event.media.length) : event.media.length} {t('common.media')}</span>
                     </div>
                   </div>
                   <p className="text-slate-600 text-lg leading-relaxed mt-4">
@@ -601,7 +608,7 @@ export default function GalleryClient() {
                         <div className={`absolute inset-0 opacity-0 group-hover:opacity-75 transition-all z-10 ${isVideo ? 'bg-black/50' : ''}`}></div>
                         <Image
                           src={imageSrc}
-                          alt={isVideo ? `${event.title} - ভিডিও ${toBanglaNumber(mediaIdx + 1)}` : `${event.title} - ছবি ${toBanglaNumber(mediaIdx + 1)}`}
+                          alt={isVideo ? `${event.title} - ${language === 'bd' ? 'ভিডিও' : 'Video'} ${language === 'bd' ? toBanglaNumber(mediaIdx + 1) : (mediaIdx + 1)}` : `${event.title} - ${language === 'bd' ? 'ছবি' : 'Photo'} ${language === 'bd' ? toBanglaNumber(mediaIdx + 1) : (mediaIdx + 1)}`}
                           fill
                           className="object-cover"
                           unoptimized
@@ -631,13 +638,13 @@ export default function GalleryClient() {
           ) : (
             !loading && filteredAlbums.length > 0 && (
               <div className="text-center py-20">
-                <p className="text-xl text-slate-600">এই পাতায় কোনো অ্যালবাম নেই</p>
+                <p className="text-xl text-slate-600">{t('gallery.noAlbumsOnPage')}</p>
               </div>
             )
           )}
           {!loading && filteredAlbums.length === 0 && allAlbums.length > 0 && (selectedDate || titleFilter || dataFilter) && (
             <div className="text-center py-20">
-              <p className="text-xl text-slate-600">এই ফিল্টার অনুসারে কোনো অ্যালবাম পাওয়া যায়নি</p>
+              <p className="text-xl text-slate-600">{t('gallery.noAlbumsForFilter')}</p>
               <button
                 onClick={() => {
                   setSelectedDate('');
@@ -646,7 +653,7 @@ export default function GalleryClient() {
                 }}
                 className="mt-4 px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
               >
-                সব ফিল্টার সরান
+                {t('gallery.clearAllFilters')}
               </button>
             </div>
           )}
@@ -661,7 +668,7 @@ export default function GalleryClient() {
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
             >
               <FaAngleLeft />
-              পূর্ববর্তী
+              {t('common.previous')}
             </button>
 
             {/* Page Numbers */}
@@ -695,7 +702,7 @@ export default function GalleryClient() {
                         : 'bg-white border border-slate-300 hover:bg-slate-50 text-slate-700'
                     }`}
                   >
-                    {toBanglaNumber(page)}
+                    {language === 'bd' ? toBanglaNumber(page) : page}
                   </button>
                 );
               })}
@@ -707,7 +714,7 @@ export default function GalleryClient() {
               disabled={currentPage === paginationMeta.last_page}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
             >
-              পরবর্তী
+              {t('common.next')}
               <FaAngleRight />
             </button>
           </div>

@@ -1,6 +1,6 @@
 import EventDetailClient from './EventDetailClient';
 
-export const dynamic = "error";
+export const dynamic = "force-dynamic";
 
 // Convert Bengali numerals to English numerals
 function convertBengaliToEnglish(bengaliStr: string): string {
@@ -41,7 +41,7 @@ async function getAllEvents(): Promise<Event[]> {
   try {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
     const response = await fetch(`${apiBaseUrl}/events`, {
-      next: { revalidate: 60 },
+      cache: 'no-store', // No caching - always fetch fresh data
     });
 
     if (!response.ok) {
@@ -94,7 +94,7 @@ async function getEvent(slug: string): Promise<any | null> {
     
     // Try fetching by slug (could be ID or UUID)
     const response = await fetch(`${apiBaseUrl}/events/${slug}`, {
-      next: { revalidate: 60 },
+      cache: 'no-store', // No caching - always fetch fresh data
     });
 
     if (!response.ok) {

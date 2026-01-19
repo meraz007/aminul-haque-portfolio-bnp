@@ -1,9 +1,10 @@
 "use client";
 import { motion } from 'framer-motion';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import ImageLightbox from '../components/ImageLightbox';
 import { FaCalendarAlt, FaMapMarkerAlt, FaImages, FaAngleLeft, FaAngleRight, FaFilter } from 'react-icons/fa';
 import Image from 'next/image';
+import { useTranslation } from '../i18n/I18nProvider';
 
 interface Album {
   id: number;
@@ -46,61 +47,11 @@ const defaultColors = [
   'from-pink-500 to-rose-600',
 ];
 
-// Format date from YYYY-MM-DD to Bengali format
-const formatDate = (dateString: string): string => {
-  try {
-    const date = new Date(dateString);
-    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  } catch (error) {
-    return dateString;
-  }
-};
-
-// Parse Bengali formatted date back to Date object
-const parseBengaliDate = (bengaliDate: string, originalDate: string): Date => {
-  try {
-    // Try to use original date string if available
-    if (originalDate) {
-      return new Date(originalDate);
-    }
-    // Fallback: parse Bengali date
-    const months: { [key: string]: number } = {
-      'জানুয়ারি': 0, 'ফেব্রুয়ারি': 1, 'মার্চ': 2, 'এপ্রিল': 3,
-      'মে': 4, 'জুন': 5, 'জুলাই': 6, 'আগস্ট': 7,
-      'সেপ্টেম্বর': 8, 'অক্টোবর': 9, 'নভেম্বর': 10, 'ডিসেম্বর': 11
-    };
-    const parts = bengaliDate.split(' ');
-    if (parts.length >= 3) {
-      const day = parseInt(parts[0]);
-      const month = months[parts[1]];
-      const year = parseInt(parts[2]);
-      if (!isNaN(day) && month !== undefined && !isNaN(year)) {
-        return new Date(year, month, day);
-      }
-    }
-    return new Date();
-  } catch (error) {
-    return new Date();
-  }
-};
-
-// Format date input value (YYYY-MM-DD) to Bengali format
-const formatDateInputToBengali = (dateString: string): string => {
-  try {
-    const date = new Date(dateString);
-    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  } catch (error) {
-    return dateString;
-  }
-};
+// Month keys for translation
+const monthKeys = [
+  'january', 'february', 'march', 'april', 'may', 'june',
+  'july', 'august', 'september', 'october', 'november', 'december'
+];
 
 interface PaginationMeta {
   current_page: number;
@@ -112,6 +63,7 @@ interface PaginationMeta {
 }
 
 export default function KheladhulaClient() {
+  const { t, language } = useTranslation();
   const [events, setEvents] = useState<KheladhulaEvent[]>([]);
   const [allEvents, setAllEvents] = useState<KheladhulaEvent[]>([]); // Store all events for client-side pagination
   const [filteredEvents, setFilteredEvents] = useState<KheladhulaEvent[]>([]); // Filtered events
@@ -127,6 +79,46 @@ export default function KheladhulaClient() {
   const [titleFilter, setTitleFilter] = useState<string>('');
   const [dataFilter, setDataFilter] = useState<string>('');
 
+  // Format date from YYYY-MM-DD to localized format
+  const formatDate = useCallback((dateString: string): string => {
+    try {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const monthKey = monthKeys[date.getMonth()];
+      const month = t(`kheladhula.months.${monthKey}`);
+      const year = date.getFullYear();
+      return `${day} ${month} ${year}`;
+    } catch {
+      return dateString;
+    }
+  }, [t]);
+
+  // Parse date back to Date object
+  const parseDateToObject = useCallback((originalDate: string): Date => {
+    try {
+      if (originalDate) {
+        return new Date(originalDate);
+      }
+      return new Date();
+    } catch {
+      return new Date();
+    }
+  }, []);
+
+  // Format date input value (YYYY-MM-DD) to localized format
+  const formatDateInputToLocalized = useCallback((dateString: string): string => {
+    try {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const monthKey = monthKeys[date.getMonth()];
+      const month = t(`kheladhula.months.${monthKey}`);
+      const year = date.getFullYear();
+      return `${day} ${month} ${year}`;
+    } catch {
+      return dateString;
+    }
+  }, [t]);
+
   // Filter events by all criteria (date, title, and data/description)
   const filterEventsByDate = useMemo(() => {
     let filtered = allEvents;
@@ -138,7 +130,7 @@ export default function KheladhulaClient() {
       const filterDateEnd = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate(), 23, 59, 59);
 
       filtered = filtered.filter((event) => {
-        const eventDate = parseBengaliDate(event.date, event.originalDate || '');
+        const eventDate = parseDateToObject(event.originalDate || '');
         return eventDate >= filterDateStart && eventDate <= filterDateEnd;
       });
     }
@@ -161,7 +153,7 @@ export default function KheladhulaClient() {
     }
 
     return filtered;
-  }, [allEvents, selectedDate, titleFilter, dataFilter]);
+  }, [allEvents, selectedDate, titleFilter, dataFilter, parseDateToObject]);
 
   // Update filtered events when filter changes
   useEffect(() => {
@@ -219,7 +211,6 @@ export default function KheladhulaClient() {
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
         
         // Always fetch all albums without pagination parameters
-        // You can change this endpoint if there's a specific API for sports/playground activities
         const url = `${apiBaseUrl}/sports/list`;
         
         const response = await fetch(url, {
@@ -230,7 +221,6 @@ export default function KheladhulaClient() {
         });
 
         if (!response.ok) {
-          // Get error details
           let errorMessage = `Failed to fetch events (${response.status}): ${response.statusText}`;
           
           try {
@@ -248,7 +238,6 @@ export default function KheladhulaClient() {
                   errorMessage = JSON.stringify(errorData.errors);
                 }
               } catch {
-                // If not JSON, use the text as error message
                 if (errorText.length < 200) {
                   errorMessage = errorText;
                 }
@@ -290,8 +279,8 @@ export default function KheladhulaClient() {
             return {
               id: album.id,
               uuid: album.uuid,
-              date: formatDate(album.date),
-              originalDate: album.date, // Store original date for filtering
+              date: album.date, // Store raw date, format when displaying
+              originalDate: album.date,
               location: album.location || '',
               title: album.bang_name || '',
               description: album.bang_description || '',
@@ -349,7 +338,7 @@ export default function KheladhulaClient() {
       <section className="py-20 px-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mb-4"></div>
-          <p className="text-xl text-slate-600">লোড হচ্ছে...</p>
+          <p className="text-xl text-slate-600">{t('kheladhula.loading')}</p>
         </div>
       </section>
     );
@@ -359,12 +348,12 @@ export default function KheladhulaClient() {
     return (
       <section className="py-20 px-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xl text-red-600 mb-4">ত্রুটি: {error}</p>
+          <p className="text-xl text-red-600 mb-4">{t('kheladhula.error')} {error}</p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
           >
-            আবার চেষ্টা করুন
+            {t('kheladhula.tryAgain')}
           </button>
         </div>
       </section>
@@ -376,7 +365,7 @@ export default function KheladhulaClient() {
     return (
       <section className="py-20 px-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xl text-slate-600">কোনো ইভেন্ট পাওয়া যায়নি</p>
+          <p className="text-xl text-slate-600">{t('kheladhula.noEvents')}</p>
         </div>
       </section>
     );
@@ -391,14 +380,14 @@ export default function KheladhulaClient() {
             <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200">
               <div className="flex items-center gap-2 text-amber-700 font-bold mb-6 text-lg">
                 <FaFilter />
-                <span>ফিল্টার অপশন</span>
+                <span>{t('kheladhula.filterOptions')}</span>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {/* Date Filter */}
                 <div>
                   <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    তারিখ ফিল্টার
+                    {t('kheladhula.dateFilter')}
                   </label>
                   <input
                     type="date"
@@ -411,13 +400,13 @@ export default function KheladhulaClient() {
                 {/* Title Filter */}
                 <div>
                   <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    শিরোনাম ফিল্টার
+                    {t('kheladhula.titleFilter')}
                   </label>
                   <input
                     type="text"
                     value={titleFilter}
                     onChange={(e) => setTitleFilter(e.target.value)}
-                    placeholder="শিরোনাম অনুসন্ধান করুন..."
+                    placeholder={t('kheladhula.searchTitle')}
                     className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
                   />
                 </div>
@@ -426,10 +415,10 @@ export default function KheladhulaClient() {
               {/* Filter Summary and Clear Button */}
               <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
                 <div className="text-sm text-slate-600 font-medium">
-                  {filteredEvents.length} টি ইভেন্ট পাওয়া গেছে
-                  {selectedDate && ` (তারিখ: ${formatDateInputToBengali(selectedDate)})`}
-                  {titleFilter && ` (শিরোনাম: ${titleFilter})`}
-                  {dataFilter && ` (বিবরণ: ${dataFilter})`}
+                  {filteredEvents.length} {t('kheladhula.eventsFound')}
+                  {selectedDate && ` (${t('kheladhula.date')}: ${formatDateInputToLocalized(selectedDate)})`}
+                  {titleFilter && ` (${t('kheladhula.title')}: ${titleFilter})`}
+                  {dataFilter && ` (${t('kheladhula.description')}: ${dataFilter})`}
                 </div>
                 {(selectedDate || titleFilter || dataFilter) && (
                   <button
@@ -440,7 +429,7 @@ export default function KheladhulaClient() {
                     }}
                     className="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition-all shadow-lg"
                   >
-                    সব ফিল্টার সরান
+                    {t('kheladhula.clearAllFilters')}
                   </button>
                 )}
               </div>
@@ -468,7 +457,7 @@ export default function KheladhulaClient() {
                       <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
                         <FaCalendarAlt className="text-white" />
                       </div>
-                      <span className="font-bold">{event.date}</span>
+                      <span className="font-bold">{formatDate(event.originalDate || event.date)}</span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-700">
                       <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
@@ -480,7 +469,7 @@ export default function KheladhulaClient() {
                       <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
                         <FaImages className="text-white" />
                       </div>
-                      <span>{event.images.length} ফটো</span>
+                      <span>{event.images.length} {t('kheladhula.photos')}</span>
                     </div>
                   </div>
                   <p className="text-slate-600 text-lg leading-relaxed mt-4">
@@ -500,7 +489,7 @@ export default function KheladhulaClient() {
                       <div className={`absolute inset-0 opacity-0 group-hover:opacity-75 transition-all z-10`}></div>
                       <Image
                         src={image}
-                        alt={`${event.title} - ছবি ${imageIdx + 1}`}
+                        alt={`${event.title} - ${t('kheladhula.image')} ${imageIdx + 1}`}
                         fill
                         className="object-cover"
                         unoptimized
@@ -518,13 +507,13 @@ export default function KheladhulaClient() {
           ) : (
             !loading && filteredEvents.length > 0 && (
               <div className="text-center py-20">
-                <p className="text-xl text-slate-600">এই পাতায় কোনো ইভেন্ট নেই</p>
+                <p className="text-xl text-slate-600">{t('kheladhula.noEventsOnPage')}</p>
               </div>
             )
           )}
           {!loading && filteredEvents.length === 0 && allEvents.length > 0 && (selectedDate || titleFilter || dataFilter) && (
             <div className="text-center py-20">
-              <p className="text-xl text-slate-600">এই ফিল্টার অনুসারে কোনো ইভেন্ট পাওয়া যায়নি</p>
+              <p className="text-xl text-slate-600">{t('kheladhula.noEventsForFilter')}</p>
               <button
                 onClick={() => {
                   setSelectedDate('');
@@ -533,7 +522,7 @@ export default function KheladhulaClient() {
                 }}
                 className="mt-4 px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
               >
-                সব ফিল্টার সরান
+                {t('kheladhula.clearAllFilters')}
               </button>
             </div>
           )}
@@ -548,7 +537,7 @@ export default function KheladhulaClient() {
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
             >
               <FaAngleLeft />
-              পূর্ববর্তী
+              {t('kheladhula.previous')}
             </button>
 
             {/* Page Numbers */}
@@ -594,7 +583,7 @@ export default function KheladhulaClient() {
               disabled={currentPage === paginationMeta.last_page}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
             >
-              পরবর্তী
+              {t('kheladhula.next')}
               <FaAngleRight />
             </button>
           </div>
@@ -614,4 +603,3 @@ export default function KheladhulaClient() {
     </>
   );
 }
-

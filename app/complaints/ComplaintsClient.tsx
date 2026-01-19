@@ -14,6 +14,7 @@ import {
     FaCheckCircle 
   } from 'react-icons/fa';
 import Image from 'next/image';
+import { useTranslation } from '../i18n/I18nProvider';
 
 interface Category {
   id: number;
@@ -25,6 +26,7 @@ interface ComplaintsClientProps {
 }
 
 export default function ComplaintsClient({ categories }: ComplaintsClientProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -168,15 +170,15 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
           >
             <span className="inline-block px-6 py-2 bg-red-100 text-red-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaExclamationTriangle className="inline mr-2" />
-              জনগণের অভিযোগ
+              {t('complaints.publicComplaints')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                অভিযোগ দাখিল করুন
+                {t('complaints.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              আপনার সমস্যা ও অভিযোগ আমাদের জানান। আমরা সমাধানে প্রতিশ্রুতিবদ্ধ
+              {t('complaints.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -198,7 +200,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
                   src="/aminul Haque/complain.jpeg"
-                  alt="আমিনুল হক"
+                  alt={t('hero.title')}
                   width={600}
                   height={800}
                   className="w-full h-auto"
@@ -214,24 +216,24 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-red-600 font-bold text-sm uppercase tracking-wider">আপনার কণ্ঠস্বর শুনুন</span>
+              <span className="text-red-600 font-bold text-sm uppercase tracking-wider">{t('complaints.hearYourVoice')}</span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-              আপনার সেবায় সর্বদা প্রস্তুত
+                {t('complaints.alwaysReady')}
               </h2>
               <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
                 <p>
-                  প্রিয় এলাকাবাসী, আপনাদের যেকোনো সমস্যা, অভিযোগ বা পরামর্শ আমাকে জানাতে দ্বিধা করবেন না। 
+                  {t('complaints.welcomeText1')}
                 </p>
                 <p>
-                  জনগণের সেবা করাই আমার লক্ষ্য। আপনার প্রতিটি অভিযোগ আমি ব্যক্তিগতভাবে দেখব এবং দ্রুত সমাধানের চেষ্টা করব।
+                  {t('complaints.welcomeText2')}
                 </p>
                 <p className="font-semibold text-red-700">
-                  একসাথে আমরা আমাদের এলাকাকে আরও উন্নত করতে পারি।
+                  {t('complaints.togetherImprove')}
                 </p>
               </div>
               <div className="mt-6 p-6 bg-red-50 rounded-2xl border-l-4 border-red-600">
                 <p className="text-slate-700">
-                  <strong className="text-red-700">প্রতিশ্রুতি:</strong> প্রতিটি অভিযোগ ৪৮ ঘণ্টার মধ্যে পর্যালোচনা করা হবে এবং সমাধানের জন্য প্রয়োজনীয় পদক্ষেপ নেওয়া হবে।
+                  <strong className="text-red-700">{t('complaints.promise')}:</strong> {t('complaints.promiseText')}
                 </p>
               </div>
             </motion.div>
@@ -249,9 +251,9 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               className="bg-green-50 border-2 border-green-200 rounded-3xl p-8 text-center"
             >
               <FaCheckCircle className="text-6xl text-green-600 mx-auto mb-4" />
-              <h3 className="text-3xl font-bold text-green-800 mb-3">অভিযোগ সফলভাবে দাখিল হয়েছে!</h3>
+              <h3 className="text-3xl font-bold text-green-800 mb-3">{t('complaints.complaintSubmitted')}</h3>
               <p className="text-lg text-green-700">
-                আপনার অভিযোগ নথিভুক্ত করা হয়েছে। শীঘ্রই আমরা আপনার সাথে যোগাযোগ করব।
+                {t('complaints.complaintRecorded')}
               </p>
             </motion.div>
           </div>
@@ -268,13 +270,13 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               className="bg-red-50 border-2 border-red-200 rounded-3xl p-8 text-center"
             >
               <FaExclamationTriangle className="text-6xl text-red-600 mx-auto mb-4" />
-              <h3 className="text-3xl font-bold text-red-800 mb-3">ত্রুটি!</h3>
+              <h3 className="text-3xl font-bold text-red-800 mb-3">{t('complaints.errorTitle')}</h3>
               <p className="text-lg text-red-700 mb-4">{error}</p>
               <button
                 onClick={() => setError(null)}
                 className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all font-bold"
               >
-                ঠিক আছে
+                {t('common.ok')}
               </button>
             </motion.div>
           </div>
@@ -302,14 +304,14 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                     <FaUser className="text-red-600" />
-                    নাম <span className="text-red-500">*</span>
+                    {t('complaints.name')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="আপনার পূর্ণ নাম লিখুন"
+                    placeholder={t('complaints.enterFullName')}
                     className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                     required
                   />
@@ -319,7 +321,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                     <FaPhone className="text-red-600" />
-                    মোবাইল নম্বর <span className="text-red-500">*</span>
+                    {t('complaints.mobileNumber')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
@@ -337,14 +339,14 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                     <FaIdCard className="text-red-600" />
-                    ভোটার আইডি / এনআইডি <span className="text-slate-400 text-sm font-normal">(ঐচ্ছিক)</span>
+                    {t('complaints.voterIdNid')} <span className="text-slate-400 text-sm font-normal">({t('complaints.optional')})</span>
                   </label>
                   <input
                     type="text"
                     name="voterId"
                     value={formData.voterId}
                     onChange={handleInputChange}
-                    placeholder="আপনার ভোটার আইডি বা এনআইডি নম্বর"
+                    placeholder={t('complaints.voterIdPlaceholder')}
                     className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                   />
                 </div>
@@ -355,14 +357,14 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                   <div>
                     <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                       <FaMapMarkerAlt className="text-red-600" />
-                      এলাকা <span className="text-red-500">*</span>
+                      {t('complaints.area')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       name="area"
                       value={formData.area}
                       onChange={handleInputChange}
-                      placeholder="এলাকার নাম"
+                      placeholder={t('complaints.areaName')}
                       className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                       required
                     />
@@ -371,7 +373,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                   {/* Thana */}
                   <div>
                     <label className="block text-slate-700 font-bold mb-3 text-lg">
-                      থানা <span className="text-red-500">*</span>
+                      {t('complaints.thana')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       name="thana"
@@ -380,7 +382,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                       className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                       required
                     >
-                      <option value="">থানা নির্বাচন করুন</option>
+                      <option value="">{t('complaints.selectThana')}</option>
                       {thanas.map((thana) => (
                         <option key={thana} value={thana}>
                           {thana}
@@ -392,14 +394,14 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                   {/* Ward */}
                   <div>
                     <label className="block text-slate-700 font-bold mb-3 text-lg">
-                      ওয়ার্ড <span className="text-red-500">*</span>
+                      {t('complaints.wardNo')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       name="ward"
                       value={formData.ward}
                       onChange={handleInputChange}
-                      placeholder="ওয়ার্ড নং"
+                      placeholder={t('complaints.wardNo')}
                       className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                       required
                     />
@@ -410,7 +412,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                     <FaList className="text-red-600" />
-                    অভিযোগের ধরন <span className="text-red-500">*</span>
+                    {t('complaints.complaintType')} <span className="text-red-500">*</span>
                   </label>
                   <select
                     name="category"
@@ -419,7 +421,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                     className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg"
                     required
                   >
-                    <option value="">ধরন নির্বাচন করুন</option>
+                    <option value="">{t('complaints.selectType')}</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
                         {category.name}
@@ -432,19 +434,19 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                     <FaFileAlt className="text-red-600" />
-                    অভিযোগের বিস্তারিত বিবরণ <span className="text-red-500">*</span>
+                    {t('complaints.complaintDetails')} <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    placeholder="আপনার সমস্যার বিস্তারিত বিবরণ লিখুন..."
+                    placeholder={t('complaints.detailsPlaceholder')}
                     rows={6}
                     className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-500 transition-all text-lg resize-none"
                     required
                   />
                   <p className="text-sm text-slate-500 mt-2">
-                    কী ঘটেছে, কখন ঘটেছে, এবং কোন ব্যবস্থা নেওয়া প্রয়োজন তা উল্লেখ করুন
+                    {t('complaints.detailsHint')}
                   </p>
                 </div>
 
@@ -452,7 +454,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                 <div>
                   <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                     <FaCamera className="text-red-600" />
-                    প্রমাণ (ছবি/ভিডিও) <span className="text-slate-400 text-sm font-normal">(সর্বোচ্চ ৫টি ফাইল)</span>
+                    {t('complaints.evidence')} <span className="text-slate-400 text-sm font-normal">({t('complaints.maxFiles')})</span>
                   </label>
                   <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-red-500 transition-all">
                     <input
@@ -470,10 +472,10 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                     >
                       <FaCamera className="text-5xl text-slate-400 mx-auto mb-4" />
                       <p className="text-lg text-slate-600 font-semibold mb-2">
-                        ছবি বা ভিডিও আপলোড করুন
+                        {t('complaints.uploadImages')}
                       </p>
                       <p className="text-sm text-slate-500">
-                        ক্লিক করুন বা ফাইল টেনে আনুন
+                        {t('complaints.clickOrDrag')}
                       </p>
                     </label>
                   </div>
@@ -500,7 +502,7 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                             onClick={() => removeFile(index)}
                             className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-all font-semibold"
                           >
-                            মুছুন
+                            {t('common.delete')}
                           </button>
                         </div>
                       ))}
@@ -517,12 +519,12 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                      জমা দেওয়া হচ্ছে...
+                      {t('common.submitting')}
                     </>
                   ) : (
                     <>
                       <FaPaperPlane />
-                      অভিযোগ দাখিল করুন
+                      {t('complaints.submitComplaint')}
                     </>
                   )}
                 </button>
@@ -543,14 +545,14 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
           >
             <h3 className="text-2xl font-bold text-amber-900 mb-4 flex items-center gap-3">
               <FaExclamationTriangle />
-              গুরুত্বপূর্ণ তথ্য
+              {t('complaints.importantInfo')}
             </h3>
             <ul className="space-y-3 text-amber-800 text-lg">
-              <li>• আপনার অভিযোগ গোপনীয় রাখা হবে</li>
-              <li>• সঠিক তথ্য প্রদান করুন যাতে আমরা দ্রুত ব্যবস্থা নিতে পারি</li>
-              <li>• প্রমাণ হিসেবে ছবি বা ভিডিও সংযুক্ত করলে অভিযোগ আরও কার্যকর হবে</li>
-              <li>• জরুরি বিষয়ে সরাসরি যোগাযোগ করুন: +৮৮০ ১৫৫২-১৬১৬১৬</li>
-              <li>• মিথ্যা অভিযোগ আইনত দণ্ডনীয় অপরাধ</li>
+              <li>• {t('complaints.info1')}</li>
+              <li>• {t('complaints.info2')}</li>
+              <li>• {t('complaints.info3')}</li>
+              <li>• {t('complaints.info4')}</li>
+              <li>• {t('complaints.info5')}</li>
             </ul>
           </motion.div>
         </div>
@@ -568,24 +570,24 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                সরাসরি যোগাযোগ প্রয়োজন?
+                {t('complaints.needDirectContact')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                জরুরি বিষয়ে আমাদের সাথে সরাসরি যোগাযোগ করুন
+                {t('complaints.urgentMatters')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="tel:+৮৮০ ১৫৫২-১৬১৬১৬"
+                  href="tel:+8801552161616"
                   className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
                 >
                   <FaPhone />
-                  কল করুন
+                  {t('common.callUs')}
                 </a>
                 <a
                   href="/contact"
                   className="px-10 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-blue-600 hover:bg-blue-50 transition-all transform hover:scale-105"
                 >
-                  যোগাযোগ ফর্ম
+                  {t('complaints.contactForm')}
                 </a>
               </div>
             </div>
@@ -595,4 +597,3 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
     </main>
   );
 }
-

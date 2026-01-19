@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import Navbar from './components/Navbar';
 import SiteFooter from './components/SiteFooter';
+import { I18nProvider } from './i18n/I18nProvider';
+import { getServerLang } from './i18n/getServerLang';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
@@ -36,19 +38,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const initialLanguage = await getServerLang();
+  
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang={initialLanguage === 'bd' ? 'bn' : 'en'} data-scroll-behavior="smooth">
       <body className={`${poppins.className} bg-white text-slate-900 antialiased `} suppressHydrationWarning>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </div>
+        <I18nProvider initialLanguage={initialLanguage}>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </div>
+        </I18nProvider>
       </body>
     </html>
   );

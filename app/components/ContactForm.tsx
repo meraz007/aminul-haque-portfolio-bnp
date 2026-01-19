@@ -1,8 +1,10 @@
 "use client";
 import { useState } from 'react';
 import { FaUser, FaEnvelope, FaCommentDots, FaPaperPlane, FaCheckCircle } from 'react-icons/fa';
+import { useTranslation } from '../i18n/I18nProvider';
 
 export default function ContactForm() {
+  const { t } = useTranslation();
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -64,9 +66,9 @@ export default function ContactForm() {
         <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6">
           <FaCheckCircle className="text-4xl text-white" />
         </div>
-        <h3 className="text-2xl font-bold text-slate-900 mb-3">বার্তা পাঠানো হয়েছে!</h3>
+        <h3 className="text-2xl font-bold text-slate-900 mb-3">{t('contactForm.messageSent')}</h3>
         <p className="text-slate-600">
-          যোগাযোগের জন্য ধন্যবাদ। আমরা যত তাড়াতাড়ি সম্ভব আপনার সাথে যোগাযোগ করব।
+          {t('contactForm.thankYouMessage')}
         </p>
       </div>
     );
@@ -83,7 +85,7 @@ export default function ContactForm() {
       {/* Name Field */}
       <div>
         <label className="mb-2 block text-sm font-bold text-slate-900">
-          পুরো নাম <span className="text-red-500">*</span>
+          {t('contactForm.fullName')} <span className="text-red-500">*</span>
         </label>
         <div className="relative">
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400">
@@ -96,7 +98,7 @@ export default function ContactForm() {
             required
             disabled={loading}
             className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            placeholder="আপনার নাম"
+            placeholder={t('contactForm.namePlaceholder')}
           />
         </div>
       </div>
@@ -104,7 +106,7 @@ export default function ContactForm() {
       {/* Email Field */}
       <div>
         <label className="mb-2 block text-sm font-bold text-slate-900">
-          ইমেইল ঠিকানা <span className="text-red-500">*</span>
+          {t('contactForm.emailAddress')} <span className="text-red-500">*</span>
         </label>
         <div className="relative">
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400">
@@ -118,7 +120,7 @@ export default function ContactForm() {
             required
             disabled={loading}
             className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            placeholder="আপনার@ইমেইল.com"
+            placeholder={t('contactForm.emailPlaceholder')}
           />
         </div>
       </div>
@@ -126,7 +128,7 @@ export default function ContactForm() {
       {/* Message Field */}
       <div>
         <label className="mb-2 block text-sm font-bold text-slate-900">
-          আপনার বার্তা <span className="text-red-500">*</span>
+          {t('contactForm.yourMessage')} <span className="text-red-500">*</span>
         </label>
         <div className="relative">
           <div className="absolute left-4 top-4 text-slate-400">
@@ -140,7 +142,7 @@ export default function ContactForm() {
             rows={6}
             disabled={loading}
             className="w-full rounded-xl border-2 border-slate-200 pl-12 pr-4 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
-            placeholder="আমরা কীভাবে আপনাকে সাহায্য করতে পারি তা বলুন..."
+            placeholder={t('contactForm.messagePlaceholder')}
           />
         </div>
       </div>
@@ -154,17 +156,15 @@ export default function ContactForm() {
         {loading ? (
           <>
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-            <span>পাঠানো হচ্ছে...</span>
+            <span>{t('contactForm.sending')}</span>
           </>
         ) : (
           <>
             <FaPaperPlane />
-            বার্তা পাঠান
+            {t('contactForm.sendMessage')}
           </>
         )}
       </button>
     </form>
   );
 }
-
-

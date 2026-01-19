@@ -6,6 +6,7 @@ import { FaXTwitter } from 'react-icons/fa6';
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useTranslation } from '@/app/i18n/I18nProvider';
 
 interface PressReleaseDetailClientProps {
   pressRelease: {
@@ -22,6 +23,7 @@ interface PressReleaseDetailClientProps {
 }
 
 export default function PressReleaseDetailClient({ pressRelease }: PressReleaseDetailClientProps) {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   if (!pressRelease) {
@@ -30,7 +32,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
         <div className="text-center">
           <h1 className="text-4xl font-black text-slate-900 mb-4">প্রেস রিলিজ পাওয়া যায়নি</h1>
           <Link href="/press-release" className="text-blue-600 hover:underline">
-            প্রেস রিলিজ পেজে ফিরে যান
+            {t('pressReleaseDetail.backToPage')}
           </Link>
         </div>
       </main>
@@ -77,7 +79,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-bold transition-colors"
           >
             <FaArrowLeft />
-            সব প্রেস রিলিজে ফিরে যান
+            {t('pressReleaseDetail.backToAll')}
           </Link>
         </div>
       </section>
@@ -108,7 +110,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
 
             {/* Share Buttons */}
             <div className="flex flex-wrap items-center gap-4 py-6 border-y border-slate-200">
-              <span className="font-bold text-slate-700">শেয়ার করুন:</span>
+              <span className="font-bold text-slate-700">{t('pressReleaseDetail.share')}</span>
               <button
                 onClick={() => handleShare('facebook')}
                 className="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-lg hover:bg-[#166FE5] transition-all transform hover:scale-105 font-medium"
@@ -135,7 +137,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
                 className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-all transform hover:scale-105 font-medium"
               >
                 <FaLink />
-                {copied ? 'কপি হয়েছে!' : 'লিংক কপি'}
+                {copied ? t('pressReleaseDetail.copied') : t('pressReleaseDetail.copyLink')}
               </button>
             </div>
           </motion.div>
@@ -194,7 +196,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
           <div className="mx-auto max-w-4xl">
             <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-3">
               <FaImage className="text-blue-600" />
-              আরও ছবি
+              {t('pressReleaseDetail.moreImages')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {pressRelease.images.slice(1).map((image: string, idx: number) => (
@@ -227,7 +229,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
           <div className="mx-auto max-w-4xl">
             <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-3">
               <FaVideo className="text-red-600" />
-              {pressRelease.videos[0]?.type === 'audio' ? 'অডিও' : 'ভিডিও'}
+              {pressRelease.videos[0]?.type === 'audio' ? t('pressReleaseDetail.audio') : t('pressReleaseDetail.video')}
             </h2>
             <div className="space-y-8">
               {pressRelease.videos.map((video: any, idx: number) => (
@@ -249,7 +251,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
                       <audio controls className="w-full">
                         <source src={video.url} type="audio/mpeg" />
                         <source src={video.url} type="audio/mp3" />
-                        আপনার ব্রাউজার অডিও সমর্থন করে না।
+                        {t('pressReleaseDetail.audioNotSupported')}
                       </audio>
                     </div>
                   ) : (
@@ -265,7 +267,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
                       ) : (
                         <video controls className="w-full h-full">
                           <source src={video.url} type="video/mp4" />
-                          আপনার ব্রাউজার ভিডিও সমর্থন করে না।
+                          {t('pressReleaseDetail.videoNotSupported')}
                         </video>
                       )}
                     </div>
@@ -287,7 +289,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
               viewport={{ once: true }}
               className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 text-center"
             >
-              <p className="text-slate-700 mb-4 font-semibold">মূল সংবাদ পড়ুন:</p>
+              <p className="text-slate-700 mb-4 font-semibold">{t('pressReleaseDetail.readOriginalNews')}</p>
               <a
                 href={pressRelease.newsLink}
                 target="_blank"
@@ -295,7 +297,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
                 className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all transform hover:scale-105"
               >
                 <FaLink />
-                সংবাদ লিঙ্ক
+                {t('pressReleaseDetail.newsLink')}
               </a>
             </motion.div>
           </div>
@@ -314,7 +316,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl text-center border border-slate-200">
               <h3 className="text-3xl font-black text-slate-900 mb-6">
-                এই প্রেস রিলিজ শেয়ার করুন
+                {t('pressReleaseDetail.shareThisRelease')}
               </h3>
               <div className="flex flex-wrap justify-center items-center gap-4">
                 <button
@@ -343,7 +345,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
                   className="flex items-center gap-2 px-6 py-3 bg-slate-700 text-white rounded-xl hover:bg-slate-800 transition-all transform hover:scale-105 font-bold shadow-lg"
                 >
                   <FaLink className="text-xl" />
-                  {copied ? 'কপি হয়েছে!' : 'লিংক কপি'}
+                  {copied ? t('pressReleaseDetail.copied') : t('pressReleaseDetail.copyLink')}
                 </button>
               </div>
             </div>
@@ -359,7 +361,7 @@ export default function PressReleaseDetailClient({ pressRelease }: PressReleaseD
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-blue-700 hover:to-cyan-700 transition-all transform hover:scale-105"
           >
             <FaArrowLeft />
-            সব প্রেস রিলিজ দেখুন
+            {t('pressReleaseDetail.viewAllReleases')}
           </Link>
         </div>
       </section>

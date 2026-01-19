@@ -13,70 +13,134 @@ import {
   FaCheckCircle
 } from 'react-icons/fa';
 import { toBanglaNumber } from '@/lib/utils';
+import { useTranslation } from '../i18n/I18nProvider';
 
 // Sample data for Bangladesh districts, upazilas, and wards
 const districts = [
-  { id: 'dhaka', name: 'ঢাকা' },
-  { id: 'chittagong', name: 'চট্টগ্রাম' },
-  { id: 'sylhet', name: 'সিলেট' },
-  { id: 'rajshahi', name: 'রাজশাহী' },
-  { id: 'khulna', name: 'খুলনা' },
-  { id: 'barisal', name: 'বরিশাল' },
-  { id: 'rangpur', name: 'রংপুর' },
-  { id: 'mymensingh', name: 'ময়মনসিংহ' },
+  { id: 'dhaka', name: 'ঢাকা', nameEn: 'Dhaka' },
+  { id: 'chittagong', name: 'চট্টগ্রাম', nameEn: 'Chittagong' },
+  { id: 'sylhet', name: 'সিলেট', nameEn: 'Sylhet' },
+  { id: 'rajshahi', name: 'রাজশাহী', nameEn: 'Rajshahi' },
+  { id: 'khulna', name: 'খুলনা', nameEn: 'Khulna' },
+  { id: 'barisal', name: 'বরিশাল', nameEn: 'Barisal' },
+  { id: 'rangpur', name: 'রংপুর', nameEn: 'Rangpur' },
+  { id: 'mymensingh', name: 'ময়মনসিংহ', nameEn: 'Mymensingh' },
 ];
 
-const upazilasByDistrict: { [key: string]: string[] } = {
-  dhaka: ['গুলশান', 'ধানমন্ডি', 'মিরপুর', 'উত্তরা', 'ঢাকা সদর', 'সাভার', 'কেরানীগঞ্জ'],
-  chittagong: ['কক্সবাজার', 'চট্টগ্রাম সদর', 'হাটহাজারী', 'রাউজান', 'ফটিকছড়ি'],
-  sylhet: ['সিলেট সদর', 'বালাগঞ্জ', 'বিয়ানীবাজার', 'বিশ্বনাথ', 'বালাগঞ্জ'],
-  rajshahi: ['রাজশাহী সদর', 'বোয়ালিয়া', 'পবা', 'দুপচাঁচিয়া'],
-  khulna: ['খুলনা সদর', 'দাকোপ', 'ডুমুরিয়া', 'দিঘলিয়া'],
-  barisal: ['বরিশাল সদর', 'বাবুগঞ্জ', 'বাকেরগঞ্জ', 'বানারীপাড়া'],
-  rangpur: ['রংপুর সদর', 'বদরগঞ্জ', 'গঙ্গাচড়া', 'কাউনিয়া'],
-  mymensingh: ['ময়মনসিংহ সদর', 'গফরগাঁও', 'গৌরীপুর', 'ঈশ্বরগঞ্জ'],
+const upazilasByDistrict: { [key: string]: { bd: string[], en: string[] } } = {
+  dhaka: {
+    bd: ['গুলশান', 'ধানমন্ডি', 'মিরপুর', 'উত্তরা', 'ঢাকা সদর', 'সাভার', 'কেরানীগঞ্জ'],
+    en: ['Gulshan', 'Dhanmondi', 'Mirpur', 'Uttara', 'Dhaka Sadar', 'Savar', 'Keraniganj']
+  },
+  chittagong: {
+    bd: ['কক্সবাজার', 'চট্টগ্রাম সদর', 'হাটহাজারী', 'রাউজান', 'ফটিকছড়ি'],
+    en: ['Cox\'s Bazar', 'Chittagong Sadar', 'Hathazari', 'Raozan', 'Fatikchhari']
+  },
+  sylhet: {
+    bd: ['সিলেট সদর', 'বালাগঞ্জ', 'বিয়ানীবাজার', 'বিশ্বনাথ', 'বালাগঞ্জ'],
+    en: ['Sylhet Sadar', 'Balaganj', 'Beanibazar', 'Bishwanath', 'Balaganj']
+  },
+  rajshahi: {
+    bd: ['রাজশাহী সদর', 'বোয়ালিয়া', 'পবা', 'দুপচাঁচিয়া'],
+    en: ['Rajshahi Sadar', 'Boalia', 'Paba', 'Durgapur']
+  },
+  khulna: {
+    bd: ['খুলনা সদর', 'দাকোপ', 'ডুমুরিয়া', 'দিঘলিয়া'],
+    en: ['Khulna Sadar', 'Dakop', 'Dumuria', 'Dighulia']
+  },
+  barisal: {
+    bd: ['বরিশাল সদর', 'বাবুগঞ্জ', 'বাকেরগঞ্জ', 'বানারীপাড়া'],
+    en: ['Barisal Sadar', 'Babuganj', 'Bakerganj', 'Banaripara']
+  },
+  rangpur: {
+    bd: ['রংপুর সদর', 'বদরগঞ্জ', 'গঙ্গাচড়া', 'কাউনিয়া'],
+    en: ['Rangpur Sadar', 'Badarganj', 'Gangachara', 'Kaunia']
+  },
+  mymensingh: {
+    bd: ['ময়মনসিংহ সদর', 'গফরগাঁও', 'গৌরীপুর', 'ঈশ্বরগঞ্জ'],
+    en: ['Mymensingh Sadar', 'Gafargaon', 'Gouripur', 'Ishwarganj']
+  },
 };
 
-const wards = Array.from({ length: 9 }, (_, i) => `ওয়ার্ড ${toBanglaNumber(i + 1)}`);
+const skillsData = {
+  bd: [
+    'কম্পিউটার/প্রযুক্তি',
+    'শিক্ষা/প্রশিক্ষণ',
+    'স্বাস্থ্যসেবা',
+    'সামাজিক কাজ',
+    'মিডিয়া/প্রচারণা',
+    'ইভেন্ট ব্যবস্থাপনা',
+    'অনুবাদ',
+    'গ্রাফিক ডিজাইন',
+    'ফটোগ্রাফি',
+    'ভিডিও সম্পাদনা',
+    'লেখালেখি',
+    'অন্যান্য'
+  ],
+  en: [
+    'Computer/Technology',
+    'Education/Training',
+    'Healthcare',
+    'Social Work',
+    'Media/Promotion',
+    'Event Management',
+    'Translation',
+    'Graphic Design',
+    'Photography',
+    'Video Editing',
+    'Writing',
+    'Others'
+  ]
+};
 
-const skills = [
-  'কম্পিউটার/প্রযুক্তি',
-  'শিক্ষা/প্রশিক্ষণ',
-  'স্বাস্থ্যসেবা',
-  'সামাজিক কাজ',
-  'মিডিয়া/প্রচারণা',
-  'ইভেন্ট ব্যবস্থাপনা',
-  'অনুবাদ',
-  'গ্রাফিক ডিজাইন',
-  'ফটোগ্রাফি',
-  'ভিডিও সম্পাদনা',
-  'লেখালেখি',
-  'অন্যান্য'
-];
+const preferredTasksData = {
+  bd: [
+    'ক্যাম্পেইন সহায়তা',
+    'ইভেন্ট আয়োজন',
+    'সামাজিক যোগাযোগ',
+    'ডেটা এন্ট্রি',
+    'ফোন কল',
+    'দরজায় দরজায় প্রচারণা',
+    'সামাজিক মিডিয়া ব্যবস্থাপনা',
+    'সামগ্রিক সহায়তা',
+    'অন্যান্য'
+  ],
+  en: [
+    'Campaign Support',
+    'Event Organization',
+    'Social Communication',
+    'Data Entry',
+    'Phone Calls',
+    'Door-to-Door Canvassing',
+    'Social Media Management',
+    'General Support',
+    'Others'
+  ]
+};
 
-const preferredTasks = [
-  'ক্যাম্পেইন সহায়তা',
-  'ইভেন্ট আয়োজন',
-  'সামাজিক যোগাযোগ',
-  'ডেটা এন্ট্রি',
-  'ফোন কল',
-  'দরজায় দরজায় প্রচারণা',
-  'সামাজিক মিডিয়া ব্যবস্থাপনা',
-  'সামগ্রিক সহায়তা',
-  'অন্যান্য'
-];
-
-const availabilityOptions = [
-  { id: 'weekday-morning', label: 'সপ্তাহের দিন (সকাল ৯টা-১২টা)' },
-  { id: 'weekday-afternoon', label: 'সপ্তাহের দিন (দুপুর ১২টা-৫টা)' },
-  { id: 'weekday-evening', label: 'সপ্তাহের দিন (সন্ধ্যা ৫টা-৮টা)' },
-  { id: 'weekend-morning', label: 'সপ্তাহান্তে (সকাল ৯টা-১২টা)' },
-  { id: 'weekend-afternoon', label: 'সপ্তাহান্তে (দুপুর ১২টা-৫টা)' },
-  { id: 'weekend-evening', label: 'সপ্তাহান্তে (সন্ধ্যা ৫টা-৮টা)' },
-  { id: 'flexible', label: 'নমনীয় সময়' },
-];
+const availabilityOptionsData = {
+  bd: [
+    { id: 'weekday-morning', label: 'সপ্তাহের দিন (সকাল ৯টা-১২টা)' },
+    { id: 'weekday-afternoon', label: 'সপ্তাহের দিন (দুপুর ১২টা-৫টা)' },
+    { id: 'weekday-evening', label: 'সপ্তাহের দিন (সন্ধ্যা ৫টা-৮টা)' },
+    { id: 'weekend-morning', label: 'সপ্তাহান্তে (সকাল ৯টা-১২টা)' },
+    { id: 'weekend-afternoon', label: 'সপ্তাহান্তে (দুপুর ১২টা-৫টা)' },
+    { id: 'weekend-evening', label: 'সপ্তাহান্তে (সন্ধ্যা ৫টা-৮টা)' },
+    { id: 'flexible', label: 'নমনীয় সময়' },
+  ],
+  en: [
+    { id: 'weekday-morning', label: 'Weekdays (9 AM - 12 PM)' },
+    { id: 'weekday-afternoon', label: 'Weekdays (12 PM - 5 PM)' },
+    { id: 'weekday-evening', label: 'Weekdays (5 PM - 8 PM)' },
+    { id: 'weekend-morning', label: 'Weekends (9 AM - 12 PM)' },
+    { id: 'weekend-afternoon', label: 'Weekends (12 PM - 5 PM)' },
+    { id: 'weekend-evening', label: 'Weekends (5 PM - 8 PM)' },
+    { id: 'flexible', label: 'Flexible Hours' },
+  ]
+};
 
 export default function VolunteerPage() {
+  const { t, language } = useTranslation();
   const [formData, setFormData] = useState({
     fullName: '',
     mobile: '',
@@ -95,6 +159,11 @@ export default function VolunteerPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const skills = language === 'bd' ? skillsData.bd : skillsData.en;
+  const preferredTasks = language === 'bd' ? preferredTasksData.bd : preferredTasksData.en;
+  const availabilityOptions = language === 'bd' ? availabilityOptionsData.bd : availabilityOptionsData.en;
+  const wards = Array.from({ length: 9 }, (_, i) => language === 'bd' ? `ওয়ার্ড ${toBanglaNumber(i + 1)}` : `Ward ${i + 1}`);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -137,45 +206,45 @@ export default function VolunteerPage() {
     const newErrors: Record<string, string> = {};
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'নাম আবশ্যক';
+      newErrors.fullName = t('volunteer.nameRequired');
     }
     if (!formData.mobile.trim()) {
-      newErrors.mobile = 'মোবাইল নম্বর আবশ্যক';
+      newErrors.mobile = t('volunteer.mobileRequired');
     } else if (!/^01[3-9]\d{8}$/.test(formData.mobile.replace(/\s/g, ''))) {
-      newErrors.mobile = 'সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)';
+      newErrors.mobile = t('volunteer.validMobile');
     }
     if (!formData.email.trim()) {
-      newErrors.email = 'ইমেইল আবশ্যক';
+      newErrors.email = t('volunteer.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'সঠিক ইমেইল ঠিকানা দিন';
+      newErrors.email = t('volunteer.validEmail');
     }
     if (!formData.district) {
-      newErrors.district = 'জেলা নির্বাচন করুন';
+      newErrors.district = t('volunteer.districtRequired');
     }
     if (!formData.upazila) {
-      newErrors.upazila = 'উপজেলা নির্বাচন করুন';
+      newErrors.upazila = t('volunteer.upazilaRequired');
     }
     if (!formData.ward) {
-      newErrors.ward = 'ওয়ার্ড নির্বাচন করুন';
+      newErrors.ward = t('volunteer.wardRequired');
     }
     if (formData.skills.length === 0) {
-      newErrors.skills = 'অন্তত একটি দক্ষতা নির্বাচন করুন';
+      newErrors.skills = t('volunteer.skillsRequired');
     }
     if (formData.preferredTasks.length === 0) {
-      newErrors.preferredTasks = 'অন্তত একটি কাজ নির্বাচন করুন';
+      newErrors.preferredTasks = t('volunteer.tasksRequired');
     }
     if (formData.availability.length === 0) {
-      newErrors.availability = 'অন্তত একটি সময় নির্বাচন করুন';
+      newErrors.availability = t('volunteer.availabilityRequired');
     }
     if (!formData.password.trim()) {
-      newErrors.password = 'পাসওয়ার্ড আবশ্যক';
+      newErrors.password = t('volunteer.passwordRequired');
     } else if (formData.password.length < 6) {
-      newErrors.password = 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে';
+      newErrors.password = t('volunteer.passwordMinLength');
     }
     if (!formData.passwordConfirmation.trim()) {
-      newErrors.passwordConfirmation = 'পাসওয়ার্ড নিশ্চিতকরণ আবশ্যক';
+      newErrors.passwordConfirmation = t('volunteer.confirmPasswordRequired');
     } else if (formData.password !== formData.passwordConfirmation) {
-      newErrors.passwordConfirmation = 'পাসওয়ার্ড মিলছে না';
+      newErrors.passwordConfirmation = t('volunteer.passwordMismatch');
     }
 
     setErrors(newErrors);
@@ -199,7 +268,8 @@ export default function VolunteerPage() {
       });
 
       // Get district name from ID
-      const districtName = districts.find((d) => d.id === formData.district)?.name || formData.district;
+      const districtData = districts.find((d) => d.id === formData.district);
+      const districtName = districtData ? (language === 'bd' ? districtData.name : districtData.nameEn) : formData.district;
 
       // Prepare payload according to API structure
       const payload = {
@@ -239,13 +309,18 @@ export default function VolunteerPage() {
       }
     } catch (error) {
       console.error('Error submitting volunteer form:', error);
-      setSubmitError(error instanceof Error ? error.message : 'আবেদন জমা দেওয়ার সময় একটি ত্রুটি হয়েছে');
+      setSubmitError(error instanceof Error ? error.message : t('volunteer.submissionError'));
     } finally {
       setSubmitting(false);
     }
   };
 
-  const availableUpazilas = formData.district ? upazilasByDistrict[formData.district] || [] : [];
+  const getAvailableUpazilas = () => {
+    if (!formData.district) return [];
+    const data = upazilasByDistrict[formData.district];
+    if (!data) return [];
+    return language === 'bd' ? data.bd : data.en;
+  };
 
   if (submitted) {
     return (
@@ -261,10 +336,10 @@ export default function VolunteerPage() {
                 <FaCheckCircle className="text-6xl text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-                ধন্যবাদ!
+                {t('volunteer.thankYou')}
               </h2>
               <p className="text-xl text-slate-600 mb-8">
-                আপনার স্বেচ্ছাসেবক আবেদন সফলভাবে জমা দেওয়া হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।
+                {t('volunteer.applicationSubmitted')}
               </p>
               <button
                 onClick={() => {
@@ -287,7 +362,7 @@ export default function VolunteerPage() {
                 }}
                 className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105"
               >
-                নতুন আবেদন করুন
+                {t('volunteer.newApplication')}
               </button>
             </div>
           </motion.div>
@@ -307,15 +382,15 @@ export default function VolunteerPage() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
-              স্বেচ্ছাসেবক হন
+              {t('volunteer.becomeVolunteer')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                স্বেচ্ছাসেবক নিবন্ধন
+                {t('volunteer.volunteerRegistration')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-            পরিবর্তনের পথে আমাদের সঙ্গী হোন—স্বেচ্ছাসেবক হিসেবে যোগ দিন
+              {t('volunteer.joinUsDesc')}
             </p>
           </motion.div>
         </div>
@@ -337,14 +412,14 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaUser className="text-emerald-600" />
-                    ব্যক্তিগত তথ্য
+                    {t('volunteer.personalInfo')}
                   </h2>
                   <div className="space-y-6">
                     {/* Full Name */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                         <FaUser className="text-emerald-600" />
-                        পুরো নাম <span className="text-red-500">*</span>
+                        {t('volunteer.fullName')} <span className="text-red-500">*</span>
                       </label>
                       {errors.fullName && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.fullName}</p>
@@ -353,7 +428,7 @@ export default function VolunteerPage() {
                         type="text"
                         value={formData.fullName}
                         onChange={(e) => handleInputChange('fullName', e.target.value)}
-                        placeholder="আপনার পূর্ণ নাম লিখুন"
+                        placeholder={t('volunteer.enterFullName')}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       />
@@ -363,7 +438,7 @@ export default function VolunteerPage() {
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                         <FaPhone className="text-emerald-600" />
-                        মোবাইল নম্বর <span className="text-red-500">*</span>
+                        {t('volunteer.mobileNumber')} <span className="text-red-500">*</span>
                       </label>
                       {errors.mobile && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.mobile}</p>
@@ -382,7 +457,7 @@ export default function VolunteerPage() {
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg flex items-center gap-2">
                         <FaEnvelope className="text-emerald-600" />
-                        ইমেইল <span className="text-red-500">*</span>
+                        {t('volunteer.emailAddress')} <span className="text-red-500">*</span>
                       </label>
                       {errors.email && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.email}</p>
@@ -391,7 +466,7 @@ export default function VolunteerPage() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        placeholder="আপনার@ইমেইল.com"
+                        placeholder={t('contactForm.emailPlaceholder')}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       />
@@ -400,7 +475,7 @@ export default function VolunteerPage() {
                     {/* Password */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        পাসওয়ার্ড <span className="text-red-500">*</span>
+                        {t('volunteer.password')} <span className="text-red-500">*</span>
                       </label>
                       {errors.password && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.password}</p>
@@ -409,7 +484,7 @@ export default function VolunteerPage() {
                         type="password"
                         value={formData.password}
                         onChange={(e) => handleInputChange('password', e.target.value)}
-                        placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)"
+                        placeholder={t('volunteer.passwordPlaceholder')}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       />
@@ -418,7 +493,7 @@ export default function VolunteerPage() {
                     {/* Password Confirmation */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        পাসওয়ার্ড নিশ্চিতকরণ <span className="text-red-500">*</span>
+                        {t('volunteer.confirmPassword')} <span className="text-red-500">*</span>
                       </label>
                       {errors.passwordConfirmation && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.passwordConfirmation}</p>
@@ -427,7 +502,7 @@ export default function VolunteerPage() {
                         type="password"
                         value={formData.passwordConfirmation}
                         onChange={(e) => handleInputChange('passwordConfirmation', e.target.value)}
-                        placeholder="পাসওয়ার্ড আবার লিখুন"
+                        placeholder={t('volunteer.confirmPasswordPlaceholder')}
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       />
@@ -439,13 +514,13 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaMapMarkerAlt className="text-emerald-600" />
-                    এলাকা
+                    {t('volunteer.area')}
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* District */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        জেলা <span className="text-red-500">*</span>
+                        {t('volunteer.district')} <span className="text-red-500">*</span>
                       </label>
                       {errors.district && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.district}</p>
@@ -456,10 +531,10 @@ export default function VolunteerPage() {
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg"
                         required
                       >
-                        <option value="">জেলা নির্বাচন করুন</option>
+                        <option value="">{t('volunteer.selectDistrict')}</option>
                         {districts.map((district) => (
                           <option key={district.id} value={district.id}>
-                            {district.name}
+                            {language === 'bd' ? district.name : district.nameEn}
                           </option>
                         ))}
                       </select>
@@ -468,7 +543,7 @@ export default function VolunteerPage() {
                     {/* Upazila */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        উপজেলা <span className="text-red-500">*</span>
+                        {t('volunteer.upazila')} <span className="text-red-500">*</span>
                       </label>
                       {errors.upazila && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.upazila}</p>
@@ -480,8 +555,8 @@ export default function VolunteerPage() {
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         required
                       >
-                        <option value="">উপজেলা নির্বাচন করুন</option>
-                        {availableUpazilas.map((upazila) => (
+                        <option value="">{t('volunteer.selectUpazila')}</option>
+                        {getAvailableUpazilas().map((upazila) => (
                           <option key={upazila} value={upazila}>
                             {upazila}
                           </option>
@@ -492,7 +567,7 @@ export default function VolunteerPage() {
                     {/* Ward */}
                     <div>
                       <label className="block text-slate-700 font-bold mb-3 text-lg">
-                        ওয়ার্ড <span className="text-red-500">*</span>
+                        {t('volunteer.ward')} <span className="text-red-500">*</span>
                       </label>
                       {errors.ward && (
                         <p className="text-red-500 text-sm font-bold mb-2">{errors.ward}</p>
@@ -504,7 +579,7 @@ export default function VolunteerPage() {
                         className="w-full px-6 py-4 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         required
                       >
-                        <option value="">ওয়ার্ড নির্বাচন করুন</option>
+                        <option value="">{t('volunteer.selectWard')}</option>
                         {wards.map((ward) => (
                           <option key={ward} value={ward}>
                             {ward}
@@ -519,7 +594,7 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaTools className="text-emerald-600" />
-                    দক্ষতা
+                    {t('volunteer.skills')}
                   </h2>
                   {errors.skills && (
                     <p className="text-red-500 text-sm font-bold mb-2">{errors.skills}</p>
@@ -548,7 +623,7 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaTasks className="text-emerald-600" />
-                    পছন্দের কাজ
+                    {t('volunteer.preferredTasks')}
                   </h2>
                   {errors.preferredTasks && (
                     <p className="text-red-500 text-sm font-bold mb-2">{errors.preferredTasks}</p>
@@ -577,7 +652,7 @@ export default function VolunteerPage() {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                     <FaCalendarAlt className="text-emerald-600" />
-                    উপলব্ধতা
+                    {t('volunteer.availability')}
                   </h2>
                   {errors.availability && (
                     <p className="text-red-500 text-sm font-bold mb-2">{errors.availability}</p>
@@ -619,10 +694,10 @@ export default function VolunteerPage() {
                     {submitting ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        জমা দেওয়া হচ্ছে...
+                        {t('common.submitting')}
                       </>
                     ) : (
-                      'আবেদন জমা দিন'
+                      t('volunteer.submitApplication')
                     )}
                   </button>
                   <button
@@ -646,7 +721,7 @@ export default function VolunteerPage() {
                     }}
                     className="px-8 py-4 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-all"
                   >
-                    রিসেট করুন
+                    {t('common.reset')}
                   </button>
                 </div>
               </form>
@@ -657,4 +732,3 @@ export default function VolunteerPage() {
     </main>
   );
 }
-

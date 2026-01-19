@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import PressReleaseCard from '../components/PressReleaseCard';
 import { FaNewspaper, FaBullhorn } from 'react-icons/fa';
+import { useTranslation } from '../i18n/I18nProvider';
 
 interface NewsDetail {
   id: number;
@@ -35,6 +36,7 @@ interface News {
 }
 
 export default function PressReleasePage() {
+  const { t } = useTranslation();
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -119,10 +121,10 @@ export default function PressReleasePage() {
       : '';
     const summary = descriptionText.length > 150 
       ? descriptionText.substring(0, 150) + '...'
-      : descriptionText || 'সংবাদের বিবরণ';
+      : descriptionText || t('pressRelease.newsDescription');
     
     // Use 'name' from main item as title (new API structure)
-    const title = item.name || firstDetail?.title || 'সংবাদ';
+    const title = item.name || firstDetail?.title || t('pressRelease.news');
     
     // Check if news has video/audio type
     const hasVideo = item.news_type === 'audio' || item.news_type === 'video';
@@ -151,15 +153,15 @@ export default function PressReleasePage() {
           >
             <span className="inline-block px-6 py-2 bg-blue-100 text-blue-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaBullhorn className="inline mr-2" />
-              সর্বশেষ সংবাদ
+              {t('pressRelease.latestNews')}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                প্রেস রিলিজ
+                {t('pressRelease.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              আমাদের কার্যক্রম এবং উদ্যোগ সম্পর্কে সর্বশেষ আপডেট
+              {t('pressRelease.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -171,26 +173,26 @@ export default function PressReleasePage() {
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-              <p className="text-xl text-slate-600">লোড হচ্ছে...</p>
+              <p className="text-xl text-slate-600">{t('common.loading')}</p>
             </div>
           ) : error ? (
             <div className="text-center py-20">
-              <p className="text-xl text-red-600 mb-4">ত্রুটি: {error}</p>
+              <p className="text-xl text-red-600 mb-4">{t('common.error')}: {error}</p>
               <button
                 onClick={() => window.location.reload()}
                 className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all"
               >
-                আবার চেষ্টা করুন
+                {t('common.retry')}
               </button>
             </div>
           ) : pressReleases.length === 0 ? (
             <div className="text-center py-20">
               <FaNewspaper className="text-6xl text-slate-300 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-slate-700 mb-2">
-                কোন সংবাদ নেই
+                {t('pressRelease.noNews')}
               </h3>
               <p className="text-slate-500">
-                শীঘ্রই নতুন সংবাদ যুক্ত করা হবে
+                {t('pressRelease.newsSoonAdded')}
               </p>
             </div>
           ) : (
@@ -230,23 +232,23 @@ export default function PressReleasePage() {
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <FaNewspaper className="text-5xl text-blue-600 mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                মিডিয়া যোগাযোগ
+                {t('pressRelease.mediaContact')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                সাংবাদিক এবং মিডিয়া সংস্থাগুলির জন্য, অনুগ্রহ করে আমাদের প্রেস অফিসের সাথে যোগাযোগ করুন
+                {t('pressRelease.mediaContactDesc')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="mailto:press@aminulhaque.com"
                   className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-blue-700 hover:to-cyan-700 transition-all transform hover:scale-105"
                 >
-                  ইমেইল পাঠান
+                  {t('pressRelease.sendEmail')}
                 </a>
                 <a
                   href="/contact"
                   className="px-10 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-blue-600 hover:bg-blue-50 transition-all transform hover:scale-105"
                 >
-                  যোগাযোগ ফর্ম
+                  {t('pressRelease.contactForm')}
                 </a>
               </div>
             </div>
@@ -256,4 +258,3 @@ export default function PressReleasePage() {
     </main>
   );
 }
-

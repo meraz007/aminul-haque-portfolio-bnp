@@ -20,6 +20,7 @@ import {
 } from 'react-icons/fa';
 import Image from 'next/image';
 import { toBanglaNumber } from '@/lib/utils';
+import { useTranslation } from './i18n/I18nProvider';
 
 interface Album {
   id: number;
@@ -45,31 +46,6 @@ const defaultColors = [
   'from-red-500 to-rose-600',
 ];
 
-// Format date - handles both YYYY-MM-DD and already formatted Bangla dates
-const formatDate = (dateString: string): string => {
-  if (!dateString) return '';
-  
-  // Check if date is already in Bangla format (contains Bangla characters)
-  const banglaPattern = /[০-৯]/;
-  if (banglaPattern.test(dateString)) {
-    return dateString.trim(); // Already in Bangla, return as-is
-  }
-  
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return dateString; // Invalid date, return original
-    }
-    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-    const day = toBanglaNumber(date.getDate());
-    const month = months[date.getMonth()];
-    const year = toBanglaNumber(date.getFullYear());
-    return `${day} ${month} ${year}`;
-  } catch (error) {
-    return dateString;
-  }
-};
-
 interface Quote {
   id: number;
   status: string;
@@ -78,6 +54,7 @@ interface Quote {
 }
 
 export default function Home() {
+  const { t, language } = useTranslation();
   const [albums, setAlbums] = useState<Album[]>([]);
   const [albumsLoading, setAlbumsLoading] = useState(true);
   const [quotes, setQuotes] = useState<Quote[]>([]);
@@ -86,6 +63,39 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentEventImages, setCurrentEventImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Format date based on language
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return '';
+    
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return dateString;
+      }
+      
+      if (language === 'bd') {
+        const banglaPattern = /[০-৯]/;
+        if (banglaPattern.test(dateString)) {
+          return dateString.trim();
+        }
+        const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+        const day = toBanglaNumber(date.getDate());
+        const month = months[date.getMonth()];
+        const year = toBanglaNumber(date.getFullYear());
+        return `${day} ${month} ${year}`;
+      } else {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+      }
+    } catch (error) {
+      return dateString;
+    }
+  };
+
+  const formatNumber = (num: number): string => {
+    return language === 'bd' ? toBanglaNumber(num) : num.toString();
+  };
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -98,7 +108,6 @@ export default function Home() {
         if (response.ok) {
           const data = await response.json();
           
-          // Handle the API response structure
           let albumsData: Album[] = [];
           if (data.success && data.data) {
             if (data.data.data && Array.isArray(data.data.data)) {
@@ -112,7 +121,6 @@ export default function Home() {
             albumsData = data.data;
           }
 
-          // Filter active albums and take first 3
           const activeAlbums = albumsData
             .filter((album: Album) => album.status === 'active')
             .slice(0, 6);
@@ -129,7 +137,6 @@ export default function Home() {
     fetchAlbums();
   }, []);
 
-  // Fetch quotes from API
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
@@ -141,7 +148,6 @@ export default function Home() {
         if (response.ok) {
           const data = await response.json();
           
-          // Handle the API response structure
           let quotesData: Quote[] = [];
           if (data.success && data.data && Array.isArray(data.data)) {
             quotesData = data.data;
@@ -149,7 +155,6 @@ export default function Home() {
             quotesData = data;
           }
 
-          // Filter only active quotes
           const activeQuotes = quotesData
             .filter((quote: Quote) => quote.status === 'active');
           
@@ -191,22 +196,22 @@ export default function Home() {
 
   const manifestos = [
     {
-      title: "আমিনুল ভাইয়ের ইশতেহার",
-      description: "ঢাকা ১৬ আসনের রাজনৈতিক ও আর্থ-সামাজিক মুক্তির লক্ষ্যে প্রণীত",
+      titleKey: "home.aminulManifesto",
+      descKey: "home.aminulManifestoDesc",
       icon: FaFileAlt,
       color: "from-emerald-500 to-green-600",
       link: "/aminul-manifesto"
     },
     {
-      title: "বিএনপির ৩১ দফা",
-      description: "গণতন্ত্র পুনরুদ্ধার ও রাষ্ট্রীয় সংস্কারের রূপরেখা",
+      titleKey: "home.bnp31Points",
+      descKey: "home.bnp31Desc",
       icon: FaFlag,
       color: "from-red-500 to-orange-600",
       link: "/bnp-31-point"
     },
     {
-      title: "বিএনপির ১৯ দফা",
-      description: "দেশের আর্থ-সামাজিক মুক্তির লক্ষ্যে প্রণীত",
+      titleKey: "home.bnp19Points",
+      descKey: "home.bnp19Desc",
       icon: FaChartLine,
       color: "from-green-500 to-emerald-600",
       link: "/bnp-19-point"
@@ -228,22 +233,21 @@ export default function Home() {
             className="text-center mb-16"
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              আমাদের প্রতিশ্রুতি
+              {t('home.ourPromise')}
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              ইশতেহার ও <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">কর্মসূচি</span>
+              {t('home.manifestoPrograms')}
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            জনগণের দাবি, জনগণের অধিকার ও সমাধানকে ভিত্তি করে গড়ে ওঠা আমাদের ইশতেহার ও কর্মপরিকল্পনা
+              {t('home.manifestoDesc')}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Left Side: Manifestos - Vertical Stack */}
             <div className="space-y-6">
               {manifestos.map((manifesto, idx) => (
                 <motion.div
-                  key={manifesto.title}
+                  key={manifesto.titleKey}
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -258,13 +262,13 @@ export default function Home() {
                       </div>
                       <div className="flex-1">
                         <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-2">
-                          {manifesto.title}
+                          {t(manifesto.titleKey)}
                         </h3>
                         <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-4">
-                          {manifesto.description}
+                          {t(manifesto.descKey)}
                         </p>
                         <div className={`inline-flex items-center gap-2 font-bold bg-gradient-to-r ${manifesto.color} bg-clip-text text-transparent group-hover:gap-3 transition-all text-sm md:text-base`}>
-                          বিস্তারিত দেখুন <FaArrowRight />
+                          {t('home.viewDetails')} <FaArrowRight />
                         </div>
                       </div>
                     </div>
@@ -273,7 +277,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Right Side: Video Embed */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -287,7 +290,7 @@ export default function Home() {
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
                     src="https://www.youtube.com/embed/AyL-WF3Uryo"
-                    title="আমিনুল হকের নির্বাচনী প্রচারণা"
+                    title={t('hero.title')}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
@@ -309,13 +312,13 @@ export default function Home() {
             className="text-center mb-16"
           >
             <span className="inline-block px-6 py-2 bg-amber-100 text-amber-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              ক্যাম্পেইন গ্যালারি
+              {t('home.campaignGallery')}
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-            প্রতিদিনের  <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">কর্মসূচি</span>
+              {t('home.dailyPrograms')}
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              জনগণের সাথে আমাদের যাত্রার অবিস্মরণীয় মুহূর্তগুলো
+              {t('home.galleryDesc')}
             </p>
           </motion.div>
 
@@ -323,16 +326,14 @@ export default function Home() {
             {albumsLoading ? (
               <div className="text-center py-20">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mb-4"></div>
-                <p className="text-xl text-slate-600">লোড হচ্ছে...</p>
+                <p className="text-xl text-slate-600">{t('common.loading')}</p>
               </div>
             ) : albums.length > 0 ? (
               albums.map((album, idx) => {
-                // Get all image media
                 const allImages = album.media
                   .filter((media) => media.type === 'image')
                   .map((media) => media.path);
                 
-                // Show only first 4 images initially
                 const images = allImages.slice(0, 4);
                 const remainingCount = allImages.length - 4;
 
@@ -349,7 +350,6 @@ export default function Home() {
                   >
                     <div className={`absolute inset-0 bg-gradient-to-r ${color} rounded-3xl blur-2xl opacity-20`}></div>
                     <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
-                      {/* Event Header */}
                       <div className="mb-8">
                         <h3 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
                           {album.name}
@@ -373,7 +373,7 @@ export default function Home() {
                             <div className={`p-2 bg-gradient-to-r ${color} rounded-lg`}>
                               <FaImages className="text-white" />
                             </div>
-                            <span>{toBanglaNumber(allImages.length)} ফটো</span>
+                            <span>{formatNumber(allImages.length)} {t('common.photos')}</span>
                           </div>
                         </div>
                         {album.description && (
@@ -383,7 +383,6 @@ export default function Home() {
                         )}
                       </div>
 
-                      {/* Images Grid */}
                       {images.length > 0 && (
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           {images.map((image, imageIdx) => {
@@ -404,25 +403,22 @@ export default function Home() {
                                 <div className={`absolute inset-0 bg-gradient-to-t ${color} opacity-0 group-hover:opacity-75 transition-all z-10`}></div>
                                 <Image
                                   src={image}
-                                  alt={`${album.name} - ছবি ${toBanglaNumber(imageIdx + 1)}`}
+                                  alt={`${album.name} - ${formatNumber(imageIdx + 1)}`}
                                   fill
                                   className="object-cover"
                                   unoptimized
                                   loading="lazy"
                                 />
                                 
-                                {/* Overlay for 4th image with remaining count */}
                                 {isLastVisible && (
                                   <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-30 group-hover:bg-black/80 transition-all">
                                     <div className="text-white text-center">
-                                      {/* <FaPlus className="text-6xl mx-auto mb-3 opacity-90" /> */}
-                                      <div className="text-4xl font-black mb-1">{toBanglaNumber(remainingCount)}</div>
-                                      <div className="text-sm font-semibold opacity-90">আরও ছবি</div>
+                                      <div className="text-4xl font-black mb-1">{formatNumber(remainingCount)}</div>
+                                      <div className="text-sm font-semibold opacity-90">{t('common.morePhotos')}</div>
                                     </div>
                                   </div>
                                 )}
                                 
-                                {/* Hover effect - only show if not the last visible with overlay */}
                                 {!isLastVisible && (
                                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20">
                                     <FaImages className="text-4xl text-white" />
@@ -439,20 +435,19 @@ export default function Home() {
               })
             ) : (
               <div className="text-center py-20">
-                <p className="text-xl text-slate-600">কোনো অ্যালবাম পাওয়া যায়নি</p>
+                <p className="text-xl text-slate-600">{t('home.noAlbumsFound')}</p>
               </div>
             )}
           </div>
 
           <div className="text-center mt-16">
             <Link href="/gallery" className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl hover:from-amber-600 hover:to-orange-700 transition-all transform hover:scale-105">
-              সম্পূর্ণ গ্যালারি দেখুন <FaArrowRight />
+              {t('home.viewFullGallery')} <FaArrowRight />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Lightbox */}
       <ImageLightbox
         isOpen={lightboxOpen}
         selectedImage={selectedImage}
@@ -472,18 +467,17 @@ export default function Home() {
             className="text-center mb-16"
           >
             <span className="inline-block px-6 py-2 bg-indigo-100 text-indigo-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              অনুপ্রেরণা
+              {t('home.inspiration')}
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">উক্তি</span> ও <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">বাণী</span>
+              {t('home.quotesTitle')}
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            জনগণের স্বপ্ন ও সংগ্রামকে ধারণ করে—আমিনুল হকের বাণী ও দিকনির্দেশনা
+              {t('home.quotesDesc')}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Image Section */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -496,7 +490,7 @@ export default function Home() {
                 <div className="relative aspect-[3/4]">
                   <Image
                     src="/aminul Haque/quotes.jpeg"
-                    alt="আমিনুল হক"
+                    alt={t('hero.title')}
                     fill
                     className="object-cover"
                     loading="lazy"
@@ -506,7 +500,6 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Quotes Section */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -517,7 +510,7 @@ export default function Home() {
               {quotesLoading ? (
                 <div className="text-center py-10">
                   <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mb-4"></div>
-                  <p className="text-slate-600">লোড হচ্ছে...</p>
+                  <p className="text-slate-600">{t('common.loading')}</p>
                 </div>
               ) : quotes.length > 0 ? (
                 quotes.map((quote, idx) => (
@@ -533,7 +526,7 @@ export default function Home() {
                       <FaQuoteLeft className="text-4xl" />
                     </div>
                     <p className="text-lg md:text-xl text-slate-700 leading-relaxed mb-4 relative z-10 pl-8">
-                      "{quote.quotes}"
+                      &ldquo;{quote.quotes}&rdquo;
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="h-1 w-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full"></div>
@@ -543,7 +536,7 @@ export default function Home() {
                 ))
               ) : (
                 <div className="text-center py-10">
-                  <p className="text-slate-600">কোনো উক্তি পাওয়া যায়নি</p>
+                  <p className="text-slate-600">{t('home.noQuotesFound')}</p>
                 </div>
               )}
             </motion.div>
@@ -551,7 +544,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Quick Services Section - Enhanced */}
+      {/* Quick Services Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -561,13 +554,13 @@ export default function Home() {
             className="text-center mb-16"
           >
             <span className="inline-block px-6 py-2 bg-cyan-100 text-cyan-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-              দ্রুত সেবা
+              {t('home.quickServices')}
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
-              অনলাইন <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">সেবা সমূহ</span>
+              {t('home.onlineServices')}
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            ঘরে বসেই গ্রহণ করুন দ্রুত, সহজ ও কার্যকর সেবা
+              {t('home.servicesDesc')}
             </p>
           </motion.div>
 
@@ -585,12 +578,12 @@ export default function Home() {
                   <div className="flex-shrink-0 p-5 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl mb-6 w-fit">
                     <FaMapMarkerAlt className="text-4xl text-white" />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-3">ভোট কেন্দ্র খুঁজুন</h3>
+                  <h3 className="text-2xl font-black text-slate-900 mb-3">{t('home.findVoterCenter')}</h3>
                   <p className="text-slate-600 leading-relaxed mb-6 flex-1">
-                    আপনার এনআইডি, মোবাইল নম্বর বা এলাকার নাম দিয়ে সহজেই আপনার ভোট কেন্দ্রের অবস্থান খুঁজে নিন
+                    {t('home.voterCenterDesc')}
                   </p>
                   <div className="flex items-center gap-2 text-blue-600 font-bold group-hover:gap-3 transition-all">
-                    এখনই খুঁজুন <FaArrowRight />
+                    {t('home.findNow')} <FaArrowRight />
                   </div>
                 </div>
               </Link>
@@ -609,12 +602,12 @@ export default function Home() {
                   <div className="flex-shrink-0 p-5 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl mb-6 w-fit">
                     <FaExclamationTriangle className="text-4xl text-white" />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-3">অভিযোগ দাখিল</h3>
+                  <h3 className="text-2xl font-black text-slate-900 mb-3">{t('home.fileComplaint')}</h3>
                   <p className="text-slate-600 leading-relaxed mb-6 flex-1">
-                    আপনার সমস্যা ও অভিযোগ জানান। আমরা সমাধানে প্রতিশ্রুতিবদ্ধ এবং দ্রুত ব্যবস্থা নিতে প্রস্তুত
+                    {t('home.complaintDesc')}
                   </p>
                   <div className="flex items-center gap-2 text-red-600 font-bold group-hover:gap-3 transition-all">
-                    অভিযোগ করুন <FaArrowRight />
+                    {t('home.fileNow')} <FaArrowRight />
                   </div>
                 </div>
               </Link>
@@ -633,12 +626,12 @@ export default function Home() {
                   <div className="flex-shrink-0 p-5 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl mb-6 w-fit">
                     <FaNewspaper className="text-4xl text-white" />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-3">প্রেস রিলিজ</h3>
+                  <h3 className="text-2xl font-black text-slate-900 mb-3">{t('home.pressRelease')}</h3>
                   <p className="text-slate-600 leading-relaxed mb-6 flex-1">
-                    আমাদের সর্বশেষ প্রেস রিলিজ, ঘোষণা এবং কার্যক্রম সম্পর্কে জানুন এবং মিডিয়া কভারেজ দেখুন
+                    {t('home.pressReleaseDesc')}
                   </p>
                   <div className="flex items-center gap-2 text-emerald-600 font-bold group-hover:gap-3 transition-all">
-                    সব রিলিজ দেখুন <FaArrowRight />
+                    {t('home.viewAllReleases')} <FaArrowRight />
                   </div>
                 </div>
               </Link>
@@ -668,17 +661,17 @@ export default function Home() {
                 className="relative z-10"
               >
                 <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
-                  একসাথে পরিবর্তন আনি
+                  {t('home.changeTogether')}
                 </h2>
                 <p className="text-xl md:text-2xl text-emerald-50 mb-10 max-w-3xl mx-auto leading-relaxed">
-                  আপনার সহযোগিতায় আমরা আরও বেশি মানুষের জীবনে ইতিবাচক পরিবর্তন আনতে পারি। আমাদের সাথে যুক্ত হয়ে একটি সমৃদ্ধ বাংলাদেশ গড়ুন।
+                  {t('home.ctaDesc')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link href="/contact" className="px-10 py-5 bg-white text-emerald-600 font-black text-lg rounded-xl shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:-translate-y-1">
-                    যোগাযোগ করুন
+                    {t('hero.contactUs')}
                   </Link>
                   <Link href="/about" className="px-10 py-5 bg-emerald-700 text-white font-black text-lg rounded-xl border-2 border-white hover:bg-emerald-800 transition-all transform hover:scale-105 hover:-translate-y-1">
-                    আরও জানুন
+                    {t('hero.learnMore')}
                   </Link>
                 </div>
               </motion.div>

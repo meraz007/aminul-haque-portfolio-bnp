@@ -1,0 +1,874 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "manifesto": "Manifesto",
+    "programs": "Programs",
+    "policy": "Policy",
+    "sportsdev": "Sports Development",
+    "bnp31": "BNP 31 Points",
+    "bnp19": "BNP 19 Points",
+    "media": "Media",
+    "gallery": "Gallery",
+    "sports": "Sports",
+    "events": "Events",
+    "pressRelease": "Press Release",
+    "surveys": "Surveys",
+    "service": "Service",
+    "voterCenter": "Voter Center",
+    "volunteer": "Volunteer",
+    "complaints": "Complaints",
+    "comments": "Comments",
+    "contact": "Contact",
+    "contactUs": "Contact Us"
+  },
+  "hero": {
+    "title": "Aminul Haque",
+    "subtitle": "I am one of you",
+    "tagline": "Aminul Haque ~ I am one of you.",
+    "servingPeople": "Serving the People",
+    "description": "Solving the problems of your life is our politics, we are by your side in the fight to build the Bangladesh of your dreams.",
+    "learnMore": "Learn More",
+    "contactUs": "Contact Us"
+  },
+  "common": {
+    "loading": "Loading...",
+    "submit": "Submit",
+    "send": "Send",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "more": "See More",
+    "back": "Go Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "seeAll": "See All",
+    "error": "Something went wrong",
+    "success": "Success",
+    "required": "Required",
+    "noDataFound": "No data found",
+    "photos": "Photos",
+    "morePhotos": "More photos",
+    "close": "Close",
+    "retry": "Try Again",
+    "sending": "Sending...",
+    "submitting": "Submitting...",
+    "reset": "Reset",
+    "ok": "OK",
+    "details": "Details",
+    "media": "Media",
+    "print": "Print",
+    "printAll": "Print All",
+    "callUs": "Call Us"
+  },
+  "home": {
+    "ourPromise": "Our Promise",
+    "manifestoPrograms": "Manifesto & Programs",
+    "manifestoDesc": "Our manifesto and action plan based on the demands, rights and solutions of the people",
+    "viewDetails": "View Details",
+    "aminulManifesto": "Aminul's Manifesto",
+    "aminulManifestoDesc": "Prepared for the political and socio-economic liberation of Dhaka-16 constituency",
+    "bnp31Points": "BNP 31 Points",
+    "bnp31Desc": "Outline for restoration of democracy and state reform",
+    "bnp19Points": "BNP 19 Points",
+    "bnp19Desc": "Prepared for the socio-economic liberation of the country",
+    "campaignGallery": "Campaign Gallery",
+    "dailyPrograms": "Daily Programs",
+    "galleryDesc": "Memorable moments of our journey with the people",
+    "viewFullGallery": "View Full Gallery",
+    "noAlbumsFound": "No albums found",
+    "inspiration": "Inspiration",
+    "quotesTitle": "Quotes & Messages",
+    "quotesDesc": "Aminul Haque's messages and guidance that embody the dreams and struggles of the people",
+    "noQuotesFound": "No quotes found",
+    "quickServices": "Quick Services",
+    "onlineServices": "Online Services",
+    "servicesDesc": "Get fast, easy and effective services from home",
+    "findVoterCenter": "Find Voter Center",
+    "voterCenterDesc": "Easily find your voting center location using your NID, mobile number or area name",
+    "findNow": "Find Now",
+    "fileComplaint": "File Complaint",
+    "complaintDesc": "Share your problems and complaints. We are committed to solving them and ready to take quick action",
+    "fileNow": "File Complaint",
+    "pressRelease": "Press Release",
+    "pressReleaseDesc": "Learn about our latest press releases, announcements and activities and see media coverage",
+    "viewAllReleases": "View All Releases",
+    "changeTogether": "Let's Change Together",
+    "ctaDesc": "With your support, we can bring positive change to more people's lives. Join us in building a prosperous Bangladesh."
+  },
+  "about": {
+    "title": "About",
+    "aboutUs": "About Us",
+    "subtitle": "Learn about Aminul Haque",
+    "legendaryGoalkeeper": "Bangladesh's Legendary Goalkeeper",
+    "personalInfo": "Personal Information",
+    "fullName": "Mohammad Aminul Haque",
+    "birthDate": "Date of Birth",
+    "birthDateValue": "October 5, 1980 (Age 45)",
+    "birthPlace": "Place of Birth",
+    "birthPlaceValue": "Bhola, Bangladesh",
+    "position": "Position",
+    "positionValue": "Goalkeeper",
+    "height": "Height",
+    "heightValue": "1.85 meters (6 feet 1 inch)",
+    "biography": "Biography",
+    "biographyText1": "Aminul Haque (born October 5, 1980) is a former Bangladeshi professional footballer who played as a goalkeeper. He is considered one of Bangladesh's best footballers and has been identified as \"the greatest goalkeeper to represent Bangladesh.\"",
+    "biographyText2": "According to former Bangladesh national team coach Georgi Kotan, Aminul is one of the best goalkeepers he has seen. Aminul's positional sense and understanding of the game has made him one of the best goalkeepers in South Asian football history.",
+    "biographyText3": "ESPN Star's Shebby Singh suggested that Aminul could play in better leagues in England with proper training. Aminul is a player of MSPCC City Club and started his career in the Dhaka Premier Division League with Mohammedan SC in 1994.",
+    "careerStats": "Career Statistics",
+    "internationalMatches": "International Matches",
+    "internationalMatchesValue": "56",
+    "clubTitles": "Club Titles",
+    "clubTitlesValue": "15+",
+    "careerYears": "Career Years",
+    "careerYearsValue": "20",
+    "specialHonors": "Special Honors",
+    "specialHonorsValue": "5+",
+    "careerHonors": "Career & Honors",
+    "legendaryJourney": "Journey of a Legendary Player",
+    "internationalCareer": "International Career",
+    "internationalCareerDesc": "Represented Bangladesh national team from 1998 to 2010",
+    "internationalCareerText1": "Aminul represented the Bangladesh national team from 1998 to 2010. He earned approximately 56 caps, during which he captained his country in 2006, 2008, 2009, and 2010.",
+    "internationalCareerText2": "2003 SAFF Championship: During the penalty shootout, he saved a crucial shot from Ashraf Luthfi, which allowed Bangladesh to win their first SAFF Championship. Aminul was also named the tournament's best goalkeeper.",
+    "internationalCareerText3": "2010 South Asian Games: He led the Bangladesh U-23 team to win the gold medal.",
+    "internationalCareerText4": "His performances at the international level also attracted interest from clubs like Newcastle United and Al Hilal SFC.",
+    "earlyLife": "Early Life",
+    "earlyLifeText1": "Born in Bhola, Aminul spent most of his childhood in Dhaka, son of Mohammad Imran and Monwara Begum. He is the youngest of three brothers. His brother Moinul Haque, who is ten years older, also played in the Dhaka Premier Division Football League.",
+    "earlyLifeText2": "While in fourth grade, Aminul began training at MSPCC City Club under coach Imtiaz. Playing for City Club's junior team in a local tournament in Mirpur's Alubdi village, Aminul received 150 taka for his performance.",
+    "earlyLifeText3": "In 1993, he participated in the Pioneer Football League with City Club and managed to keep nine consecutive clean sheets in the first phase of the league.",
+    "politicalLife": "Political Life",
+    "newChapter": "New Chapter in Public Service",
+    "politicalIntro": "After ending his football career, Aminul Haque entered politics and dedicated himself to public service.",
+    "bnpMember": "Bangladesh Nationalist Party (BNP)",
+    "bnpRole": "Aminul Haque has joined as the Member Secretary of the Dhaka North City Unit of Bangladesh Nationalist Party and is working for the party.",
+    "politicalStruggle": "Political Struggle:",
+    "politicalStruggleText": "During the regime of former Prime Minister Sheikh Hasina from 2009-2024, he was arrested on November 1, 2023 due to two separate sabotage incidents. He was released after several months of imprisonment.",
+    "politicalConclusion": "In his political life, Aminul Haque is as courageous and determined as he was in his football career. He continues to fight for people's rights and democracy.",
+    "club": "Club",
+    "honor": "Honor",
+    "award": "Award",
+    "timeline": {
+      "mohammedan1994": {
+        "date": "1994–1995",
+        "title": "Mohammedan SC",
+        "description": "Started career in Dhaka Premier Division League"
+      },
+      "muktijoddha": {
+        "date": "1997–1998",
+        "title": "Muktijoddha Sangsad",
+        "description": "First league title and Mohannagari Cup victory"
+      },
+      "abahani": {
+        "date": "1999-2000",
+        "title": "Dhaka Abahani",
+        "description": "Federation Cup and National League titles"
+      },
+      "saff2003": {
+        "date": "2003",
+        "title": "SAFF Championship Victory",
+        "description": "Tournament's best goalkeeper - Crucial role in Bangladesh's first SAFF Championship win"
+      },
+      "mohammedan2008": {
+        "date": "2008-2010",
+        "title": "Mohammedan SC",
+        "description": "2009 Super Cup victory and Best Goalkeeper award"
+      },
+      "sagames2010": {
+        "date": "2010",
+        "title": "South Asian Games Gold Medal",
+        "description": "Led Bangladesh U-23 team to gold medal as captain"
+      },
+      "sheikhjamal": {
+        "date": "2011–2012",
+        "title": "Sheikh Jamal DC",
+        "description": "Premier League and Federation Cup titles"
+      },
+      "federationcup": {
+        "date": "2003-2012",
+        "title": "Federation Cup Champion",
+        "description": "5 Federation Cup victories - Outstanding performances for various clubs"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Connect With Us",
+    "description": "For your questions, suggestions or cooperation, please contact us",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "sendMessage": "Send Message",
+    "address": "Address",
+    "office": "Office",
+    "followUs": "Follow Us",
+    "officeHours": "Office Hours",
+    "socialMedia": "Social Media",
+    "viewOnMap": "View on Google Maps",
+    "monFri": "Monday - Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "closed": "Closed",
+    "replyTime": "Reply within 24 hours"
+  },
+  "contactForm": {
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "yourMessage": "Your Message",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "your@email.com",
+    "messagePlaceholder": "Tell us how we can help you...",
+    "sendMessage": "Send Message",
+    "sending": "Sending...",
+    "messageSent": "Message Sent!",
+    "thankYouMessage": "Thank you for contacting us. We will get back to you as soon as possible."
+  },
+  "programs": {
+    "title": "Programs",
+    "subtitle": "Our Programs",
+    "ourPrograms": "Our Programs",
+    "creatingChange": "Creating Change",
+    "programsDesc": "Carefully designed initiatives for lasting impact",
+    "noProgramsFound": "No programs found",
+    "bePartOfChange": "Be Part of Change",
+    "joinPrograms": "Join our programs and help create sustainable impact in Bangladesh"
+  },
+  "events": {
+    "title": "Events",
+    "subtitle": "Upcoming and Recent Events",
+    "upcoming": "Upcoming Events",
+    "past": "Past Events",
+    "ourActivities": "Our Activities",
+    "allEvents": "All Events",
+    "viewAllEvents": "View all upcoming and past activities and programs",
+    "filterOptions": "Filter Options",
+    "titleFilter": "Title Filter",
+    "dateFilter": "Date Filter",
+    "searchEventTitle": "Search event title...",
+    "eventsFound": "events found",
+    "clearAllFilters": "Clear All Filters",
+    "noEvents": "No Events",
+    "noEventsForFilter": "No events found for this filter",
+    "upcomingEventsComingSoon": "New events will be added soon",
+    "noPastEvents": "No past events found",
+    "learnAboutEvents": "Learn About Events",
+    "latestUpdates": "Contact us for the latest updates about our upcoming events"
+  },
+  "eventDetail": {
+    "eventNotFound": "Event Not Found",
+    "backToEventsPage": "Go back to events page",
+    "backToAllEvents": "Back to all events",
+    "completedEvent": "Completed Event",
+    "upcomingEvent": "Upcoming Event",
+    "eventLocation": "Event Location",
+    "eventVideos": "Event Videos & Recordings",
+    "forMoreInfo": "For More Information",
+    "contactForDetails": "Contact us for event details or registration",
+    "contactUs": "Contact Us",
+    "viewAllEvents": "View All Events"
+  },
+  "eventCard": {
+    "videoAvailable": "Video Available",
+    "comingSoon": "Coming Soon",
+    "completed": "Completed",
+    "viewDetails": "View Details"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Photo & Video Gallery",
+    "campaignGallery": "Campaign Gallery",
+    "dailyPrograms": "Daily Programs",
+    "memorableMoments": "Memorable moments of our journey with the people",
+    "filterOptions": "Filter Options",
+    "dateFilter": "Date Filter",
+    "titleFilter": "Title Filter",
+    "searchTitle": "Search title...",
+    "albumsFound": "albums found",
+    "clearAllFilters": "Clear All Filters",
+    "noAlbumsForFilter": "No albums found for this filter",
+    "noAlbumsOnPage": "No albums on this page",
+    "noAlbumsFound": "No albums found"
+  },
+  "volunteer": {
+    "title": "Volunteer",
+    "subtitle": "Join us",
+    "joinUs": "Join Our Team",
+    "becomeVolunteer": "Become a Volunteer",
+    "volunteerRegistration": "Volunteer Registration",
+    "joinUsDesc": "Join us as a volunteer on the path to change",
+    "personalInfo": "Personal Information",
+    "fullName": "Full Name",
+    "enterFullName": "Enter your full name",
+    "mobileNumber": "Mobile Number",
+    "emailAddress": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Password (at least 6 characters)",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "area": "Area",
+    "district": "District",
+    "selectDistrict": "Select District",
+    "upazila": "Upazila",
+    "selectUpazila": "Select Upazila",
+    "ward": "Ward",
+    "selectWard": "Select Ward",
+    "skills": "Skills",
+    "preferredTasks": "Preferred Tasks",
+    "availability": "Availability",
+    "submitApplication": "Submit Application",
+    "thankYou": "Thank You!",
+    "applicationSubmitted": "Your volunteer application has been successfully submitted. We will contact you soon.",
+    "newApplication": "Submit New Application",
+    "nameRequired": "Name is required",
+    "mobileRequired": "Mobile number is required",
+    "validMobile": "Enter a valid mobile number (01XXXXXXXXX)",
+    "emailRequired": "Email is required",
+    "validEmail": "Enter a valid email address",
+    "districtRequired": "Please select a district",
+    "upazilaRequired": "Please select an upazila",
+    "wardRequired": "Please select a ward",
+    "skillsRequired": "Please select at least one skill",
+    "tasksRequired": "Please select at least one task",
+    "availabilityRequired": "Please select at least one time slot",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "confirmPasswordRequired": "Password confirmation is required",
+    "passwordMismatch": "Passwords do not match",
+    "submissionError": "An error occurred while submitting the application"
+  },
+  "voterCenter": {
+    "title": "Find Voter Center",
+    "subtitle": "Easily find your voting center and electoral area",
+    "voterService": "Voter Service",
+    "findVotingCenter": "Find Voting Center",
+    "helpingYou": "We are helping you find your voting center",
+    "searchByNidMobile": "Search by Name / Voter Number",
+    "searchPlaceholder": "Example: Md. Kamal Hossain / 260926906297",
+    "searching": "Searching...",
+    "search": "Search",
+    "infoNotFound": "Information Not Found",
+    "votingCenterInfo": "Voting Center Information",
+    "personalInfo": "Personal Information",
+    "name": "Name",
+    "voterNumber": "Voter Number",
+    "fatherName": "Father's Name",
+    "motherName": "Mother's Name",
+    "dateOfBirth": "Date of Birth",
+    "profession": "Profession",
+    "votingCenterDetails": "Voting Center Details",
+    "votingCenter": "Voting Center",
+    "address": "Address",
+    "voterArea": "Voter Area",
+    "voterAreaNumber": "Voter Area Number",
+    "ward": "Ward",
+    "printVoterInfo": "Print This Voter's Information",
+    "importantGuidelines": "Important Guidelines",
+    "guideline1": "Bring your national ID card when going to vote",
+    "guideline2": "Check the schedule before going to the voting center",
+    "guideline3": "Contact voting center officials if you face any problems",
+    "infoFound": "Information Found!",
+    "votersFound": "voters' information found!",
+    "voter": "Voter",
+    "verifyAndTryAgain": "Please verify your information and try again",
+    "serverConnectionError": "Failed to connect to server. Please try again later.",
+    "popupBlocked": "Popup blocked. Please allow popups.",
+    "needHelp": "Need Help?",
+    "helpDesc": "Contact us if you have any questions or issues regarding the voting center"
+  },
+  "complaints": {
+    "title": "File a Complaint",
+    "subtitle": "Let us know your problems and complaints. We are committed to solutions",
+    "publicComplaints": "Public Complaints",
+    "hearYourVoice": "Hear Your Voice",
+    "alwaysReady": "Always Ready to Serve You",
+    "welcomeText1": "Dear residents, don't hesitate to let me know about any problems, complaints or suggestions.",
+    "welcomeText2": "My goal is to serve the people. I will personally review each complaint and try to resolve it quickly.",
+    "togetherImprove": "Together we can improve our area.",
+    "promise": "Promise",
+    "promiseText": "Every complaint will be reviewed within 48 hours and necessary steps will be taken to resolve it.",
+    "complaintSubmitted": "Complaint Successfully Submitted!",
+    "complaintRecorded": "Your complaint has been recorded. We will contact you soon.",
+    "errorTitle": "Error!",
+    "name": "Name",
+    "enterFullName": "Enter your full name",
+    "mobileNumber": "Mobile Number",
+    "voterIdNid": "Voter ID / NID",
+    "optional": "Optional",
+    "voterIdPlaceholder": "Your voter ID or NID number",
+    "area": "Area",
+    "areaName": "Area name",
+    "thana": "Thana",
+    "selectThana": "Select Thana",
+    "wardNo": "Ward No.",
+    "complaintType": "Complaint Type",
+    "selectType": "Select Type",
+    "complaintDetails": "Complaint Details",
+    "detailsPlaceholder": "Write detailed description of your problem...",
+    "detailsHint": "Describe what happened, when it happened, and what action is needed",
+    "evidence": "Evidence (Photo/Video)",
+    "maxFiles": "Maximum 5 files",
+    "uploadImages": "Upload photos or videos",
+    "clickOrDrag": "Click or drag files here",
+    "submitComplaint": "Submit Complaint",
+    "importantInfo": "Important Information",
+    "info1": "Your complaint will be kept confidential",
+    "info2": "Provide accurate information so we can take quick action",
+    "info3": "Attaching photos or videos as evidence will make the complaint more effective",
+    "info4": "For urgent matters, contact directly: +880 1552-161616",
+    "info5": "Filing false complaints is a punishable offense",
+    "needDirectContact": "Need Direct Contact?",
+    "urgentMatters": "Contact us directly for urgent matters",
+    "contactForm": "Contact Form"
+  },
+  "comments": {
+    "title": "Leave a Comment",
+    "subtitle": "Share your thoughts, opinions and suggestions with us",
+    "yourOpinion": "Your Opinion",
+    "hearYou": "We Hear You",
+    "opinionIsStrength": "Your Opinion is My Strength",
+    "welcomeText1": "Dear residents, your opinions, suggestions and thoughts are extremely valuable to me.",
+    "welcomeText2": "As a representative of the people, my responsibility is to listen to you and act accordingly. Each of your comments inspires me to do better work.",
+    "smallCommentBigChange": "Even a small comment from you can bring big change - so don't hesitate to share your opinion.",
+    "myPromise": "My Promise",
+    "promiseText": "Every comment will be read and we will try to reflect your suggestions in our work.",
+    "newComment": "New Comment",
+    "commentAdded": "Your comment has been added!",
+    "yourName": "Your Name (Optional)",
+    "namePlaceholder": "Enter name or leave empty",
+    "nameHint": "* If left empty, will show as 'Anonymous'",
+    "yourComment": "Your Comment",
+    "commentPlaceholder": "Write your opinion...",
+    "sendComment": "Send Comment",
+    "sending": "Sending...",
+    "allComments": "All Comments",
+    "commentsFound": "comments found",
+    "noComments": "No comments found. Be the first to comment!",
+    "anonymous": "Anonymous",
+    "noDate": "No date",
+    "opinionImportant": "Your Opinion is Important",
+    "ctaText": "Each of your comments helps us provide better service. Feel free to share your opinion."
+  },
+  "manifesto": {
+    "title": "BNP's 18-Point Vision",
+    "subtitle": "Sports Development Plan",
+    "ourVision": "Our Vision",
+    "proposals": "Proposals",
+    "proposalsDesc": "Our commitment to overall development of the sports sector",
+    "proposal": "Proposal",
+    "noProposals": "No proposals found",
+    "ourPromise": "Our Promise",
+    "promiseText": "We are committed to elevating Bangladesh's sports sector to international standards. We will provide full support to fulfill every athlete's dream.",
+    "downloadFullManifesto": "Download Full Manifesto"
+  },
+  "aminulManifesto": {
+    "heroTag": "Our Promise",
+    "heroTitle": "Aminul's Manifesto",
+    "heroSubtitle": "For the people, by the people - A roadmap for a prosperous future",
+    "myIdentity": "My Identity",
+    "introText1": "Assalamu Alaikum. I am Aminul Haque - Convener of Dhaka Metropolitan North BNP and one of your own. This Dhaka-16 is my home, my neighborhood. Your joys, sorrows, struggles and dreams - I feel them in my heart.",
+    "introText2": "For the past 17 years, we have all been going through difficult times together. Traffic jams, water and gas shortages, extortion, drugs and mismanagement have made our daily lives unbearable. Our children are losing their way, mothers are living in insecurity, families are losing their dreams.",
+    "introText3": "I do politics not for power, but to serve the people. I believe - change is possible if we want it together. And to show you that path of change, I have come to you with my plans and promises.",
+    "myPromises": "My Promises",
+    "promisesSubtitle": "My plans for the development of Dhaka-16",
+    "myCommitment": "My Commitment",
+    "commitmentIntro": "Dear people of Dhaka-16,",
+    "commitmentText": "This is not an empty promise. This is our collective hope, our collective future. Now the decision is yours - another 17 years of corruption and misrule, or a new era of justice, dignity and hope.",
+    "commitmentQuote": "\"I am Aminul Haque, I don't make promises with words, I show them in action.\"",
+    "commitmentConclusion": "As your child, as your representative, I will be by your side to bring light to every home.",
+    "sections": {
+      "rehabilitation": {
+        "title": "Permanent Rehabilitation & Social Dignity",
+        "content1": "Providing permanent rehabilitation, security and social dignity to all low and middle income citizens"
+      },
+      "urduCommunity": {
+        "title": "Rights of Urdu-speaking Community",
+        "content1": "Ensuring all civic facilities and providing permanent rehabilitation and social dignity to the Urdu-speaking community"
+      },
+      "educationQuality": {
+        "title": "Education Quality Improvement",
+        "content1": "Ensuring educational environment and quality education in every educational institution",
+        "content2": "Free education for low and middle income and Urdu-speaking communities"
+      },
+      "scholarship": {
+        "title": "Merit Scholarships",
+        "content1": "Providing merit and educational scholarships for talented students"
+      },
+      "healthcare": {
+        "title": "Healthcare",
+        "content1": "Establishing ward-based health and maternity centers providing free primary healthcare and ensuring services for pregnant mothers",
+        "content2": "Construction of government medical colleges and hospitals",
+        "content3": "Effective measures to prevent dengue and chikungunya"
+      },
+      "higherEducation": {
+        "title": "Higher Education Development",
+        "content1": "Converting degree colleges into university colleges"
+      },
+      "nationalization": {
+        "title": "Nationalization of Educational Institutions",
+        "content1": "Priority nationalization of all MPO-listed educational institutions in Pallabi and Rupnagar police stations"
+      },
+      "shelter": {
+        "title": "Shelter Centers",
+        "content1": "Construction of shelter centers for the helpless and homeless"
+      },
+      "utilities": {
+        "title": "Gas, Water & Electricity",
+        "content1": "Ensuring uninterrupted gas, water and electricity supply for every family and necessary renovation and replacement of old, dilapidated gas and water lines"
+      },
+      "employment": {
+        "title": "Employment Creation",
+        "content1": "Ensuring employment for the unemployed and youth through technical training, third language education and Job Fairs"
+      },
+      "sportsAcademy": {
+        "title": "Sports & Sports Academy",
+        "content1": "Creating suitable playgrounds for sports and establishing a full-fledged sports academy"
+      },
+      "religiousHarmony": {
+        "title": "Religious Harmony",
+        "content1": "Establishing and developing mosques, madrasas, temples, churches and other places of worship in every ward to ensure communal harmony and peaceful celebration of religious festivals regardless of religion, caste, party or opinion"
+      },
+      "security": {
+        "title": "Security System",
+        "content1": "Installing CCTV, appointing security personnel and ensuring security through local committees in every residential and non-residential area"
+      },
+      "digital": {
+        "title": "Digital Facilities",
+        "content1": "Free WiFi Zone in colleges, bus stands and markets, and modern libraries for science-based development among the youth"
+      }
+    }
+  },
+  "bnp31Point": {
+    "heroTag": "National Program",
+    "heroTitle": "BNP's 31 Points",
+    "heroSubtitle": "Roadmap for Restoration of Democracy and State Reform",
+    "introTitle": "Framework for State Structure Repair",
+    "introSubtitle": "(Formulated for Democratic Reform of Constitution and State System, and Economic Liberation)",
+    "introText1": "The people of Bangladesh built this state through the great Liberation War at the cost of a sea of blood, dreaming of democracy, equality, human dignity, and social justice. Today, the ownership of that state is no longer in their hands. The current authoritarian government has shattered the state structure of Bangladesh. This state needs to be repaired and reconstructed. After winning a free, fair, impartial, acceptable and participatory election with the aim of returning the ownership of the country to its people, a \"Pro-people National Consensus Government\" will be established comprising the political parties participating in the movement to oust the current fascist government.",
+    "introText2": "The said \"National Government\" will undertake the following state transformative reform activities:",
+    "pointsTitle": "31-Point Demands",
+    "ctaTitle": "Let's Bring Change Together",
+    "ctaText": "Your support and participation is needed to implement these 31 points",
+    "ctaButton": "Contact Us",
+    "points": {
+      "p1": {
+        "title": "Formation of Constitution Reform Commission",
+        "content": "For over a decade, the Awami League government has brought in many irrational fundamental constitutional amendments with the sinister purpose of monopolizing power. A \"Constitution Reform Commission\" will be formed to review and repeal/amend all controversial and undemocratic constitutional amendments and changes, and other essential constitutional reforms will be made. The referendum system will be reinstated in the constitution to restore people's democratic rights."
+      },
+      "p2": {
+        "title": "Establishing a Harmonious Rainbow Nation and Formation of National Reconciliation Commission",
+        "content": "Instead of politics of revenge and retaliation, an inclusive, discrimination-free and harmonious \"Rainbow Nation\" will be established on the basis of Bangladeshi nationalism combining all views and paths. A new forward-looking social contract will be reached through continuous dialogue, exchange of views and mutual understanding. A \"National Reconciliation Commission\" will be formed for this purpose."
+      },
+      "p3": {
+        "title": "Reinstatement of Non-partisan Caretaker Government System During Elections",
+        "content": "A \"Non-partisan Caretaker Government during elections\" system will be introduced to restore democracy and voting rights in Bangladesh and to give a permanent constitutional and institutional form to a transparent democratic process."
+      },
+      "p4": {
+        "title": "Establishing Balance of State Power",
+        "content": "Balance will be brought to the executive power of the Prime Minister and the Cabinet. The powers, responsibilities and duties of the Executive, Legislative and Judicial branches will be coordinated to establish checks and balances of state power."
+      },
+      "p5": {
+        "title": "Determining Term Limit for Prime Minister",
+        "content": "No one shall serve as Prime Minister for more than two consecutive terms."
+      },
+      "p6": {
+        "title": "Introduction of Upper House in Legislature",
+        "content": "Alongside the existing parliamentary system, an \"Upper House of the Legislature\" will be introduced comprising distinguished citizens, renowned academics, professionals, political scientists, social scientists and administratively experienced persons for governing the state with expert knowledge."
+      },
+      "p7": {
+        "title": "Amendment of Article 70 of the Constitution",
+        "content": "Amendment of Article 70 of the Constitution will be considered subject to examination to ensure that Members of Parliament can freely express their opinions on all matters except vote of confidence, money bills, constitutional amendment bills and matters involving national security."
+      },
+      "p8": {
+        "title": "Reform of Election Commission and Electoral System and Amendment of Related Laws",
+        "content": "The current \"Chief Election Commissioner and Other Election Commissioners Appointment Act, 2022\" will be amended to form an effective Election Commission comprising independent, efficient, impartial, acceptable and resolute persons based on the opinions of political parties and distinguished persons."
+      },
+      "p9": {
+        "title": "Restructuring of All State, Constitutional and Statutory Institutions for Ensuring Transparency",
+        "content": "All state, constitutional and statutory institutions will be restructured through legal reform to restore transparency, accountability and credibility, rising above narrow political partisanship."
+      },
+      "p10": {
+        "title": "Formation of Judicial Commission, Reinstatement of Supreme Judicial Council and Enactment of Judge Appointment Law",
+        "content": "Effective independence of the judiciary will be ensured in light of the Constitution of Bangladesh and the verdict of the Masdar Hossain case. A \"Judicial Commission\" will be formed to reform the current judicial system."
+      },
+      "p11": {
+        "title": "Formation of Administrative Reform Commission",
+        "content": "An \"Administrative Reform Commission\" will be formed comprising qualified, experienced and wise persons to reform and reorganize the administration with the aim of building patriotic public service and police administration."
+      },
+      "p12": {
+        "title": "Formation of Media Commission",
+        "content": "A \"Media Commission\" will be formed comprising former Supreme Court judges, media-related professionals and wise, experienced and acceptable media personalities to ensure full freedom of the media and comprehensive reform."
+      },
+      "p13": {
+        "title": "Visible and Effective Measures to Prevent Corruption and Appointment of Ombudsman",
+        "content": "There will be no compromise on corruption. A white paper will be published investigating the money laundering and corruption that occurred over the past one and a half decades, and legal action will be taken against those identified as responsible."
+      },
+      "p14": {
+        "title": "Establishing Rule of Law and Human Rights at All Levels",
+        "content": "Rule of law will be established at all levels. Human values and human dignity will be restored, and disappearances, murders, extrajudicial killings, and inhumane cruel physical and mental torture will be ended."
+      },
+      "p15": {
+        "title": "Formation of Economic Reform Commission",
+        "content": "An \"Economic Reform Commission\" will be formed comprising expert economists and researchers, experienced bankers, corporate leaders, and administratively experienced persons to ensure economic justice."
+      },
+      "p16": {
+        "title": "Ensuring Maximum Religious Freedom",
+        "content": "Based on the principle \"Religion belongs to everyone, the state belongs to all,\" every religious person will enjoy full rights to practice their own religion."
+      },
+      "p17": {
+        "title": "Ensuring Fair Wages Considering Inflation",
+        "content": "Fair wages (price-index based) for workers will be ensured in light of inflation. Child labor will be stopped and a suitable environment and arrangements for their life development will be ensured."
+      },
+      "p18": {
+        "title": "Modernization of Industry, Power, Mineral and Energy Sectors and Establishing Good Governance",
+        "content": "All draconian laws including the indemnity law in the power, energy and mineral sectors will be repealed and the ongoing unlimited corruption in purchasing electricity from anti-public interest quick rental power plants will be stopped."
+      },
+      "p19": {
+        "title": "Development of Foreign Relations Ensuring Priority of National Interest",
+        "content": "Bangladesh's national interest, national sovereignty and national security will be given highest priority in all areas of foreign relations."
+      },
+      "p20": {
+        "title": "Modernizing Defense Forces and Keeping Them Above All Controversy",
+        "content": "The defense forces will be organized, modernized and inspired with the highest patriotism to protect the country's sovereignty."
+      },
+      "p21": {
+        "title": "Making Local Government Institutions Autonomous and Empowered for Decentralization",
+        "content": "Local government institutions will be made more independent, strong and empowered for extensive decentralization of power."
+      },
+      "p22": {
+        "title": "Providing State Honor and Recognition to Martyred Freedom Fighters",
+        "content": "Arrangements will be made to provide state recognition for everyone's contribution to the 1971 Liberation War. A list of martyrs of the Liberation War will be prepared based on intensive survey on state initiative."
+      },
+      "p23": {
+        "title": "Formulating Modern and Contemporary Youth Development Policy",
+        "content": "Modern and contemporary youth development policy will be formulated incorporating the vision, thoughts and aspirations of the youth."
+      },
+      "p24": {
+        "title": "Taking Appropriate Steps for Women's Dignity, Protection and Empowerment",
+        "content": "Specific programs will be undertaken for women's empowerment to ensure effective participation of women in the national development process."
+      },
+      "p25": {
+        "title": "Building an Educated Population Capable of Meeting Future Challenges Through Demand and Knowledge-based Education",
+        "content": "Need-based education at primary and secondary levels and knowledge-based education at higher education will be prioritized, eliminating the current anarchy in education."
+      },
+      "p26": {
+        "title": "Implementing the Policy of \"Health for All\"",
+        "content": "Universal health coverage will be introduced based on the principle of \"Health for All\" and \"No death without treatment,\" modeled after the UK's \"NHS,\" considering health as an asset."
+      },
+      "p27": {
+        "title": "Ensuring Fair Prices for Agricultural Products Including Production and Marketing Protection for Farmers",
+        "content": "Fair prices for agricultural products will be ensured. Government procurement centers for agricultural products will be gradually established in all unions."
+      },
+      "p28": {
+        "title": "Modernization of Road, Rail, Waterways and Establishing Multi-dimensional Transportation System",
+        "content": "An integrated multi-dimensional transportation system will be built across the country by necessary reform of roads, railways and waterways for development of the country's communication infrastructure."
+      },
+      "p29": {
+        "title": "Effective Steps to Address Climate Change Crisis and Natural Disasters, and River Management and Canal Excavation Initiatives",
+        "content": "Sustainable and effective strategies will be adopted to address the climate change crisis and damage."
+      },
+      "p30": {
+        "title": "Development and Optimal Use of ICT, Space Research and Nuclear Energy",
+        "content": "Necessary steps will be taken to elevate the ICT sector to global standards and its application will be prioritized in all areas."
+      },
+      "p31": {
+        "title": "Formulation and Implementation of Contemporary, Planned, Environment-friendly Housing and Urbanization Policies",
+        "content": "Through formulation of a national master plan, planned housing and urbanization policies will be adopted and implemented without destroying agricultural land in urban and rural areas and reducing the ever-increasing population pressure in cities."
+      }
+    }
+  },
+  "bnp19Point": {
+    "heroTag": "Historic Program",
+    "heroTitle": "BNP's 19-Point Program",
+    "heroSubtitle": "Shaheed President Ziaur Rahman",
+    "heroDesc": "Formulated for the socio-economic liberation of the country",
+    "introTitle": "Historic 19 Points",
+    "introText": "Shaheed President Ziaur Rahman formulated the 19-point program for the socio-economic liberation of Bangladesh. This program provides direction for the nation's development and prosperity, and its relevance remains intact even today.",
+    "pointsTitle": "19-Point Program",
+    "ctaTitle": "Zia's Ideals Guide Our Path",
+    "ctaText": "We are committed to achieving the development and prosperity of Bangladesh following the path shown by Shaheed President Ziaur Rahman",
+    "ctaButton": "Contact Us",
+    "points": {
+      "p1": {
+        "title": "Protect the country's independence, integrity and sovereignty",
+        "content": "Protect the country's independence, integrity and sovereignty in all respects."
+      },
+      "p2": {
+        "title": "Full reflection of the four principles of the constitution in national life",
+        "content": "Full reflection of the four principles of the constitution in national life: absolute trust and faith in Almighty Allah, democracy, nationalism, and social and economic justice through socialism."
+      },
+      "p3": {
+        "title": "Build ourselves as a self-reliant nation by all means",
+        "content": "Build ourselves as a self-reliant nation by all means."
+      },
+      "p4": {
+        "title": "Ensure public participation at all levels of administration",
+        "content": "Ensure public participation at all levels of administration, development activities and law and order maintenance."
+      },
+      "p5": {
+        "title": "Strengthen rural and national economy through agricultural development",
+        "content": "Strengthen rural and national economy through agricultural development on the basis of highest priority."
+      },
+      "p6": {
+        "title": "Make the country self-sufficient in food",
+        "content": "Make the country self-sufficient in food and ensure that no one goes hungry."
+      },
+      "p7": {
+        "title": "Ensure at least basic clothing for everyone",
+        "content": "Ensure at least basic clothing for everyone by increasing cloth production in the country."
+      },
+      "p8": {
+        "title": "Provide housing as much as possible",
+        "content": "Provide housing as much as possible so that no citizen remains homeless."
+      },
+      "p9": {
+        "title": "Free the country from the curse of illiteracy",
+        "content": "Free the country from the curse of illiteracy."
+      },
+      "p10": {
+        "title": "Provide minimum healthcare for all citizens",
+        "content": "Provide minimum healthcare for all citizens."
+      },
+      "p11": {
+        "title": "Establish proper dignity of women and organize the youth",
+        "content": "Establish proper dignity of women in society and organize the youth to inspire them in nation building."
+      },
+      "p12": {
+        "title": "Provide necessary encouragement to the private sector",
+        "content": "Provide necessary encouragement to the private sector for economic development of the country."
+      },
+      "p13": {
+        "title": "Improve workers' conditions and build healthy worker-owner relations",
+        "content": "Improve workers' conditions and build healthy worker-owner relations in the interest of increased production."
+      },
+      "p14": {
+        "title": "Encourage public service mentality among government employees",
+        "content": "Encourage public service and nation-building mentality among government employees and improve their financial condition."
+      },
+      "p15": {
+        "title": "Control population explosion",
+        "content": "Control population explosion."
+      },
+      "p16": {
+        "title": "Build friendship with all foreign countries on equal terms",
+        "content": "Build friendship with all foreign countries on equal terms and strengthen relations with Muslim countries."
+      },
+      "p17": {
+        "title": "Decentralize administration and strengthen local government",
+        "content": "Decentralize administration and development system and strengthen local government."
+      },
+      "p18": {
+        "title": "Establish a corruption-free, justice-based social system",
+        "content": "Establish a corruption-free, justice-based social system."
+      },
+      "p19": {
+        "title": "Fully protect rights of all citizens and strengthen national unity",
+        "content": "Fully protect the rights of all citizens regardless of religion, tribe and caste, and strengthen national unity and solidarity."
+      }
+    }
+  },
+  "pressRelease": {
+    "title": "Press Release",
+    "subtitle": "Latest updates about our activities and initiatives",
+    "latestNews": "Latest News",
+    "noNews": "No News",
+    "newsSoonAdded": "New news will be added soon",
+    "mediaContact": "Media Contact",
+    "mediaContactDesc": "For journalists and media organizations, please contact our press office",
+    "sendEmail": "Send Email",
+    "contactForm": "Contact Form",
+    "newsDescription": "News description",
+    "news": "News"
+  },
+  "pressReleaseCard": {
+    "video": "Video",
+    "pressRelease": "Press Release",
+    "readFull": "Read Full"
+  },
+  "pressReleaseDetail": {
+    "notFound": "Press Release Not Found",
+    "backToPage": "Go back to press release page",
+    "backToAll": "Back to all press releases",
+    "share": "Share:",
+    "copied": "Copied!",
+    "copyLink": "Copy Link",
+    "moreImages": "More Images",
+    "audio": "Audio",
+    "video": "Video",
+    "audioNotSupported": "Your browser does not support audio.",
+    "videoNotSupported": "Your browser does not support video.",
+    "readOriginalNews": "Read original news:",
+    "newsLink": "News Link",
+    "shareThisRelease": "Share This Press Release",
+    "viewAllReleases": "View All Press Releases"
+  },
+  "kheladhula": {
+    "heroTag": "Sports",
+    "heroTitle": "Sports & Athletic Activities",
+    "heroSubtitle": "Unforgettable moments of our sports activities with the youth",
+    "loading": "Loading...",
+    "error": "Error:",
+    "tryAgain": "Try Again",
+    "noEvents": "No events found",
+    "filterOptions": "Filter Options",
+    "dateFilter": "Date Filter",
+    "titleFilter": "Title Filter",
+    "searchTitle": "Search title...",
+    "eventsFound": "events found",
+    "date": "Date",
+    "title": "Title",
+    "description": "Description",
+    "clearAllFilters": "Clear All Filters",
+    "photos": "Photos",
+    "image": "Image",
+    "noEventsOnPage": "No events on this page",
+    "noEventsForFilter": "No events found for this filter",
+    "previous": "Previous",
+    "next": "Next",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  },
+  "surveysPage": {
+    "heroTag": "Surveys & Opinions",
+    "heroTitle": "Surveys",
+    "heroSubtitle": "Share your valuable opinion and participate in change",
+    "loading": "Loading...",
+    "noSurveys": "No surveys available",
+    "noSurveysDesc": "New surveys will be added soon",
+    "viewSurvey": "View Survey",
+    "ctaTitle": "Your Opinion Matters",
+    "ctaText": "Participate in our surveys and share your valuable opinions to be part of the change",
+    "contactUs": "Contact Us"
+  },
+  "footer": {
+    "servingPeople": "Serving the People",
+    "aboutText": "A promise to build a prosperous Bangladesh through sustainable development in education, agriculture, industry and culture.",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "contact": "Contact",
+    "rights": "All Rights Reserved",
+    "socialMedia": "Social Media",
+    "home": "Home",
+    "aboutLink": "About",
+    "programsLink": "Programs",
+    "visionLink": "Vision",
+    "galleryLink": "Gallery",
+    "contactLink": "Contact"
+  }
+}
