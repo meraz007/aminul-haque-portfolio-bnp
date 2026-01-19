@@ -139,7 +139,7 @@ export default function VoterCenterPage() {
             <p style="margin: 0;"><strong>${language === 'bd' ? 'নামঃ' : 'Name:'}</strong> ${voter.name}</p>
             ${voter.voter_number ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'ভোটার নং-' : 'Voter No:'}</strong> ${language === 'bd' ? voter.voter_number_bangla : voter.voter_number}</p>` : ''}
             ${voter.date_of_birth ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'জন্ম তারিখঃ' : 'DOB:'}</strong> ${language === 'bd' ? voter.date_of_birth_bangla : voter.date_of_birth}</p>` : ''}
-            ${voter.father_name ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'পিতা/স্বামীঃ' : 'Father/Husband:'}</strong> ${voter.father_name}</p>` : ''}
+            ${voter.father_name ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'পিতা/স্বামীঃ' : 'Father:'}</strong> ${voter.father_name}</p>` : ''}
             ${voter.mother_name ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'মাতাঃ' : 'Mother:'}</strong> ${voter.mother_name}</p>` : ''}
             ${voter.address ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'ঠিকানাঃ' : 'Address:'}</strong> ${voter.address}</p>` : ''}
             ${voter.voter_area ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'এলাকাঃ' : 'Area:'}</strong> ${voter.voter_area}</p>` : ''}
@@ -221,7 +221,7 @@ export default function VoterCenterPage() {
             <p style="margin: 0;"><strong>${language === 'bd' ? 'নামঃ' : 'Name:'}</strong> ${voter.name}</p>
             ${voter.voter_number ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'ভোটার নং-' : 'Voter No:'}</strong> ${language === 'bd' ? voter.voter_number_bangla : voter.voter_number}</p>` : ''}
             ${voter.date_of_birth ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'জন্ম তারিখঃ' : 'DOB:'}</strong> ${language === 'bd' ? voter.date_of_birth_bangla : voter.date_of_birth}</p>` : ''}
-            ${voter.father_name ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'পিতা/স্বামীঃ' : 'Father/Husband:'}</strong> ${voter.father_name}</p>` : ''}
+            ${voter.father_name ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'পিতা/স্বামীঃ' : 'Father:'}</strong> ${voter.father_name}</p>` : ''}
             ${voter.mother_name ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'মাতাঃ' : 'Mother:'}</strong> ${voter.mother_name}</p>` : ''}
             ${voter.address ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'ঠিকানাঃ' : 'Address:'}</strong> ${voter.address}</p>` : ''}
             ${voter.voter_area ? `<p style="margin: 0;"><strong>${language === 'bd' ? 'এলাকাঃ' : 'Area:'}</strong> ${voter.voter_area}</p>` : ''}
