@@ -14,6 +14,7 @@
     "events": "Events",
     "pressRelease": "Press Release",
     "surveys": "Surveys",
+    "tournament": "Tournament",
     "service": "Service",
     "voterCenter": "Voter Center",
     "volunteer": "Volunteer",
@@ -854,6 +855,22 @@
     "viewSurvey": "View Survey",
     "ctaTitle": "Your Opinion Matters",
     "ctaText": "Participate in our surveys and share your valuable opinions to be part of the change",
+    "contactUs": "Contact Us"
+  },
+  "tournament": {
+    "heroTag": "Tournament",
+    "heroTitle": "Tournament",
+    "heroSubtitle": "Join exciting sports tournaments and showcase your talent",
+    "activeTournaments": "Active Tournaments",
+    "noTournaments": "No tournaments available at the moment",
+    "joinNow": "Join Now",
+    "registrationDeadline": "Registration Deadline",
+    "startDate": "Start Date",
+    "participants": "Participants",
+    "location": "Location",
+    "registerViaForm": "Register via Google Form",
+    "ctaTitle": "Want to Participate?",
+    "ctaText": "Don't miss the opportunity to participate in upcoming tournaments. Register now!",
     "contactUs": "Contact Us"
   },
   "footer": {

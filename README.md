@@ -32,7 +32,7 @@ npm install
 
 Create a `.env.local` file in the root (if needed):
 ```env
-NEXT_PUBLIC_API_BASE_URL="https://admin.arsonconsultancy.org/api/v1"
+NEXT_PUBLIC_API_BASE_URL="https://admin.aminul-haque.com/api/v1"
 ```
 
 4. **Start development server**

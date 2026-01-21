@@ -100,7 +100,7 @@ export default function Home() {
   useEffect(() => {
     const fetchAlbums = async () => {
       try {
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/albums/list`, {
           cache: 'no-store',
         });
@@ -140,7 +140,7 @@ export default function Home() {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/quotes`, {
           cache: 'no-store',
         });
@@ -225,7 +225,7 @@ export default function Home() {
 
       {/* Manifesto Highlights */}
       <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -304,7 +304,7 @@ export default function Home() {
       
       {/* Gallery Preview */}
       <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -459,7 +459,7 @@ export default function Home() {
 
       {/* Quotes Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -546,7 +546,7 @@ export default function Home() {
 
       {/* Quick Services Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -642,7 +642,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

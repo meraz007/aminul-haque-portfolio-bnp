@@ -40,7 +40,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
     const fetchComments = async () => {
       try {
         setIsRefreshing(true);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/comments`, {
           cache: 'no-store', // Always fetch fresh data
         });
@@ -138,7 +138,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
     setError(null);
 
     try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
       const response = await fetch(`${apiBaseUrl}/comments`, {
         method: 'POST',
         headers: {
@@ -201,7 +201,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-pink-50 via-white to-rose-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -225,7 +225,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
 
       {/* Welcome Section with Image */}
       <section className="py-20 px-4 bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Image */}
             <motion.div
@@ -282,7 +282,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
 
       {/* Stats Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Comment Form */}

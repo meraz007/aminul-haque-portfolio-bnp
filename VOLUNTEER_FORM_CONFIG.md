@@ -8,7 +8,7 @@ The volunteer registration form (`/volunteer`) is configured to submit data to y
 
 **Endpoint**: `POST /volunteers/store`
 
-**Base URL**: `https://admin.arsonconsultancy.org/api/v1`
+**Base URL**: `https://admin.aminul-haque.com/api/v1`
 
 You can override this by setting the environment variable:
 ```env
@@ -120,7 +120,7 @@ Create a `.env.local` file (optional) to override the default API URL:
 NEXT_PUBLIC_API_BASE_URL="https://your-custom-api-url.com/api/v1"
 ```
 
-If not set, the form will use: `https://admin.arsonconsultancy.org/api/v1`
+If not set, the form will use: `https://admin.aminul-haque.com/api/v1`
 
 ## Troubleshooting
 

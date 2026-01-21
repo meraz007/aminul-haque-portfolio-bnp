@@ -46,7 +46,7 @@ export default function PressReleasePage() {
       try {
         setLoading(true);
         setError(null);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/news`, {
           cache: 'no-store',
         });
@@ -93,7 +93,7 @@ export default function PressReleasePage() {
   // Map news to press release format
   const pressReleases = news.map((item) => {
     const firstDetail = item.details && item.details.length > 0 ? item.details[0] : null;
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com';
     
     // Build image URL - check if it's already a full URL or needs base URL
     let imageUrl = '/aminul_haque.jpg'; // Fallback image
@@ -145,7 +145,7 @@ export default function PressReleasePage() {
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -169,7 +169,7 @@ export default function PressReleasePage() {
 
       {/* Press Releases Grid */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>

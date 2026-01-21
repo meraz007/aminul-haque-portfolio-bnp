@@ -128,7 +128,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
     setSubmitError(null);
 
     try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
       
       // Format answers array according to API requirements
       const answers = survey.questions.map((question, index) => ({

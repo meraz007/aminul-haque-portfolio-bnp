@@ -21,7 +21,7 @@ export default function BNP31PointPage() {
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-red-50 via-white to-orange-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -45,7 +45,7 @@ export default function BNP31PointPage() {
 
       {/* Introduction */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

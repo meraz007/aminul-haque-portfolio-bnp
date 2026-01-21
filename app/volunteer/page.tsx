@@ -259,7 +259,7 @@ export default function VolunteerPage() {
     setSubmitError(null);
 
     try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
       
       // Map availability IDs to labels
       const availabilityLabels = formData.availability.map((id) => {
@@ -375,7 +375,7 @@ export default function VolunteerPage() {
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-emerald-50 via-white to-green-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

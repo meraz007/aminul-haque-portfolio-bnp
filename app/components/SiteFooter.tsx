@@ -38,7 +38,7 @@ export default function SiteFooter() {
 
   return (
     <footer className="bg-gradient-to-b from-slate-50 to-slate-100 border-t-4 border-emerald-500">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* About Section */}
           <div>

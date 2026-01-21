@@ -19,7 +19,7 @@ interface Proposal {
 // Fetch all proposals to generate static params
 async function getAllProposals(): Promise<Proposal[]> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     const response = await fetch(`${apiBaseUrl}/proposal`, {
       next: { revalidate: 60 },
     });
@@ -55,7 +55,7 @@ async function getAllProposals(): Promise<Proposal[]> {
 // Fetch individual proposal by UUID or ID
 async function getProposal(slug: string): Promise<Proposal | null> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     
     // First, fetch all proposals and find the one matching the slug
     const proposals = await getAllProposals();

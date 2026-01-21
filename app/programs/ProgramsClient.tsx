@@ -36,7 +36,7 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
     const fetchPrograms = async () => {
       try {
         setIsRefreshing(true);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         const response = await fetch(`${apiBaseUrl}/programs`, {
           cache: 'no-store', // Always fetch fresh data
         });
@@ -66,8 +66,8 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
           if (program.image) {
             const image = program.image.trim();
             if (image.startsWith('http://') || image.startsWith('https://')) {
-              const baseStorageUrl = 'https://admin.arsonconsultancy.org/storage';
-              const baseStorageUrlHttp = 'http://admin.arsonconsultancy.org/storage';
+              const baseStorageUrl = 'admin.aminul-haque.com/storage';
+              const baseStorageUrlHttp = 'admin.aminul-haque.com/storage';
               if (image !== baseStorageUrl && image !== baseStorageUrlHttp && image.length > baseStorageUrl.length) {
                 imageUrl = image;
               }
@@ -75,7 +75,7 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
               imageUrl = image;
             } else if (image) {
               imageUrl = image.startsWith('storage/') || image.startsWith('/storage/')
-                ? `https://admin.arsonconsultancy.org/${image.replace(/^\//, '')}`
+                ? `https://admin.aminul-haque.com/${image.replace(/^\//, '')}`
                 : image;
             }
           }
@@ -110,7 +110,7 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="relative py-32 px-4 bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -133,7 +133,7 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
 
       {/* Programs Grid */}
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
           {error && (
             <div className="flex items-center justify-center py-20">
               <div className="text-center bg-red-50 rounded-2xl p-8 max-w-md">

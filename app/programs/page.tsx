@@ -25,7 +25,7 @@ const defaultColors = [
 
 async function getPrograms(): Promise<{ programs: Program[]; error: string | null }> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     const response = await fetch(`${apiBaseUrl}/programs`, {
       cache: 'no-store', // No caching - always fetch fresh data
     });
@@ -65,8 +65,8 @@ async function getPrograms(): Promise<{ programs: Program[]; error: string | nul
         // Check if it's a complete HTTP/HTTPS URL
         if (image.startsWith('http://') || image.startsWith('https://')) {
           // Validate it's not just the base storage URL (must have additional path)
-          const baseStorageUrl = 'https://admin.arsonconsultancy.org/storage';
-          const baseStorageUrlHttp = 'http://admin.arsonconsultancy.org/storage';
+          const baseStorageUrl = 'https://admin.aminul-haque.com/storage';
+          const baseStorageUrlHttp = 'http://admin.aminul-haque.com/storage';
           
           if (image !== baseStorageUrl && 
               image !== baseStorageUrlHttp &&
@@ -81,7 +81,7 @@ async function getPrograms(): Promise<{ programs: Program[]; error: string | nul
           // If it's a non-empty string but not a URL, try to construct full URL
           // This handles cases where API might return just the path
           imageUrl = image.startsWith('storage/') || image.startsWith('/storage/') 
-            ? `https://admin.arsonconsultancy.org/${image.replace(/^\//, '')}`
+            ? `https://admin.aminul-haque.com/${image.replace(/^\//, '')}`
             : image;
         }
       }

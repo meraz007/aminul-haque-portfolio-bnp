@@ -14,7 +14,7 @@ interface Comment {
 
 async function getComments(): Promise<Comment[]> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     const response = await fetch(`${apiBaseUrl}/comments`, {
       next: { revalidate: 10 }, // Revalidate every 30 seconds
     });

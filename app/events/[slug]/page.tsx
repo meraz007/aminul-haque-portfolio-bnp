@@ -39,7 +39,7 @@ interface Event {
 // Fetch all events to generate static params
 async function getAllEvents(): Promise<Event[]> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     const response = await fetch(`${apiBaseUrl}/events`, {
       cache: 'no-store', // No caching - always fetch fresh data
     });
@@ -90,7 +90,7 @@ async function getAllEvents(): Promise<Event[]> {
 // Fetch individual event by ID or UUID
 async function getEvent(slug: string): Promise<any | null> {
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
     
     // Try fetching by slug (could be ID or UUID)
     const response = await fetch(`${apiBaseUrl}/events/${slug}`, {
@@ -166,8 +166,8 @@ async function getEvent(slug: string): Promise<any | null> {
     if (eventData.image) {
       const image = eventData.image.trim();
       if (image.startsWith('http://') || image.startsWith('https://')) {
-        const baseStorageUrl = 'https://admin.arsonconsultancy.org/storage';
-        const baseStorageUrlHttp = 'http://admin.arsonconsultancy.org/storage';
+        const baseStorageUrl = 'https://admin.aminul-haque.com/storage';
+        const baseStorageUrlHttp = 'http://admin.aminul-haque.com/storage';
         if (image !== baseStorageUrl && image !== baseStorageUrlHttp && image.length > baseStorageUrl.length) {
           imageUrl = image;
         }
@@ -175,7 +175,7 @@ async function getEvent(slug: string): Promise<any | null> {
         imageUrl = image;
       } else if (image) {
         imageUrl = image.startsWith('storage/') || image.startsWith('/storage/')
-          ? `https://admin.arsonconsultancy.org/${image.replace(/^\//, '')}`
+          ? `https://admin.aminul-haque.com/${image.replace(/^\//, '')}`
           : image;
       }
     }

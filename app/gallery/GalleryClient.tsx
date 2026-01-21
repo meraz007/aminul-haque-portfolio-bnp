@@ -286,7 +286,7 @@ export default function GalleryClient() {
       try {
         setLoading(true);
         setError(null);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.arsonconsultancy.org/api/v1';
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
         
         // Always fetch all albums without pagination parameters
         const url = `${apiBaseUrl}/albums/list`;
@@ -443,7 +443,7 @@ export default function GalleryClient() {
   if (loading) {
     return (
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mb-4"></div>
           <p className="text-xl text-slate-600">{t('common.loading')}</p>
         </div>
@@ -454,7 +454,7 @@ export default function GalleryClient() {
   if (error) {
     return (
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xl text-red-600 mb-4">{t('common.error')}: {error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -471,7 +471,7 @@ export default function GalleryClient() {
   if (!loading && allAlbums.length === 0) {
     return (
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xl text-slate-600">{t('gallery.noAlbumsFound')}</p>
         </div>
       </section>
@@ -481,7 +481,7 @@ export default function GalleryClient() {
   return (
     <>
       <section className="py-20 px-4">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
           {/* Filters Section */}
           <div className="mb-8">
             <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200">
