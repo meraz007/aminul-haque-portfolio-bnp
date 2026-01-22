@@ -5,6 +5,7 @@ import { FaXTwitter } from 'react-icons/fa6';
 import ContactForm from '../components/ContactForm';
 import ChatWidget from '../components/ChatWidget';
 import { useTranslation } from '../i18n/I18nProvider';
+import Image from 'next/image';
 
 export default function ContactPage() {
   const { t, language } = useTranslation();
@@ -27,7 +28,7 @@ export default function ContactPage() {
     {
       icon: FaMapMarkerAlt,
       titleKey: 'contact.office',
-      value: language === 'bd' 
+      value: language === 'bd'
         ? 'ডি/১৮৬, রোড- ডব্লিউ ৩, ইস্টার্ন হাউজিং ২য় পর্ব, পল্লবী, ঢাকা-১২১৬'
         : 'D/186, Road- W 3, Eastern Housing Phase 2, Pallabi, Dhaka-1216',
       color: 'from-purple-500 to-pink-600',
@@ -43,7 +44,7 @@ export default function ContactPage() {
     { day: 'Saturday', time: '10:00 AM - 4:00 PM' },
     { day: 'Sunday', time: 'Closed', closed: true },
   ];
-  
+
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
@@ -176,6 +177,36 @@ export default function ContactPage() {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Constituency Map */}
+      <section className="py-20 px-4 max-w-7xl mx-auto">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 rounded-2xl blur opacity-20"></div>
+          <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl shadow-lg">
+                <FaMapMarkerAlt className="text-2xl text-white" />
+              </div>
+              <h3 className="text-2xl font-black text-slate-900">
+                {language === 'bd' ? 'ঢাকা-১৬ নির্বাচনী এলাকা' : 'Dhaka-16 Constituency'}
+              </h3>
+            </div>
+            <div className="relative w-full aspect-square max-w-md mx-auto py-6">
+              <Image
+                src="/aminul Haque/ঢাকা-১৬.svg.png"
+                alt={language === 'bd' ? 'ঢাকা-১৬ নির্বাচনী এলাকার মানচিত্র' : 'Dhaka-16 Constituency Map'}
+                fill
+                className="object-contain"
+              />
+            </div>
+            <p className="text-center text-slate-600 text-sm mt-4">
+              {language === 'bd'
+                ? 'পল্লবী ও রুপনগর থানা এলাকা'
+                : 'Pallabi & Rupnagar Police Station Area'}
+            </p>
           </div>
         </div>
       </section>

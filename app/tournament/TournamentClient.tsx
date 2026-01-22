@@ -1,11 +1,10 @@
 "use client";
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
-import { FaTrophy, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
+import { useState } from 'react';
 import { MdSportsTennis } from 'react-icons/md';
 import { useTranslation } from '../i18n/I18nProvider';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaTrophy, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
 
 interface Tournament {
   id: number;
@@ -19,7 +18,8 @@ interface Tournament {
   locationEn: string;
   participants: string;
   participantsEn: string;
-  image: string;
+  cardImage: string;
+  modalImage: string;
   googleFormUrl: string;
   isActive: boolean;
 }
@@ -38,7 +38,8 @@ const tournaments: Tournament[] = [
     locationEn: "Dhaka-16",
     participants: "ঢাকা–১৬ এর ৭টি মহল্লার নারী",
     participantsEn: "Women from 7 mohallas of Dhaka-16",
-    image: "/aminul Haque/aminulhaque.jpeg",
+    cardImage: "/aminul Haque/tournamentTwo.jpeg",
+    modalImage: "/aminul Haque/tournamentOne.jpeg",
     googleFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLSflbvxThusHbYkSoKczyN6QvWth8lsLqJbsIWsDdrEVi18bmg/viewform?usp=publish-editor",
     isActive: true,
   }
@@ -92,7 +93,7 @@ export default function TournamentClient() {
                     {/* Card Image */}
                     <div className="relative h-56 overflow-hidden">
                       <Image
-                        src={tournament.image}
+                        src={tournament.cardImage}
                         alt={language === 'bd' ? tournament.title : tournament.titleEn}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -211,26 +212,28 @@ export default function TournamentClient() {
               className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Modal Header */}
-              <div className="relative bg-gradient-to-r from-emerald-500 to-green-600 p-6 text-white">
+              {/* Modal Image */}
+              <div className="relative h-64 md:h-80 overflow-hidden">
+                <Image
+                  src={selectedTournament.modalImage}
+                  alt={language === 'bd' ? selectedTournament.title : selectedTournament.titleEn}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <button
                   onClick={() => setSelectedTournament(null)}
-                  className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+                  className="absolute top-4 right-4 w-10 h-10 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors"
                 >
-                  <FaTimes className="text-xl" />
+                  <FaTimes className="text-xl text-white" />
                 </button>
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                    <FaTrophy className="text-3xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold">
-                      {language === 'bd' ? selectedTournament.title : selectedTournament.titleEn}
-                    </h3>
-                    <p className="text-white/80 text-sm mt-1">
-                      {t('tournament.registerViaForm')}
-                    </p>
-                  </div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-2xl font-bold text-white drop-shadow-lg">
+                    {language === 'bd' ? selectedTournament.title : selectedTournament.titleEn}
+                  </h3>
+                  <p className="text-white/80 text-sm mt-1">
+                    {t('tournament.registerViaForm')}
+                  </p>
                 </div>
               </div>
 
