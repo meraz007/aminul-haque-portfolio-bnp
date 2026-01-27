@@ -40,6 +40,7 @@ export default function SurveyDetailClient({ survey }: SurveyDetailClientProps) 
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  console.log(submitting);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState<{
     answers: Record<string, string>;
