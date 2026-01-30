@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaSearch,
@@ -9,6 +9,9 @@ import {
   FaTimes,
   FaUser,
   FaPrint,
+  FaFilter,
+  FaCheck,
+  FaChevronDown,
 } from "react-icons/fa";
 import Image from "next/image";
 import { toBanglaNumber } from "@/lib/utils";
@@ -68,6 +71,76 @@ export default function VoterCenterPage() {
   const [notFound, setNotFound] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+  const filterDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filterDropdownRef.current &&
+        !filterDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowFilterDropdown(false);
+      }
+    };
+
+    if (showFilterDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFilterDropdown]);
+
+  // Available search columns with labels
+  const searchColumns = [
+    { id: "name", labelEn: "Name", labelBd: "নাম", icon: "👤" },
+    {
+      id: "serial_number",
+      labelEn: "Serial Number",
+      labelBd: "সিরিয়াল নম্বর",
+      icon: "🔢",
+    },
+    { id: "address", labelEn: "Address", labelBd: "ঠিকানা", icon: "📍" },
+    {
+      id: "father_name",
+      labelEn: "Father's Name",
+      labelBd: "পিতার নাম",
+      icon: "👨",
+    },
+    {
+      id: "mother_name",
+      labelEn: "Mother's Name",
+      labelBd: "মাতার নাম",
+      icon: "👩",
+    },
+    { id: "ward", labelEn: "Ward", labelBd: "ওয়ার্ড", icon: "🏘️" },
+    {
+      id: "date_of_birth",
+      labelEn: "Date of Birth",
+      labelBd: "জন্ম তারিখ",
+      icon: "📅",
+    },
+  ];
+
+  const toggleColumn = (columnId: string) => {
+    setSelectedColumns((prev) =>
+      prev.includes(columnId)
+        ? prev.filter((id) => id !== columnId)
+        : [...prev, columnId],
+    );
+  };
+
+  const clearAllColumns = () => {
+    setSelectedColumns([]);
+  };
+
+  const selectAllColumns = () => {
+    setSelectedColumns(searchColumns.map((col) => col.id));
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +150,7 @@ export default function VoterCenterPage() {
 
     try {
       const response = await fetch(
-        `https://admin.aminul-haque.com/api/v1/voters?search=${encodeURIComponent(searchQuery)}`,
+        `https://admin.aminul-haque.com/api/v1/voters?search=${encodeURIComponent(searchQuery)}&searchColumns=${encodeURIComponent(selectedColumns.join(","))}`,
       );
 
       const data: VoterApiResponse = await response.json();
@@ -335,6 +408,175 @@ export default function VoterCenterPage() {
                           />
                         </div>
 
+                        {/* Advanced Filter - Column Selection */}
+                        <div className="relative" ref={filterDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowFilterDropdown(!showFilterDropdown)
+                            }
+                            className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors group"
+                          >
+                            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-50 to-slate-100 rounded-full border border-slate-200 hover:border-blue-300 hover:from-blue-50 hover:to-cyan-50 transition-all">
+                              <FaFilter className="text-blue-500" />
+                              <span>
+                                {language === "bd"
+                                  ? "সার্চ কলাম নির্বাচন করুন"
+                                  : "Filter Search Columns"}
+                              </span>
+                              <span className="flex items-center justify-center bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5">
+                                {selectedColumns.length}
+                              </span>
+                              <FaChevronDown
+                                className={`text-slate-400 transition-transform duration-200 ${showFilterDropdown ? "rotate-180" : ""}`}
+                              />
+                            </div>
+                          </button>
+
+                          {/* Selected Columns Pills */}
+                          {selectedColumns.length > 0 && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="flex flex-wrap gap-2 mt-3"
+                            >
+                              {selectedColumns.map((colId) => {
+                                const column = searchColumns.find(
+                                  (c) => c.id === colId,
+                                );
+                                return (
+                                  <motion.span
+                                    key={colId}
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 0.8, opacity: 0 }}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm rounded-full shadow-sm"
+                                  >
+                                    <span>{column?.icon}</span>
+                                    <span>
+                                      {language === "bd"
+                                        ? column?.labelBd
+                                        : column?.labelEn}
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleColumn(colId);
+                                      }}
+                                      className="ml-1 hover:bg-white/20 rounded-full p-0.5 transition-colors"
+                                    >
+                                      <FaTimes className="text-xs" />
+                                    </button>
+                                  </motion.span>
+                                );
+                              })}
+                              <button
+                                type="button"
+                                onClick={clearAllColumns}
+                                className="text-sm text-red-500 hover:text-red-600 font-medium px-2 hover:underline"
+                              >
+                                {language === "bd" ? "সব মুছুন" : "Clear All"}
+                              </button>
+                            </motion.div>
+                          )}
+
+                          {/* Filter Dropdown */}
+                          <AnimatePresence>
+                            {showFilterDropdown && (
+                              <motion.div
+                                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute z-20 left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
+                              >
+                                {/* Header */}
+                                <div className="bg-gradient-to-r from-blue-600 to-cyan-600 px-5 py-3 flex items-center justify-between">
+                                  <span className="text-white font-bold text-sm">
+                                    {language === "bd"
+                                      ? "সার্চ করার জন্য কলাম নির্বাচন করুন"
+                                      : "Select Columns to Search"}
+                                  </span>
+                                  <div className="flex gap-2">
+                                    <button
+                                      type="button"
+                                      onClick={selectAllColumns}
+                                      className="text-xs text-white/90 hover:text-white bg-white/20 hover:bg-white/30 px-2 py-1 rounded-md transition-colors"
+                                    >
+                                      {language === "bd"
+                                        ? "সব নির্বাচন"
+                                        : "Select All"}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={clearAllColumns}
+                                      className="text-xs text-white/90 hover:text-white bg-white/20 hover:bg-white/30 px-2 py-1 rounded-md transition-colors"
+                                    >
+                                      {language === "bd" ? "সব মুছুন" : "Clear"}
+                                    </button>
+                                  </div>
+                                </div>
+
+                                {/* Column Options Grid */}
+                                <div className="p-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                  {searchColumns.map((column) => {
+                                    const isSelected = selectedColumns.includes(
+                                      column.id,
+                                    );
+                                    return (
+                                      <motion.button
+                                        key={column.id}
+                                        type="button"
+                                        onClick={() => toggleColumn(column.id)}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className={`relative flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 transition-all text-left ${
+                                          isSelected
+                                            ? "bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-400 text-blue-700"
+                                            : "bg-slate-50 border-slate-200 text-slate-600 hover:border-blue-300 hover:bg-blue-50/50"
+                                        }`}
+                                      >
+                                        <span className="text-lg">
+                                          {column.icon}
+                                        </span>
+                                        <span className="text-sm font-medium flex-1">
+                                          {language === "bd"
+                                            ? column.labelBd
+                                            : column.labelEn}
+                                        </span>
+                                        <div
+                                          className={`flex items-center justify-center w-5 h-5 rounded-full border-2 transition-all ${
+                                            isSelected
+                                              ? "bg-blue-600 border-blue-600"
+                                              : "border-slate-300 bg-white"
+                                          }`}
+                                        >
+                                          {isSelected && (
+                                            <FaCheck className="text-white text-xs" />
+                                          )}
+                                        </div>
+                                      </motion.button>
+                                    );
+                                  })}
+                                </div>
+
+                                {/* Footer with Done Button */}
+                                <div className="border-t border-slate-100 px-4 py-3 bg-slate-50">
+                                  <button
+                                    type="button"
+                                    onClick={() => setShowFilterDropdown(false)}
+                                    className="w-full py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all text-sm"
+                                  >
+                                    {language === "bd" ? "সম্পন্ন" : "Done"}
+                                  </button>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
                         <button
                           type="submit"
                           disabled={isSearching}
@@ -486,7 +728,9 @@ export default function VoterCenterPage() {
                             {voter.serial_number && (
                               <div className="p-4 bg-slate-50 rounded-xl">
                                 <p className="text-sm text-slate-600 mb-1">
-                                  {language === "bd" ? "সিরিয়াল নম্বর" : "Serial Number"}
+                                  {language === "bd"
+                                    ? "সিরিয়াল নম্বর"
+                                    : "Serial Number"}
                                 </p>
                                 <p className="text-lg font-bold text-slate-900">
                                   {voter.serial_number}
