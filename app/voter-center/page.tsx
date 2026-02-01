@@ -230,7 +230,7 @@ export default function VoterCenterPage() {
         <!-- Voter Details -->
         <div style="padding: 20px; background: white;">
           <div style="line-height: 2; font-size: 15px; color: #333;">
-            ${voter.serial_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নম্বরঃ" : "Serial Number:"}</strong> ${voter.serial_number}</p>` : ""}
+            ${voter.serial_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নম্বরঃ" : "Serial Number:"}</strong> ${language === "bd" ? toBanglaNumber(voter.serial_number) : voter.serial_number}</p>` : ""}
             <p style="margin: 0;"><strong>${language === "bd" ? "নামঃ" : "Name:"}</strong> ${voter.name}</p>
             ${voter.voter_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "ভোটার নং-" : "Voter No:"}</strong> ${language === "bd" ? voter.voter_number_bangla : voter.voter_number}</p>` : ""}
             ${voter.date_of_birth ? `<p style="margin: 0;"><strong>${language === "bd" ? "জন্ম তারিখঃ" : "DOB:"}</strong> ${language === "bd" ? voter.date_of_birth_bangla : voter.date_of_birth}</p>` : ""}
@@ -309,7 +309,7 @@ export default function VoterCenterPage() {
         <!-- Voter Details -->
         <div style="padding: 20px; background: white;">
           <div style="line-height: 2; font-size: 15px; color: #333;">
-            ${voter.serial_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নম্বরঃ" : "Serial Number:"}</strong> ${voter.serial_number}</p>` : ""}
+            ${voter.serial_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "সিরিয়াল নম্বরঃ" : "Serial Number:"}</strong> ${language === "bd" ? toBanglaNumber(voter.serial_number) : voter.serial_number}</p>` : ""}
             <p style="margin: 0;"><strong>${language === "bd" ? "নামঃ" : "Name:"}</strong> ${voter.name}</p>
             ${voter.voter_number ? `<p style="margin: 0;"><strong>${language === "bd" ? "ভোটার নং-" : "Voter No:"}</strong> ${language === "bd" ? voter.voter_number_bangla : voter.voter_number}</p>` : ""}
             ${voter.date_of_birth ? `<p style="margin: 0;"><strong>${language === "bd" ? "জন্ম তারিখঃ" : "DOB:"}</strong> ${language === "bd" ? voter.date_of_birth_bangla : voter.date_of_birth}</p>` : ""}
