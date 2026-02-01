@@ -984,7 +984,7 @@ export default function VoterCenterPage() {
                   {t("nav.contactUs")}
                 </a>
                 <a
-                  href="tel:+8801712345678"
+                  href="tel:+880 1552-161616"
                   className="px-10 py-4 bg-white text-emerald-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-emerald-600 hover:bg-emerald-50 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
                 >
                   <FaPhone />

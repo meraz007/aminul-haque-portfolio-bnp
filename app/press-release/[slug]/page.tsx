@@ -58,7 +58,7 @@ async function getNewsBySlug(slug: string) {
 export default async function PressReleaseDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const newsData = await getNewsBySlug(slug);
-  
+  console.log(newsData);
   if (!newsData) {
     return <PressReleaseDetailClient pressRelease={null} />;
   }
