@@ -9,12 +9,10 @@ import {
   FaTimes,
   FaUser,
   FaPrint,
-  FaFilter,
-  FaCheck,
   FaChevronDown,
 } from "react-icons/fa";
 import Image from "next/image";
-import { toBanglaNumber } from "@/lib/utils";
+import { toBanglaNumber, toEnglishNumber } from "@/lib/utils";
 import { useTranslation } from "../i18n/I18nProvider";
 
 interface Voter {
@@ -63,11 +61,14 @@ interface VoterApiResponse {
   };
 }
 
+
 export default function VoterCenterPage() {
   const { t, language } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [fatherNameQuery, setFatherNameQuery] = useState("");
   const [dateOfBirthQuery, setDateOfBirthQuery] = useState("");
+  const [voterAreaQuery, setVoterArea] = useState("");
+  const [wardQuery, setWardQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Voter[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -75,10 +76,12 @@ export default function VoterCenterPage() {
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalVoters, setTotalVoters] = useState(0);
   const [hasNextPage, setHasNextPage] = useState(false);
+  const [voterAreas, setVoterAreas] = useState<string[]>([]);
+  const [apiWards, setApiWards] = useState<string[]>([]);
+
   const filterDropdownRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -102,44 +105,14 @@ export default function VoterCenterPage() {
     };
   }, [showFilterDropdown]);
 
-  // Available search columns with labels
-  const searchColumns = [
-    { id: "name", labelEn: "Name", labelBd: "নাম", icon: "👤" },
-    {
-      id: "serial_number",
-      labelEn: "Serial Number",
-      labelBd: "সিরিয়াল নম্বর",
-      icon: "🔢",
-    },
-    { id: "address", labelEn: "Address", labelBd: "ঠিকানা", icon: "📍" },
-    {
-      id: "father_name",
-      labelEn: "Father's Name",
-      labelBd: "পিতার নাম",
-      icon: "👨",
-    },
-    {
-      id: "mother_name",
-      labelEn: "Mother's Name",
-      labelBd: "মাতার নাম",
-      icon: "👩",
-    },
-    { id: "ward", labelEn: "Ward", labelBd: "ওয়ার্ড", icon: "🏘️" },
-    {
-      id: "date_of_birth",
-      labelEn: "Date of Birth",
-      labelBd: "জন্ম তারিখ",
-      icon: "📅",
-    },
-  ];
 
   const buildSearchUrl = (page: number = 1) => {
     const params = new URLSearchParams();
     if (searchQuery) params.append("search", searchQuery);
-    if (selectedColumns.length > 0)
-      params.append("searchColumns", selectedColumns.join(","));
     if (fatherNameQuery) params.append("father_name", fatherNameQuery);
     if (dateOfBirthQuery) params.append("date_of_birth", dateOfBirthQuery);
+    if (wardQuery) params.append("ward", wardQuery);
+    if (voterAreaQuery) params.append("voter_area", voterAreaQuery);
     params.append("page", page.toString());
     return `https://admin.aminul-haque.com/api/v1/voters?${params.toString()}`;
   };
@@ -391,6 +364,30 @@ export default function VoterCenterPage() {
     printWindow.focus();
   };
 
+  useEffect(() => {
+    areas();
+    wards();
+  }, []);
+  const areas = function() {
+    const areaApi = process.env.NEXT_PUBLIC_API_BASE_URL + '/voters/voter-areas';
+
+    fetch(areaApi)
+      .then((res) => res.json())
+      .then((data) => {
+        setVoterAreas(data.data);
+      });
+  }
+
+  const wards = function(){
+    const wardApi = process.env.NEXT_PUBLIC_API_BASE_URL + '/voters/wards';
+
+    fetch(wardApi)
+      .then((res) => res.json())
+      .then((data) => {
+        setApiWards(data.data);
+      });
+  }
+
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
       <section className="relative py-32 px-4 bg-gradient-to-br from-blue-50 via-white to-cyan-50">
@@ -501,13 +498,73 @@ export default function VoterCenterPage() {
                           />
                         </div>
 
+                        <div>
+                          <label className="block text-slate-700 font-bold mb-3 text-base flex items-center gap-2 flex-wrap">
+                            <span>🗺️</span>
+                            <span>{t("voterCenter.voterArea")}</span>
+                            <span className="text-slate-400 font-normal text-sm">
+                              ({language === "bd" ? "ঐচ্ছিক" : "Optional"})
+                            </span>
+                          </label>
+                          <div className="relative">
+                            <select
+                                value={voterAreaQuery}
+                                onChange={(e) =>
+                                    setVoterArea(e.target.value)
+                                }
+                                className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all appearance-none"
+                            >
+                              <option value="">{language === "bd" ? "ভোটার এলাকা নির্বাচন করুন" : "Select Voter Area"}</option>
+                              {voterAreas.map((area, index) => (
+                                  <option key={index} value={area}>
+                                    {area}
+                                  </option>
+                              ))}
+                            </select>
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                              <FaChevronDown size={14} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-slate-700 font-bold mb-3 text-base flex items-center gap-2 flex-wrap">
+                            <span>🏴󠁶󠁵󠁭󠁡󠁰󠁿</span>
+                            <span>{t("voterCenter.ward")}</span>
+                            <span className="text-slate-400 font-normal text-sm">
+                              ({language === "bd" ? "ঐচ্ছিক" : "Optional"})
+                            </span>
+                          </label>
+                          <div className="relative">
+                            <select
+                                value={wardQuery}
+                                onChange={(e) =>
+                                    setWardQuery(e.target.value)
+                                }
+                                className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all appearance-none"
+                            >
+                              <option value="">{language === "bd" ? "ওয়ার্ড নির্বাচন করুন" : "Select Ward"}</option>
+                              {apiWards.map((ward, index) => (
+                                  <option key={index} value={ward}>
+                                    {ward}
+                                  </option>
+                              ))}
+                            </select>
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                              <FaChevronDown size={14} />
+                            </div>
+                          </div>
+                        </div>
+
                         <button
                           type="submit"
                           disabled={
                             isSearching ||
                             (!searchQuery &&
                               !fatherNameQuery &&
-                              !dateOfBirthQuery)
+                              !dateOfBirthQuery &&
+                              !voterAreaQuery &&
+                              !wardQuery)
                           }
                           className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-blue-700 hover:to-cyan-700 transition-all transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-lg"
                         >
@@ -675,7 +732,9 @@ export default function VoterCenterPage() {
                                     : "Serial Number"}
                                 </p>
                                 <p className="text-lg font-bold text-slate-900">
-                                  {voter.serial_number}
+                                  {language === "bd"
+                                      ? toBanglaNumber(voter.serial_number)
+                                      : voter.serial_number}
                                 </p>
                               </div>
                             )}

@@ -7,3 +7,10 @@ export const toBanglaNumber = (num: number | string): string => {
   }).join('');
 };
 
+export const toEnglishNumber = (banglaNumber: number | string): string => {
+  const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return banglaNumber.toString().replace(/[০-৯]/g, (digit) => {
+      return banglaDigits.indexOf(digit).toString();
+    });
+}
+
