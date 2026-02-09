@@ -1,11 +1,20 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaFileAlt, FaFlag, FaCheck } from 'react-icons/fa';
 import { toBanglaNumber } from '@/lib/utils';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 export default function BNP31PointPage() {
   const { t, language } = useTranslation();
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('bnp-31-point', 'national-program').then(setCmsData);
+    fetchCmsPage('bnp-31-point', 'end-section').then(setEndCmsData);
+  }, []);
 
   const getPointNumber = (num: number) => {
     return language === 'bd' ? toBanglaNumber(num) : num.toString();
@@ -33,11 +42,11 @@ export default function BNP31PointPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                {t('bnp31Point.heroTitle')}
+                {cmsData?.title || t('bnp31Point.heroTitle')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('bnp31Point.heroSubtitle')}
+              {cmsData?.description || t('bnp31Point.heroSubtitle')}
             </p>
           </motion.div>
         </div>
@@ -122,10 +131,10 @@ export default function BNP31PointPage() {
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t('bnp31Point.ctaTitle')}
+                {endCmsData?.title || t('bnp31Point.ctaTitle')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t('bnp31Point.ctaText')}
+                {endCmsData?.description || t('bnp31Point.ctaText')}
               </p>
               <a
                 href="/contact"

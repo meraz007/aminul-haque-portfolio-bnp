@@ -1,11 +1,18 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaFutbol } from 'react-icons/fa';
 import KheladhulaClient from './KheladhulaClient';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 export default function KheladhulaPage() {
   const { t } = useTranslation();
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('sports', 'sports').then(setCmsData);
+  }, []);
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
@@ -23,11 +30,11 @@ export default function KheladhulaPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                {t('kheladhula.heroTitle')}
+                {cmsData?.title || t('kheladhula.heroTitle')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('kheladhula.heroSubtitle')}
+              {cmsData?.description || t('kheladhula.heroSubtitle')}
             </p>
           </motion.div>
         </div>

@@ -1,39 +1,78 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
+import { IconType } from 'react-icons';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaTiktok, FaYoutube, FaLinkedinIn, FaPinterestP } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import ContactForm from '../components/ContactForm';
 import ChatWidget from '../components/ChatWidget';
 import { useTranslation } from '../i18n/I18nProvider';
+import { useSettings } from '../contexts/SettingsProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 import Image from 'next/image';
 
 export default function ContactPage() {
   const { t, language } = useTranslation();
+  const { settings } = useSettings();
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('contact', 'contact-us').then(setCmsData);
+  }, []);
+
+  const phone = settings?.company_phone
+    || (language === 'bd' ? '+৮৮০ ১৫৫২-১৬১৬১৬' : '+880 1552-161616');
+
+  const email = settings?.company_email || 'captainaminulhoquedhaka16@gmail.com';
+
+  const address = settings?.company_address
+    || (language === 'bd'
+      ? 'ডি/১৮৬, রোড- ডব্লিউ ৩, ইস্টার্ন হাউজিং ২য় পর্ব, পল্লবী, ঢাকা-১২১৬'
+      : 'D/186, Road- W 3, Eastern Housing Phase 2, Pallabi, Dhaka-1216');
 
   const contactInfo = [
     {
       icon: FaPhone,
       titleKey: 'contact.phone',
-      value: language === 'bd' ? '+৮৮০ ১৫৫২-১৬১৬১৬' : '+880 1552-161616',
+      value: phone,
       subtextKey: 'contact.monFri',
       color: 'from-cyan-500 to-blue-600',
     },
     {
       icon: FaEnvelope,
       titleKey: 'contact.email',
-      value: <>captainaminulhoque<br />dhaka16@gmail.com</>,
+      value: email,
       subtextKey: 'contact.replyTime',
       color: 'from-blue-500 to-purple-600',
     },
     {
       icon: FaMapMarkerAlt,
       titleKey: 'contact.office',
-      value: language === 'bd'
-        ? 'ডি/১৮৬, রোড- ডব্লিউ ৩, ইস্টার্ন হাউজিং ২য় পর্ব, পল্লবী, ঢাকা-১২১৬'
-        : 'D/186, Road- W 3, Eastern Housing Phase 2, Pallabi, Dhaka-1216',
+      value: address,
       color: 'from-purple-500 to-pink-600',
     },
   ];
+
+  // Build social links from settings with fallbacks
+  const socialLinks: { icon: IconType; color: string; link: string }[] = [];
+
+  const fbUrl = settings?.social_media?.facebook || 'https://www.facebook.com/AminulBd07';
+  if (fbUrl) socialLinks.push({ icon: FaFacebook, color: 'from-blue-600 to-blue-700', link: fbUrl });
+
+  const igUrl = settings?.social_media?.instagram || 'https://www.instagram.com/captain_aminul_haque';
+  if (igUrl) socialLinks.push({ icon: FaInstagram, color: 'from-pink-500 to-purple-600', link: igUrl });
+
+  const xUrl = settings?.social_media?.x_twitter || 'https://x.com/Aminulhaque1980';
+  if (xUrl) socialLinks.push({ icon: FaXTwitter, color: 'from-gray-800 to-black', link: xUrl });
+
+  const tiktokUrl = settings?.social_media?.tiktok || 'https://www.tiktok.com/@aminulhoqueofficial';
+  if (tiktokUrl) socialLinks.push({ icon: FaTiktok, color: 'from-gray-900 to-black', link: tiktokUrl });
+
+  const ytUrl = settings?.social_media?.youtube || 'https://youtube.com/@captainaminulhaquedhaka16';
+  if (ytUrl) socialLinks.push({ icon: FaYoutube, color: 'from-red-600 to-red-700', link: ytUrl });
+
+  if (settings?.linkedin) socialLinks.push({ icon: FaLinkedinIn, color: 'from-blue-700 to-blue-800', link: settings.linkedin });
+  if (settings?.pinterest) socialLinks.push({ icon: FaPinterestP, color: 'from-red-600 to-red-700', link: settings.pinterest });
 
   const officeStatus = {
     bd: 'সর্বদা খোলা',
@@ -55,11 +94,11 @@ export default function ContactPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-                {t('contact.subtitle')}
+                {cmsData?.title || t('contact.subtitle')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('contact.description')}
+              {cmsData?.description || t('contact.description')}
             </p>
           </motion.div>
         </div>
@@ -178,13 +217,7 @@ export default function ContactPage() {
                 <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
                   <h3 className="text-2xl font-black text-slate-900 mb-6">{t('contact.socialMedia')}</h3>
                   <div className="flex gap-4 flex-wrap">
-                    {[
-                      { icon: FaFacebook, color: 'from-blue-600 to-blue-700', link: 'https://www.facebook.com/AminulBd07' },
-                      { icon: FaInstagram, color: 'from-pink-500 to-purple-600', link: 'https://www.instagram.com/captain_aminul_haque' },
-                      { icon: FaXTwitter, color: 'from-gray-800 to-black', link: 'https://x.com/Aminulhaque1980' },
-                      { icon: FaTiktok, color: 'from-gray-900 to-black', link: 'https://www.tiktok.com/@aminulhoqueofficial' },
-                      { icon: FaYoutube, color: 'from-red-600 to-red-700', link: 'https://youtube.com/@captainaminulhaquedhaka16' },
-                    ].map((social, idx) => (
+                    {socialLinks.map((social, idx) => (
                       <a
                         key={idx}
                         href={social.link}

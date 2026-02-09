@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import { IconType } from 'react-icons';
 import {
   FaFacebook,
   FaInstagram,
@@ -8,14 +9,24 @@ import {
   FaPhone,
   FaMapMarkerAlt,
   FaTiktok,
-  FaGooglePlay
+  FaGooglePlay,
+  FaLinkedinIn,
+  FaPinterestP,
 } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { toBanglaNumber } from '@/lib/utils';
 import { useTranslation } from '../i18n/I18nProvider';
+import { useSettings } from '../contexts/SettingsProvider';
+
+interface SocialLink {
+  icon: IconType;
+  color: string;
+  url: string;
+}
 
 export default function SiteFooter() {
   const { t, language } = useTranslation();
+  const { settings } = useSettings();
 
   const quickLinks = [
     { titleKey: 'footer.home', href: '/' },
@@ -36,6 +47,43 @@ export default function SiteFooter() {
   const formatYear = (year: number) => {
     return language === 'bd' ? toBanglaNumber(year) : year.toString();
   };
+
+  // Build social links from settings, falling back to hardcoded defaults
+  const socialLinks: SocialLink[] = [];
+
+  const fbUrl = settings?.social_media?.facebook ;
+  if (fbUrl) socialLinks.push({ icon: FaFacebook, color: 'from-blue-600 to-blue-700', url: fbUrl });
+
+  const igUrl = settings?.social_media?.instagram || 'https://www.instagram.com/captain_aminul_haque';
+  if (igUrl) socialLinks.push({ icon: FaInstagram, color: 'from-pink-500 to-purple-600', url: igUrl });
+
+  const xUrl = settings?.social_media?.x_twitter || 'https://x.com/Aminulhaque1980';
+  if (xUrl) socialLinks.push({ icon: FaXTwitter, color: 'from-gray-800 to-black', url: xUrl });
+
+  const tiktokUrl = settings?.social_media?.tiktok || 'https://www.tiktok.com/@aminulhoqueofficial';
+  if (tiktokUrl) socialLinks.push({ icon: FaTiktok, color: 'from-gray-900 to-black', url: tiktokUrl });
+
+  const ytUrl = settings?.social_media?.youtube || 'https://youtube.com/@captainaminulhaquedhaka16';
+  if (ytUrl) socialLinks.push({ icon: FaYoutube, color: 'from-red-600 to-red-700', url: ytUrl });
+
+  if (settings?.linkedin) {
+    socialLinks.push({ icon: FaLinkedinIn, color: 'from-blue-700 to-blue-800', url: settings.linkedin });
+  }
+
+  if (settings?.pinterest) {
+    socialLinks.push({ icon: FaPinterestP, color: 'from-red-600 to-red-700', url: settings.pinterest });
+  }
+
+  // Contact info from settings or hardcoded fallbacks
+  const address = settings?.company_address
+    || (language === 'bd'
+      ? 'ডি/১৮৬, রোড- ডব্লিউ ৩, ইস্টার্ন হাউজিং ২য় পর্ব, পল্লবী, ঢাকা-১২১৬'
+      : 'D/186, Road- W 3, Eastern Housing Phase 2, Pallabi, Dhaka-1216');
+
+  const phone = settings?.company_phone
+    || (language === 'bd' ? '+৮৮০ ১৫৫২-১৬১৬১৬' : '+880 1552-161616');
+
+  const email = settings?.company_email || 'captainaminulhoquedhaka16@gmail.com';
 
   return (
     <footer className="bg-gradient-to-b from-slate-50 to-slate-100 border-t-4 border-emerald-500">
@@ -58,16 +106,10 @@ export default function SiteFooter() {
               {t('footer.aboutText')}
             </p>
             <div className="flex gap-3 flex-wrap">
-              {[
-                { icon: FaFacebook, color: 'from-blue-600 to-blue-700', link: 'https://www.facebook.com/AminulBd07' },
-                { icon: FaInstagram, color: 'from-pink-500 to-purple-600', link: 'https://www.instagram.com/captain_aminul_haque' },
-                { icon: FaXTwitter, color: 'from-gray-800 to-black', link: 'https://x.com/Aminulhaque1980' },
-                { icon: FaTiktok, color: 'from-gray-900 to-black', link: 'https://www.tiktok.com/@aminulhoqueofficial' },
-                { icon: FaYoutube, color: 'from-red-600 to-red-700', link: 'https://youtube.com/@captainaminulhaquedhaka16' },
-              ].map((social, idx) => (
+              {socialLinks.map((social, idx) => (
                 <a
                   key={idx}
-                  href={social.link}
+                  href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`p-3 bg-gradient-to-br ${social.color} text-white rounded-xl hover:shadow-xl transition-all transform hover:scale-110`}
@@ -128,11 +170,7 @@ export default function SiteFooter() {
                   <FaMapMarkerAlt className="text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-700 font-semibold">
-                    {language === 'bd' 
-                      ? 'ডি/১৮৬, রোড- ডব্লিউ ৩, ইস্টার্ন হাউজিং ২য় পর্ব, পল্লবী, ঢাকা-১২১৬'
-                      : 'D/186, Road- W 3, Eastern Housing Phase 2, Pallabi, Dhaka-1216'}
-                  </p>
+                  <p className="text-slate-700 font-semibold">{address}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -140,9 +178,7 @@ export default function SiteFooter() {
                   <FaPhone className="text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-700 font-semibold">
-                    {language === 'bd' ? '+৮৮০ ১৫৫২-১৬১৬১৬' : '+880 1552-161616'}
-                  </p>
+                  <p className="text-slate-700 font-semibold">{phone}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -150,7 +186,7 @@ export default function SiteFooter() {
                   <FaEnvelope className="text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-700 font-semibold">captainaminulhoque<br /> dhaka16@gmail.com</p>
+                  <p className="text-slate-700 font-semibold break-all">{email}</p>
                 </div>
               </div>
             </div>

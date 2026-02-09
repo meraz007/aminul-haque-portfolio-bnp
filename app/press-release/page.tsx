@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import PressReleaseCard from '../components/PressReleaseCard';
 import { FaNewspaper, FaBullhorn } from 'react-icons/fa';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 interface NewsDetail {
   id: number;
@@ -40,6 +41,13 @@ export default function PressReleasePage() {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('press-release', 'latest-news').then(setCmsData);
+    fetchCmsPage('press-release', 'end-section').then(setEndCmsData);
+  }, []);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -157,11 +165,11 @@ export default function PressReleasePage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                {t('pressRelease.title')}
+                {cmsData?.title || t('pressRelease.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('pressRelease.subtitle')}
+              {cmsData?.description || t('pressRelease.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -232,10 +240,10 @@ export default function PressReleasePage() {
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <FaNewspaper className="text-5xl text-blue-600 mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t('pressRelease.mediaContact')}
+                {endCmsData?.title || t('pressRelease.mediaContact')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t('pressRelease.mediaContactDesc')}
+                {endCmsData?.description || t('pressRelease.mediaContactDesc')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a

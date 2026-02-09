@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 interface Program {
   id?: string | number;
@@ -30,6 +31,13 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
   const [programs, setPrograms] = useState<Program[]>(initialPrograms);
   const [error, setError] = useState<string | null>(initialError || null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('programs', 'action-plan').then(setCmsData);
+    fetchCmsPage('programs', 'end-section').then(setEndCmsData);
+  }, []);
 
   // Poll for updates every 10 seconds
   useEffect(() => {
@@ -121,11 +129,11 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                {t('programs.creatingChange')}
+                {cmsData?.title || t('programs.creatingChange')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('programs.programsDesc')}
+              {cmsData?.description || t('programs.programsDesc')}
             </p>
           </motion.div>
         </div>
@@ -221,10 +229,10 @@ export default function ProgramsClient({ programs: initialPrograms, error: initi
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t('programs.bePartOfChange')}
+                {endCmsData?.title || t('programs.bePartOfChange')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t('programs.joinPrograms')}
+                {endCmsData?.description || t('programs.joinPrograms')}
               </p>
               <button className="px-10 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105">
                 {t('nav.contactUs')}

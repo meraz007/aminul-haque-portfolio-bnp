@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   FaUser, 
@@ -14,6 +14,7 @@ import {
 } from 'react-icons/fa';
 import { toBanglaNumber } from '@/lib/utils';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 // Sample data for Bangladesh districts, upazilas, and wards
 const districts = [
@@ -159,6 +160,11 @@ export default function VolunteerPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('volunteer', 'become-volunteer').then(setCmsData);
+  }, []);
 
   const skills = language === 'bd' ? skillsData.bd : skillsData.en;
   const preferredTasks = language === 'bd' ? preferredTasksData.bd : preferredTasksData.en;
@@ -386,11 +392,11 @@ export default function VolunteerPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {t('volunteer.volunteerRegistration')}
+                {cmsData?.title || t('volunteer.volunteerRegistration')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('volunteer.joinUsDesc')}
+              {cmsData?.description || t('volunteer.joinUsDesc')}
             </p>
           </motion.div>
         </div>

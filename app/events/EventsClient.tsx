@@ -6,6 +6,7 @@ import EventCard from '../components/EventCard';
 import { FaCalendarAlt, FaFilter } from 'react-icons/fa';
 import { toBanglaNumber } from '@/lib/utils';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 // Convert Bengali numerals to English numerals
 function convertBengaliToEnglish(bengaliStr: string): string {
@@ -50,6 +51,13 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [titleFilter, setTitleFilter] = useState<string>('');
   const [dateFilter, setDateFilter] = useState<string>('');
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('events', 'our-activities').then(setCmsData);
+    fetchCmsPage('events', 'end-section').then(setEndCmsData);
+  }, []);
 
   // Poll for updates every 10 seconds
   useEffect(() => {
@@ -243,11 +251,11 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {t('events.allEvents')}
+                {cmsData?.title || t('events.allEvents')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('events.viewAllEvents')}
+              {cmsData?.description || t('events.viewAllEvents')}
             </p>
           </motion.div>
         </div>
@@ -422,10 +430,10 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t('events.learnAboutEvents')}
+                {endCmsData?.title || t('events.learnAboutEvents')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t('events.latestUpdates')}
+                {endCmsData?.description || t('events.latestUpdates')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a

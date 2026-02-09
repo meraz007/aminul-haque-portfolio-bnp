@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   FaExclamationTriangle, 
@@ -15,6 +15,7 @@ import {
   } from 'react-icons/fa';
 import Image from 'next/image';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage, fetchComplaintHearYourVoice, type ComplaintHearYourVoice } from '@/lib/api';
 
 interface Category {
   id: number;
@@ -41,6 +42,15 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+  const [hearVoiceData, setHearVoiceData] = useState<ComplaintHearYourVoice | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('complaint', 'public-complaints').then(setCmsData);
+    fetchCmsPage('complaint', 'end-section').then(setEndCmsData);
+    fetchComplaintHearYourVoice().then(setHearVoiceData);
+  }, []);
 
   const thanas = [
     'উত্তরা',
@@ -174,11 +184,11 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                {t('complaints.title')}
+                {cmsData?.title || t('complaints.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('complaints.subtitle')}
+              {cmsData?.description || t('complaints.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -199,12 +209,13 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
               <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src="/aminul Haque/complain.jpeg"
-                  alt={t('hero.title')}
+                  src={hearVoiceData?.main_image || "/aminul Haque/complain.jpeg"}
+                  alt={hearVoiceData?.title || t('hero.title')}
                   width={600}
                   height={800}
                   className="w-full h-auto"
                   loading="lazy"
+                  unoptimized={!!hearVoiceData?.main_image}
                 />
               </div>
             </motion.div>
@@ -218,22 +229,31 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
             >
               <span className="text-red-600 font-bold text-sm uppercase tracking-wider">{t('complaints.hearYourVoice')}</span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-                {t('complaints.alwaysReady')}
+                {hearVoiceData?.title || t('complaints.alwaysReady')}
               </h2>
-              <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
-                <p>
-                  {t('complaints.welcomeText1')}
+              {hearVoiceData?.content ? (
+                <div
+                  className="space-y-4 text-lg text-slate-700 leading-relaxed prose prose-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: hearVoiceData.content }}
+                />
+              ) : (
+                <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
+                  <p>{t('complaints.welcomeText1')}</p>
+                  <p>{t('complaints.welcomeText2')}</p>
+                </div>
+              )}
+              {hearVoiceData?.subtitle ? (
+                <p className="font-semibold text-red-700 mt-4">
+                  {hearVoiceData.subtitle}
                 </p>
-                <p>
-                  {t('complaints.welcomeText2')}
-                </p>
-                <p className="font-semibold text-red-700">
+              ) : (
+                <p className="font-semibold text-red-700 mt-4">
                   {t('complaints.togetherImprove')}
                 </p>
-              </div>
+              )}
               <div className="mt-6 p-6 bg-red-50 rounded-2xl border-l-4 border-red-600">
                 <p className="text-slate-700">
-                  <strong className="text-red-700">{t('complaints.promise')}:</strong> {t('complaints.promiseText')}
+                  {hearVoiceData?.quotes || (<><strong className="text-red-700">{t('complaints.promise')}:</strong> {t('complaints.promiseText')}</>)}
                 </p>
               </div>
             </motion.div>
@@ -570,10 +590,10 @@ export default function ComplaintsClient({ categories }: ComplaintsClientProps) 
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t('complaints.needDirectContact')}
+                {endCmsData?.title || t('complaints.needDirectContact')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t('complaints.urgentMatters')}
+                {endCmsData?.description || t('complaints.urgentMatters')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a

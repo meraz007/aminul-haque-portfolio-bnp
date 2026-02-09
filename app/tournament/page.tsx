@@ -1,11 +1,18 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaTrophy } from 'react-icons/fa';
 import TournamentClient from './TournamentClient';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 export default function TournamentPage() {
   const { t } = useTranslation();
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('tournament', 'tournament').then(setCmsData);
+  }, []);
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
@@ -28,11 +35,11 @@ export default function TournamentPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {t('tournament.heroTitle')}
+                {cmsData?.title || t('tournament.heroTitle')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('tournament.heroSubtitle')}
+              {cmsData?.description || t('tournament.heroSubtitle')}
             </p>
           </motion.div>
         </div>

@@ -5,6 +5,7 @@ import { Poppins } from 'next/font/google';
 import Navbar from './components/Navbar';
 import SiteFooter from './components/SiteFooter';
 import { I18nProvider } from './i18n/I18nProvider';
+import { SettingsProvider } from './contexts/SettingsProvider';
 import { getServerLang } from './i18n/getServerLang';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
@@ -49,11 +50,13 @@ export default async function RootLayout({
     <html lang={initialLanguage === 'bd' ? 'bn' : 'en'} data-scroll-behavior="smooth">
       <body className={`${poppins.className} bg-white text-slate-900 antialiased `} suppressHydrationWarning>
         <I18nProvider initialLanguage={initialLanguage}>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
+          <SettingsProvider>
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <SiteFooter />
+            </div>
+          </SettingsProvider>
         </I18nProvider>
       </body>
     </html>

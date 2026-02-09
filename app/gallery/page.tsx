@@ -1,11 +1,18 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCamera } from 'react-icons/fa';
 import GalleryClient from './GalleryClient';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 export default function GalleryPage() {
   const { t } = useTranslation();
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('gallery', 'campaign-gallery').then(setCmsData);
+  }, []);
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
@@ -23,11 +30,11 @@ export default function GalleryPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                {t('gallery.dailyPrograms')}
+                {cmsData?.title || t('gallery.dailyPrograms')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('gallery.memorableMoments')}
+              {cmsData?.description || t('gallery.memorableMoments')}
             </p>
           </motion.div>
         </div>

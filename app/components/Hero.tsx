@@ -2,11 +2,23 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 export default function Hero() {
   const { t } = useTranslation();
-  
+  const [heroData, setHeroData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('home', 'hero').then(setHeroData);
+  }, []);
+
+  const description = heroData?.description || t('hero.description');
+  const tagline = heroData?.image_description || t('hero.tagline');
+  const titleImage = heroData?.title_image || '/aminul Haque/sobarAgeBangladesh.jpeg';
+  const mainImage = heroData?.main_image || '/aminul Haque/hero.jpeg';
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-slate-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-32 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -18,16 +30,17 @@ export default function Hero() {
         >
           <h1>
             <Image
-              src="/aminul Haque/sobarAgeBangladesh.jpeg"
+              src={titleImage}
               alt="সবার আগে বাংলাদেশ"
               width={400}
               height={200}
               className="w-full max-w-md h-auto"
               priority
+              unoptimized
             />
           </h1>
           <p className="text-slate-600 text-lg max-w-prose leading-relaxed">
-            {t('hero.description')}
+            {description}
           </p>
           <div className="flex items-center gap-4">
             <Link
@@ -54,18 +67,19 @@ export default function Hero() {
           <div className="absolute inset-0 bg-emerald-500 rounded-3xl blur-2xl opacity-20"></div>
           <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white h-[400px] sm:h-[500px] md:h-[600px] bg-gradient-to-b from-emerald-200 to-emerald-300">
             <Image
-              src="/aminul Haque/hero.jpeg"
+              src={mainImage}
               alt={t('hero.title')}
               className="object-contain object-bottom"
               priority
               style={{ height: 'auto' }}
               width={600}
               height={800}
+              unoptimized
             />
           </div>
           <div className="mt-4 md:absolute md:bottom-[-50px] md:left-0 md:right-0 p-2 md:p-4">
             <p className="text-black text-center font-semibold text-lg md:text-xl">
-              {t('hero.tagline')}
+              {tagline}
             </p>
           </div>
         </motion.div>

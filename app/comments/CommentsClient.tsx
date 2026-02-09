@@ -6,6 +6,7 @@ import { FaComment, FaUser, FaPaperPlane, FaClock, FaHeart } from 'react-icons/f
 import Image from 'next/image';
 import { toBanglaNumber } from '@/lib/utils';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage, fetchCommentsWeHearYou, type HearYourVoiceData } from '@/lib/api';
 
 interface Comment {
   id: number;
@@ -34,6 +35,15 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+  const [hearYouData, setHearYouData] = useState<HearYourVoiceData | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('comments', 'your-opinion').then(setCmsData);
+    fetchCmsPage('comments', 'end-section').then(setEndCmsData);
+    fetchCommentsWeHearYou().then(setHearYouData);
+  }, []);
 
   // Poll for updates every 10 seconds
   useEffect(() => {
@@ -213,11 +223,11 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-                {t('comments.title')}
+                {cmsData?.title || t('comments.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('comments.subtitle')}
+              {cmsData?.description || t('comments.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -238,12 +248,13 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src="/aminul Haque/complain.jpeg"
-                  alt={t('hero.title')}
+                  src={hearYouData?.main_image || "/aminul Haque/complain.jpeg"}
+                  alt={hearYouData?.title || t('hero.title')}
                   width={600}
                   height={800}
                   className="w-full h-auto"
                   loading="lazy"
+                  unoptimized={!!hearYouData?.main_image}
                 />
               </div>
             </motion.div>
@@ -257,22 +268,31 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             >
               <span className="text-pink-600 font-bold text-sm uppercase tracking-wider">{t('comments.hearYou')}</span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-                {t('comments.opinionIsStrength')}
+                {hearYouData?.title || t('comments.opinionIsStrength')}
               </h2>
-              <div className="space-y-4 text-lg text-slate-700 leading-relaxed text-justify">
-                <p>
-                  {t('comments.welcomeText1')}
+              {hearYouData?.content ? (
+                <div
+                  className="space-y-4 text-lg text-slate-700 leading-relaxed text-justify prose prose-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: hearYouData.content }}
+                />
+              ) : (
+                <div className="space-y-4 text-lg text-slate-700 leading-relaxed text-justify">
+                  <p>{t('comments.welcomeText1')}</p>
+                  <p>{t('comments.welcomeText2')}</p>
+                </div>
+              )}
+              {hearYouData?.subtitle ? (
+                <p className="font-semibold text-pink-700 mt-4">
+                  {hearYouData.subtitle}
                 </p>
-                <p>
-                  {t('comments.welcomeText2')}
-                </p>
-                <p className="font-semibold text-pink-700">
+              ) : (
+                <p className="font-semibold text-pink-700 mt-4">
                   {t('comments.smallCommentBigChange')}
                 </p>
-              </div>
+              )}
               <div className="mt-6 p-6 bg-pink-50 rounded-2xl border-l-4 border-pink-600">
                 <p className="text-slate-700">
-                  <strong className="text-pink-700">{t('comments.myPromise')}:</strong> {t('comments.promiseText')}
+                  {hearYouData?.quotes || (<><strong className="text-pink-700">{t('comments.myPromise')}:</strong> {t('comments.promiseText')}</>)}
                 </p>
               </div>
             </motion.div>
@@ -440,10 +460,10 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t('comments.opinionImportant')}
+                {endCmsData?.title || t('comments.opinionImportant')}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t('comments.ctaText')}
+                {endCmsData?.description || t('comments.ctaText')}
               </p>
             </div>
           </motion.div>

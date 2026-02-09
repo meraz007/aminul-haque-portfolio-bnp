@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { toBanglaNumber, toEnglishNumber } from "@/lib/utils";
 import { useTranslation } from "../i18n/I18nProvider";
+import { fetchCmsPage, type CmsPage } from "@/lib/api";
 
 interface Voter {
   id: number;
@@ -81,6 +82,15 @@ export default function VoterCenterPage() {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [voterAreas, setVoterAreas] = useState<string[]>([]);
   const [apiWards, setApiWards] = useState<string[]>([]);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
+  const [serviceCmsData, setServiceCmsData] = useState<CmsPage | null>(null);
+  console.log(serviceCmsData);
+  useEffect(() => {
+    fetchCmsPage('voter-center', 'voter-service').then(setCmsData);
+    fetchCmsPage('voter-center', 'end-section').then(setEndCmsData);
+    fetchCmsPage('voter-center', 'at-your-service').then(setServiceCmsData);
+  }, []);
 
   const filterDropdownRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
@@ -401,11 +411,11 @@ export default function VoterCenterPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                {t("voterCenter.findVotingCenter")}
+                {cmsData?.title || t("voterCenter.findVotingCenter")}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t("voterCenter.subtitle")}
+              {cmsData?.description || t("voterCenter.subtitle")}
             </p>
           </motion.div>
         </div>
@@ -426,7 +436,7 @@ export default function VoterCenterPage() {
                 {language === "bd" ? "ভোটার সেবায় আমরা" : "At Your Service"}
               </span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-                {t("voterCenter.helpingYou")}
+                {serviceCmsData?.title || t("voterCenter.helpingYou")}
               </h2>
               <section>
                 <div className="mx-auto max-w-4xl">
@@ -596,12 +606,13 @@ export default function VoterCenterPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src="/aminul Haque/voter-center.jpeg"
+                  src={serviceCmsData?.main_image || '/aminul Haque/voter-center.jpeg'}
                   alt={language === "bd" ? "আমিনুল হক" : "Aminul Haque"}
                   width={600}
                   height={800}
                   className="w-full h-auto"
                   loading="lazy"
+                  unoptimized
                 />
               </div>
             </motion.div>
@@ -971,10 +982,10 @@ export default function VoterCenterPage() {
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t("voterCenter.needHelp")}
+                {endCmsData?.title || t("voterCenter.needHelp")}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t("voterCenter.helpDesc")}
+                {endCmsData?.description || t("voterCenter.helpDesc")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a

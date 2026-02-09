@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toBanglaNumber } from '@/lib/utils';
 import { useTranslation } from '../i18n/I18nProvider';
+import { fetchCmsPage, type CmsPage } from '@/lib/api';
 
 interface ProposalContent {
   id: number;
@@ -59,6 +60,13 @@ export default function ManifestoPage() {
   const [manifestoPoints, setManifestoPoints] = useState<ManifestoPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cmsData, setCmsData] = useState<CmsPage | null>(null);
+  const [proposalCmsData, setProposalCmsData] = useState<CmsPage | null>(null);
+
+  useEffect(() => {
+    fetchCmsPage('sports-development', 'our-vision').then(setCmsData);
+    fetchCmsPage('sports-development', 'proposal').then(setProposalCmsData);
+  }, []);
 
   useEffect(() => {
     const fetchProposals = async () => {
@@ -132,11 +140,11 @@ export default function ManifestoPage() {
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">
-                {t('manifesto.title')}
+                {cmsData?.title || t('manifesto.title')}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('manifesto.subtitle')}
+              {cmsData?.description || t('manifesto.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -153,10 +161,10 @@ export default function ManifestoPage() {
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4">
-              {t('manifesto.proposals')}
+              {proposalCmsData?.title || t('manifesto.proposals')}
             </h2>
             <p className="text-xl text-slate-600">
-              {t('manifesto.proposalsDesc')}
+              {proposalCmsData?.description || t('manifesto.proposalsDesc')}
             </p>
           </motion.div>
 

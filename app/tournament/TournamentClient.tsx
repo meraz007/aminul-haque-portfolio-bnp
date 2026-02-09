@@ -1,59 +1,84 @@
 "use client";
 import Image from 'next/image';
-import { useState } from 'react';
-import { MdSportsTennis } from 'react-icons/md';
+import { useState, useEffect } from 'react';
 import { useTranslation } from '../i18n/I18nProvider';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTrophy, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
+import { FaTrophy, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaExternalLinkAlt, FaTimes, FaSpinner } from 'react-icons/fa';
 
 interface Tournament {
   id: number;
   title: string;
-  titleEn: string;
+  sports_name: string;
+  sports_icon: string;
+  thumbnail: string;
+  image: string;
   description: string;
-  descriptionEn: string;
-  startDate: string;
-  startDateEn: string;
-  registrationDeadline: string;
-  registrationDeadlineEn: string;
+  start_date: string;
+  registration_deadline: string;
   location: string;
-  locationEn: string;
-  participants: string;
-  participantsEn: string;
-  cardImage: string;
-  modalImage: string;
-  googleFormUrl: string;
-  isActive: boolean;
+  participant: string;
+  registration_link: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
 }
 
-// Tournament data
-const tournaments: Tournament[] = [
-  {
-    id: 1,
-    title: "ঢাকা–১৬ উইমেন ব্যাডমিন্টন চ্যাম্পিয়নশিপ",
-    titleEn: "Dhaka-16 Women Badminton Championship",
-    description: "ঢাকা–১৬ এর ৭টি মহল্লার নারীদের অংশগ্রহণে আগামী ২৩ জানুয়ারি ২০২৬ তারিখ থেকে আয়োজিত হতে যাচ্ছে ঢাকা–১৬ উইমেন ব্যাডমিন্টন চ্যাম্পিয়নশিপ। খেলায় অংশ নিতে আগ্রহীরা নিচের দেয়া গুগল ফর্ম পূরণ এর মাধ্যমে আজই রেজিস্ট্রেশন করুন।",
-    descriptionEn: "The Dhaka-16 Women Badminton Championship is being organized from January 23, 2026, with participation from women of 7 mohallas of Dhaka-16. Those interested in participating can register today by filling out the Google form below.",
-    startDate: "৩১ জানুয়ারি ২০২৬",
-    startDateEn: "31 January 2026",
-    registrationDeadline: "২৪ জানুয়ারি ২০২৬",
-    registrationDeadlineEn: "24 January 2026",
-    location: "ঢাকা–১৬",
-    locationEn: "Dhaka-16",
-    participants: "ঢাকা–১৬ এর ৭টি মহল্লার নারী",
-    participantsEn: "Women from 7 mohallas of Dhaka-16",
-    cardImage: "/aminul Haque/tournamentTwo.jpeg",
-    modalImage: "/aminul Haque/tournamentOne.jpeg",
-    googleFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLSflbvxThusHbYkSoKczyN6QvWth8lsLqJbsIWsDdrEVi18bmg/viewform?usp=publish-editor",
-    isActive: true,
-  }
-];
+interface TournamentApiResponse {
+  success: boolean;
+  message: string;
+  data: {
+    data: Tournament[];
+    links: {
+      first: string;
+      last: string;
+      prev: string | null;
+      next: string | null;
+    };
+    meta: {
+      current_page: number;
+      from: number;
+      last_page: number;
+      path: string;
+      per_page: number;
+      to: number;
+      total: number;
+    };
+  };
+}
 
 export default function TournamentClient() {
   const { t, language } = useTranslation();
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const activeTournaments = tournaments.filter(t => t.isActive);
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+        const response = await fetch(`${apiBaseUrl}/tournaments`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch tournaments');
+        }
+        const data: TournamentApiResponse = await response.json();
+        if (data.success) {
+          setTournaments(data.data.data);
+        } else {
+          throw new Error(data.message || 'Failed to fetch tournaments');
+        }
+      } catch (err) {
+        console.error('Error fetching tournaments:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTournaments();
+  }, []);
 
   return (
     <>
@@ -73,7 +98,25 @@ export default function TournamentClient() {
             <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-green-600 mx-auto rounded-full"></div>
           </motion.div>
 
-          {activeTournaments.length === 0 ? (
+          {loading ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-16"
+            >
+              <FaSpinner className="text-5xl text-emerald-500 mx-auto mb-4 animate-spin" />
+              <p className="text-xl text-slate-500">{t('common.loading')}</p>
+            </motion.div>
+          ) : error ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-16"
+            >
+              <FaTrophy className="text-6xl text-slate-300 mx-auto mb-4" />
+              <p className="text-xl text-red-500">{error}</p>
+            </motion.div>
+          ) : tournaments.length === 0 ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -84,7 +127,7 @@ export default function TournamentClient() {
             </motion.div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {activeTournaments.map((tournament, index) => (
+              {tournaments.map((tournament, index) => (
                 <motion.div
                   key={tournament.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -97,18 +140,28 @@ export default function TournamentClient() {
                     {/* Card Image */}
                     <div className="relative h-56 overflow-hidden">
                       <Image
-                        src={tournament.cardImage}
-                        alt={language === 'bd' ? tournament.title : tournament.titleEn}
+                        src={tournament.thumbnail}
+                        alt={tournament.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        unoptimized
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                      
-                      {/* Badge */}
+
+                      {/* Sport Badge */}
                       <div className="absolute top-4 left-4">
                         <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-full text-sm font-bold shadow-lg">
-                          <MdSportsTennis className="text-lg" />
-                          {language === 'bd' ? 'ব্যাডমিন্টন' : 'Badminton'}
+                          {tournament.sports_icon && (
+                            <Image
+                              src={tournament.sports_icon}
+                              alt={tournament.sports_name}
+                              width={20}
+                              height={20}
+                              className="w-5 h-5"
+                              unoptimized
+                            />
+                          )}
+                          {tournament.sports_name}
                         </span>
                       </div>
 
@@ -122,7 +175,7 @@ export default function TournamentClient() {
                       {/* Title Overlay */}
                       <div className="absolute bottom-4 left-4 right-4">
                         <h3 className="text-xl font-bold text-white line-clamp-2 drop-shadow-lg">
-                          {language === 'bd' ? tournament.title : tournament.titleEn}
+                          {tournament.title}
                         </h3>
                       </div>
                     </div>
@@ -131,7 +184,7 @@ export default function TournamentClient() {
                     <div className="p-6">
                       {/* Description */}
                       <p className="text-slate-600 text-sm line-clamp-3 mb-4">
-                        {language === 'bd' ? tournament.description : tournament.descriptionEn}
+                        {tournament.description}
                       </p>
 
                       {/* Info Items */}
@@ -143,7 +196,7 @@ export default function TournamentClient() {
                           <div>
                             <span className="text-xs text-slate-400 block">{t('tournament.startDate')}</span>
                             <span className="font-semibold text-slate-700">
-                              {language === 'bd' ? tournament.startDate : tournament.startDateEn}
+                              {tournament.start_date}
                             </span>
                           </div>
                         </div>
@@ -155,7 +208,7 @@ export default function TournamentClient() {
                           <div>
                             <span className="text-xs text-slate-400 block">{t('tournament.registrationDeadline')}</span>
                             <span className="font-semibold text-red-600">
-                              {language === 'bd' ? tournament.registrationDeadline : tournament.registrationDeadlineEn}
+                              {tournament.registration_deadline}
                             </span>
                           </div>
                         </div>
@@ -167,7 +220,7 @@ export default function TournamentClient() {
                           <div>
                             <span className="text-xs text-slate-400 block">{t('tournament.location')}</span>
                             <span className="font-semibold text-slate-700">
-                              {language === 'bd' ? tournament.location : tournament.locationEn}
+                              {tournament.location}
                             </span>
                           </div>
                         </div>
@@ -179,7 +232,7 @@ export default function TournamentClient() {
                           <div>
                             <span className="text-xs text-slate-400 block">{t('tournament.participants')}</span>
                             <span className="font-semibold text-slate-700">
-                              {language === 'bd' ? tournament.participants : tournament.participantsEn}
+                              {tournament.participant}
                             </span>
                           </div>
                         </div>
@@ -202,7 +255,7 @@ export default function TournamentClient() {
         </div>
       </section>
 
-      {/* Modal for Google Form */}
+      {/* Modal for Tournament Details */}
       <AnimatePresence>
         {selectedTournament && (
           <motion.div
@@ -223,10 +276,11 @@ export default function TournamentClient() {
               {/* Modal Image */}
               <div className="relative h-64 md:h-80 overflow-hidden">
                 <Image
-                  src={selectedTournament.modalImage}
-                  alt={language === 'bd' ? selectedTournament.title : selectedTournament.titleEn}
+                  src={selectedTournament.image}
+                  alt={selectedTournament.title}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <button
@@ -237,7 +291,7 @@ export default function TournamentClient() {
                 </button>
                 <div className="absolute bottom-4 left-4 right-4">
                   <h3 className="text-2xl font-bold text-white drop-shadow-lg">
-                    {language === 'bd' ? selectedTournament.title : selectedTournament.titleEn}
+                    {selectedTournament.title}
                   </h3>
                   <p className="text-white/80 text-sm mt-1">
                     {t('tournament.registerViaForm')}
@@ -246,10 +300,10 @@ export default function TournamentClient() {
               </div>
 
               {/* Modal Body */}
-              <div className="p-6">
+              <div className="p-6 overflow-y-auto max-h-[calc(90vh-20rem)]">
                 <div className="bg-slate-50 rounded-2xl p-4 mb-6">
                   <p className="text-slate-600 text-sm">
-                    {language === 'bd' ? selectedTournament.description : selectedTournament.descriptionEn}
+                    {selectedTournament.description}
                   </p>
                 </div>
 
@@ -260,7 +314,7 @@ export default function TournamentClient() {
                       <span className="text-xs font-medium">{t('tournament.startDate')}</span>
                     </div>
                     <span className="font-bold text-slate-800">
-                      {language === 'bd' ? selectedTournament.startDate : selectedTournament.startDateEn}
+                      {selectedTournament.start_date}
                     </span>
                   </div>
                   <div className="bg-red-50 rounded-xl p-4">
@@ -269,25 +323,48 @@ export default function TournamentClient() {
                       <span className="text-xs font-medium">{t('tournament.registrationDeadline')}</span>
                     </div>
                     <span className="font-bold text-red-600">
-                      {language === 'bd' ? selectedTournament.registrationDeadline : selectedTournament.registrationDeadlineEn}
+                      {selectedTournament.registration_deadline}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-blue-50 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-blue-600 mb-1">
+                      <FaMapMarkerAlt />
+                      <span className="text-xs font-medium">{t('tournament.location')}</span>
+                    </div>
+                    <span className="font-bold text-slate-800">
+                      {selectedTournament.location}
+                    </span>
+                  </div>
+                  <div className="bg-purple-50 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-purple-600 mb-1">
+                      <FaUsers />
+                      <span className="text-xs font-medium">{t('tournament.participants')}</span>
+                    </div>
+                    <span className="font-bold text-slate-800">
+                      {selectedTournament.participant}
                     </span>
                   </div>
                 </div>
 
                 {/* Google Form Button */}
-                <a
-                  href={selectedTournament.googleFormUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-3"
-                >
-                  <FaExternalLinkAlt />
-                  {t('tournament.joinNow')}
-                </a>
+                {selectedTournament.registration_link && (
+                  <a
+                    href={selectedTournament.registration_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-3"
+                  >
+                    <FaExternalLinkAlt />
+                    {t('tournament.joinNow')}
+                  </a>
+                )}
 
                 <p className="text-center text-slate-400 text-sm mt-4">
-                  {language === 'bd' 
-                    ? 'গুগল ফর্ম নতুন ট্যাবে খুলবে' 
+                  {language === 'bd'
+                    ? 'গুগল ফর্ম নতুন ট্যাবে খুলবে'
                     : 'Google Form will open in a new tab'}
                 </p>
               </div>
@@ -298,4 +375,3 @@ export default function TournamentClient() {
     </>
   );
 }
-
