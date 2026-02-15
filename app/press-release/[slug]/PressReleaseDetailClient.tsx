@@ -226,7 +226,7 @@ export default function PressReleaseDetailClient({
                           {t("pressReleaseDetail.newsLink")}
                         </p>
                       </div>
-                      <div className="space-y-2">
+                      <div className="grid grid-cols-1 gap-2">
                         {pressRelease.news_links.map((link, index) => (
                           <motion.a
                             key={index}
@@ -239,11 +239,11 @@ export default function PressReleaseDetailClient({
                               duration: 0.4,
                               delay: 0.4 + index * 0.1,
                             }}
-                            className="group flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-orange-300 hover:border-orange-500 hover:bg-white transition-all duration-300"
+                            className="group flex items-center gap-2 px-2 py-1.5 bg-white rounded-md border border-orange-300 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300 text-xs"
                             title={link.title || link.url}
                           >
                             <FaLink className="text-orange-500 flex-shrink-0 text-xs group-hover:rotate-12 transition-transform" />
-                            <span className="text-xs font-medium text-slate-700 group-hover:text-orange-600 truncate">
+                            <span className="font-medium text-slate-700 group-hover:text-orange-600 truncate">
                               {link.title ||
                                 link.url.split("//")[1]?.split("/")[0]}
                             </span>
