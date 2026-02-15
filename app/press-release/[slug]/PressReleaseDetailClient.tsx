@@ -453,33 +453,6 @@ export default function PressReleaseDetailClient({
         </section>
       )}
 
-      {/* External News Link */}
-      {pressRelease.newsLink && (
-        <section className="py-8 px-4">
-          <div className="mx-auto max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 text-center"
-            >
-              <p className="text-slate-700 mb-4 font-semibold">
-                {t("pressReleaseDetail.readOriginalNews")}
-              </p>
-              <a
-                href={pressRelease.newsLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all transform hover:scale-105"
-              >
-                <FaLink />
-                {t("pressReleaseDetail.newsLink")}
-              </a>
-            </motion.div>
-          </div>
-        </section>
-      )}
-
       {/* Share Again Section */}
       <section className="py-12 px-4">
         <div className="mx-auto max-w-4xl">
