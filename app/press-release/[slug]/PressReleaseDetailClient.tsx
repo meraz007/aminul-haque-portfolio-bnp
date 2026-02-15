@@ -226,28 +226,35 @@ export default function PressReleaseDetailClient({
                           {t("pressReleaseDetail.newsLink")}
                         </p>
                       </div>
-                      <div className="grid grid-cols-1 gap-2">
+                      <div className="flex flex-wrap gap-1 items-center">
                         {pressRelease.news_links.map((link, index) => (
-                          <motion.a
+                          <motion.span
                             key={index}
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
                             transition={{
                               duration: 0.4,
-                              delay: 0.4 + index * 0.1,
+                              delay: 0.4 + index * 0.05,
                             }}
-                            className="group flex items-center gap-2 px-2 py-1.5 bg-white rounded-md border border-orange-300 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300 text-xs"
-                            title={link.title || link.url}
+                            className="flex items-center gap-1"
                           >
-                            <FaLink className="text-orange-500 flex-shrink-0 text-xs group-hover:rotate-12 transition-transform" />
-                            <span className="font-medium text-slate-700 group-hover:text-orange-600 truncate">
-                              {link.title ||
-                                link.url.split("//")[1]?.split("/")[0]}
-                            </span>
-                          </motion.a>
+                            <a
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group inline-flex items-center gap-1 text-orange-600 hover:text-orange-700 font-medium text-xs transition-colors"
+                              title={link.title || link.url}
+                            >
+                              <FaLink className="text-xs group-hover:rotate-12 transition-transform" />
+                              <span className="underline hover:no-underline">
+                                {link.title ||
+                                  link.url.split("//")[1]?.split("/")[0]}
+                              </span>
+                            </a>
+                            {index < pressRelease.news_links.length - 1 && (
+                              <span className="text-slate-400">,</span>
+                            )}
+                          </motion.span>
                         ))}
                       </div>
                     </motion.div>
