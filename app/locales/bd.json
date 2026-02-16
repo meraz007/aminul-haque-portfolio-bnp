@@ -806,7 +806,9 @@
     "readOriginalNews": "মূল সংবাদ পড়ুন:",
     "newsLink": "সংবাদ লিঙ্ক",
     "shareThisRelease": "এই প্রেস রিলিজ শেয়ার করুন",
-    "viewAllReleases": "সব প্রেস রিলিজ দেখুন"
+    "viewAllReleases": "সব প্রেস রিলিজ দেখুন",
+    "reporter": "প্রতিবেদক",
+    "publishedOn": "প্রকাশিত হয়েছে"
   },
   "kheladhula": {
     "heroTag": "খেলাধুলা",

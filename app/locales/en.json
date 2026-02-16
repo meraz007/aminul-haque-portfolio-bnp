@@ -806,7 +806,9 @@
     "readOriginalNews": "Read original news:",
     "newsLink": "News Link",
     "shareThisRelease": "Share This Press Release",
-    "viewAllReleases": "View All Press Releases"
+    "viewAllReleases": "View All Press Releases",
+    "reporter": "Reporter",
+    "publishedOn": "Published on"
   },
   "kheladhula": {
     "heroTag": "Sports",
