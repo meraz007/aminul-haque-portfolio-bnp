@@ -1,12 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
 import type { Language, I18nContextType, Dictionary } from './types';
 import { getDictionarySync, getTranslation } from './getDictionary';
 
 const COOKIE_NAME = 'lang';
 const STORAGE_KEY = 'lang';
 const API_URL = 'https://admin.aminul-haque.com/api/v1/settings/change-language';
+const DEFAULT_LANGUAGE: Language = 'bd';
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
@@ -21,22 +22,23 @@ interface I18nProviderProps {
   initialLanguage?: Language;
 }
 
-export function I18nProvider({ children, initialLanguage = 'bd' }: I18nProviderProps) {
+export function I18nProvider({ children, initialLanguage = DEFAULT_LANGUAGE }: I18nProviderProps) {
   const [language, setLanguageState] = useState<Language>(initialLanguage);
-  const [dictionary, setDictionary] = useState<Dictionary>(() => getDictionarySync(initialLanguage));
   const [isChangingLanguage, setIsChangingLanguage] = useState(false);
 
-  // Sync dictionary when language changes
-  useEffect(() => {
-    setDictionary(getDictionarySync(language));
-  }, [language]);
+  // Derive dictionary from language so content always matches toggle (no stale frame)
+  const dictionary = useMemo(() => getDictionarySync(language), [language]);
 
-  // On mount, check localStorage for any mismatch (client-side hydration)
+  // On mount: sync with localStorage and ensure first-time visitors get default (bd) persisted
   useEffect(() => {
     const storedLang = localStorage.getItem(STORAGE_KEY) as Language | null;
     if (storedLang && (storedLang === 'bd' || storedLang === 'en') && storedLang !== language) {
       setLanguageState(storedLang);
       setCookie(COOKIE_NAME, storedLang);
+    } else if (!storedLang) {
+      // First-time visitor: persist initial language so server and client stay in sync
+      localStorage.setItem(STORAGE_KEY, language);
+      setCookie(COOKIE_NAME, language);
     }
   }, []);
 
