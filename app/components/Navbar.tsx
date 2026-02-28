@@ -3,7 +3,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBars, FaTimes, FaChevronDown, FaUser, FaTasks, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaBars,
+  FaTimes,
+  FaChevronDown,
+  FaUser,
+  FaTasks,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "../i18n/I18nProvider";
 
@@ -60,7 +67,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await logout();
-    router.push('/');
+    router.push("/");
     setOpenUserDropdown(false);
   };
 
@@ -207,8 +214,10 @@ export default function Navbar() {
                   className="flex items-center gap-2 px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
                 >
                   <FaUser />
-                  {volunteer?.full_name || 'User'}
-                  <FaChevronDown className={`text-xs transition-transform ${openUserDropdown ? 'rotate-180' : ''}`} />
+                  {volunteer?.full_name || "User"}
+                  <FaChevronDown
+                    className={`text-xs transition-transform ${openUserDropdown ? "rotate-180" : ""}`}
+                  />
                 </button>
 
                 <AnimatePresence>
@@ -227,7 +236,7 @@ export default function Navbar() {
                         className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all"
                       >
                         <FaUser />
-                        প্রোফাইল
+                        {t("nav.profile")}
                       </Link>
                       <Link
                         href="/volunteer/tasks"
@@ -235,14 +244,14 @@ export default function Navbar() {
                         className="flex items-center gap-3 px-4 py-3 font-bold text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all"
                       >
                         <FaTasks />
-                        স্বেচ্ছাসেবক কাজ
+                        {t("nav.volunteerTasks")}
                       </Link>
                       <button
                         onClick={handleLogout}
                         className="w-full flex items-center gap-3 px-4 py-3 font-bold text-sm text-red-600 hover:bg-red-50 transition-all"
                       >
                         <FaSignOutAlt />
-                        লগআউট
+                        {t("nav.logout")}
                       </button>
                     </motion.div>
                   )}
@@ -254,13 +263,13 @@ export default function Navbar() {
                   href="/volunteer/login"
                   className="px-4 xl:px-6 py-2 xl:py-3 bg-slate-100 text-slate-700 font-bold text-xs xl:text-sm rounded-xl hover:bg-slate-200 transition-all whitespace-nowrap"
                 >
-                  লগইন
+                  {t("nav.login")}
                 </Link>
                 <Link
                   href="/contact"
                   className="px-4 xl:px-6 py-2 xl:py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-xs xl:text-sm rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 whitespace-nowrap"
                 >
-                  যোগাযোগ
+                  {t("nav.contact")}
                 </Link>
               </>
             )}
@@ -450,7 +459,7 @@ export default function Navbar() {
                       className="block px-4 py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-center"
                     >
                       <FaUser className="inline mr-2" />
-                      প্রোফাইল
+                      {t("nav.profile")}
                     </Link>
                     <Link
                       href="/volunteer/tasks"
@@ -461,7 +470,7 @@ export default function Navbar() {
                       className="block px-4 py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-center"
                     >
                       <FaTasks className="inline mr-2" />
-                      স্বেচ্ছাসেবক কাজ
+                      {t("nav.volunteerTasks")}
                     </Link>
                     <button
                       onClick={() => {
@@ -472,7 +481,7 @@ export default function Navbar() {
                       className="w-full block px-4 py-3 bg-red-50 text-red-600 font-bold rounded-xl text-center"
                     >
                       <FaSignOutAlt className="inline mr-2" />
-                      লগআউট
+                      {t("nav.logout")}
                     </button>
                   </>
                 ) : (
@@ -485,7 +494,7 @@ export default function Navbar() {
                       }}
                       className="block px-4 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl text-center"
                     >
-                      লগইন
+                      {t("nav.login")}
                     </Link>
                     <Link
                       href="/contact"
