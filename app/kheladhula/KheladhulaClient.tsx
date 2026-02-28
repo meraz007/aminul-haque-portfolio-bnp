@@ -1,10 +1,18 @@
 "use client";
-import { motion } from 'framer-motion';
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import ImageLightbox from '../components/ImageLightbox';
-import { FaCalendarAlt, FaMapMarkerAlt, FaImages, FaAngleLeft, FaAngleRight, FaFilter } from 'react-icons/fa';
-import Image from 'next/image';
-import { useTranslation } from '../i18n/I18nProvider';
+import { motion } from "framer-motion";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import ImageLightbox from "../components/ImageLightbox";
+import {
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaImages,
+  FaAngleLeft,
+  FaAngleRight,
+  FaFilter,
+} from "react-icons/fa";
+import Image from "next/image";
+import { useTranslation } from "../i18n/I18nProvider";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface Album {
   id: number;
@@ -49,27 +57,37 @@ interface KheladhulaEvent {
 
 // Default color gradients for albums
 const defaultColors = [
-  'from-amber-500 to-orange-600',
-  'from-emerald-500 to-green-600',
-  'from-purple-500 to-pink-600',
-  'from-blue-500 to-cyan-600',
-  'from-rose-500 to-red-600',
-  'from-teal-500 to-cyan-600',
-  'from-indigo-500 to-purple-600',
-  'from-pink-500 to-rose-600',
+  "from-amber-500 to-orange-600",
+  "from-emerald-500 to-green-600",
+  "from-purple-500 to-pink-600",
+  "from-blue-500 to-cyan-600",
+  "from-rose-500 to-red-600",
+  "from-teal-500 to-cyan-600",
+  "from-indigo-500 to-purple-600",
+  "from-pink-500 to-rose-600",
 ];
 
 // Bengali numeral mapping
 const bengaliNumerals: { [key: string]: string } = {
-  '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪',
-  '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
+  "0": "০",
+  "1": "১",
+  "2": "২",
+  "3": "৩",
+  "4": "৪",
+  "5": "৫",
+  "6": "৬",
+  "7": "৭",
+  "8": "৮",
+  "9": "৯",
 };
 
 // Convert number to Bengali numerals
 const toBengaliNumber = (num: number | string): string => {
-  return String(num).replace(/[0-9]/g, (digit) => bengaliNumerals[digit] || digit);
+  return String(num).replace(
+    /[0-9]/g,
+    (digit) => bengaliNumerals[digit] || digit,
+  );
 };
-
 
 interface PaginationMeta {
   current_page: number;
@@ -88,19 +106,21 @@ export default function KheladhulaClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
+  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(
+    null,
+  );
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentEventImages, setCurrentEventImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedDate, setSelectedDate] = useState<string>('');
-  const [titleFilter, setTitleFilter] = useState<string>('');
-  const [dataFilter, setDataFilter] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [titleFilter, setTitleFilter] = useState<string>("");
+  const [dataFilter, setDataFilter] = useState<string>("");
 
   // Format date - API already returns dates in Bengali format like "১৬ জানুয়ারি, ২০২৬"
   // Just return as-is for Bengali, or convert for English if needed
   const formatDate = useCallback((dateString: string): string => {
-    if (!dateString) return '';
+    if (!dateString) return "";
     // The API returns dates already formatted in Bengali, return as-is
     return dateString;
   }, []);
@@ -114,8 +134,10 @@ export default function KheladhulaClient() {
     if (selectedDate) {
       const searchTerm = selectedDate.trim().toLowerCase();
       filtered = filtered.filter((event) => {
-        return event.date.toLowerCase().includes(searchTerm) ||
-               event.originalDate?.toLowerCase().includes(searchTerm);
+        return (
+          event.date.toLowerCase().includes(searchTerm) ||
+          event.originalDate?.toLowerCase().includes(searchTerm)
+        );
       });
     }
 
@@ -131,8 +153,10 @@ export default function KheladhulaClient() {
     if (dataFilter.trim()) {
       const searchTerm = dataFilter.trim().toLowerCase();
       filtered = filtered.filter((event) => {
-        return event.description.toLowerCase().includes(searchTerm) ||
-               event.location.toLowerCase().includes(searchTerm);
+        return (
+          event.description.toLowerCase().includes(searchTerm) ||
+          event.location.toLowerCase().includes(searchTerm)
+        );
       });
     }
 
@@ -148,7 +172,7 @@ export default function KheladhulaClient() {
   // Calculate paginated events using useMemo for immediate updates
   const paginatedEvents = useMemo(() => {
     if (filteredEvents.length === 0) return [];
-    
+
     const perPage = 5;
     const startIndex = (currentPage - 1) * perPage;
     const endIndex = startIndex + perPage;
@@ -162,7 +186,7 @@ export default function KheladhulaClient() {
       const totalPages = Math.ceil(filteredEvents.length / perPage);
       const startIndex = (currentPage - 1) * perPage;
       const endIndex = startIndex + perPage;
-      
+
       setPaginationMeta({
         current_page: currentPage,
         last_page: totalPages,
@@ -192,25 +216,27 @@ export default function KheladhulaClient() {
       try {
         setLoading(true);
         setError(null);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-        
+        const apiBaseUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://admin.aminul-haque.com/api/v1";
+
         // Always fetch all albums without pagination parameters
         const url = `${apiBaseUrl}/sports/list`;
-        
-        const response = await fetch(url, {
-          cache: 'no-store',
+
+        const response = await syncedFetch(url, {
+          cache: "no-store",
           headers: {
-            'Accept': 'application/json',
+            Accept: "application/json",
           },
         });
 
         if (!response.ok) {
           let errorMessage = `Failed to fetch events (${response.status}): ${response.statusText}`;
-          
+
           try {
             const errorText = await response.text();
-            console.error('API Error Response:', errorText);
-            
+            console.error("API Error Response:", errorText);
+
             if (errorText) {
               try {
                 const errorData = JSON.parse(errorText);
@@ -228,16 +254,16 @@ export default function KheladhulaClient() {
               }
             }
           } catch (parseError) {
-            console.error('Error parsing error response:', parseError);
+            console.error("Error parsing error response:", parseError);
           }
-          
+
           throw new Error(errorMessage);
         }
 
         const data = await response.json();
         // Handle the API response structure: { success: true, data: { data: [...] } }
         let albumsData: Album[] = [];
-        
+
         if (data.success && data.data) {
           if (data.data.data && Array.isArray(data.data.data)) {
             albumsData = data.data.data;
@@ -252,13 +278,14 @@ export default function KheladhulaClient() {
 
         // Filter only active albums and map to kheladhula events
         const mappedEvents: KheladhulaEvent[] = albumsData
-          .filter((album: Album) => album.status === 'active')
+          .filter((album: Album) => album.status === "active")
           .map((album: Album, index: number) => {
             // Get only image media - check mime type or type field for images
             const images = album.media
               .filter((media) => {
                 // Check if it's an image by mime type or type field
-                const isImage = media.mime?.startsWith('image/') || media.type === 'image';
+                const isImage =
+                  media.mime?.startsWith("image/") || media.type === "image";
                 // Also ensure path exists
                 return isImage && media.path;
               })
@@ -269,9 +296,9 @@ export default function KheladhulaClient() {
               uuid: album.uuid,
               date: album.date, // Already formatted in Bengali from API
               originalDate: album.date,
-              location: album.location || '',
-              name: album.name || '',
-              description: album.description || '',
+              location: album.location || "",
+              name: album.name || "",
+              description: album.description || "",
               images: images,
               color: defaultColors[index % defaultColors.length],
             };
@@ -280,8 +307,8 @@ export default function KheladhulaClient() {
         // Store all events for client-side pagination
         setAllEvents(mappedEvents);
       } catch (err) {
-        console.error('Error fetching events:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch events');
+        console.error("Error fetching events:", err);
+        setError(err instanceof Error ? err.message : "Failed to fetch events");
         setEvents([]);
       } finally {
         setLoading(false);
@@ -294,7 +321,7 @@ export default function KheladhulaClient() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     // Scroll to top when page changes
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const openLightbox = (image: string, eventImages: string[]) => {
@@ -309,9 +336,11 @@ export default function KheladhulaClient() {
     setSelectedImage(null);
   };
 
-  const navigateImage = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      const newIndex = (currentImageIndex - 1 + currentEventImages.length) % currentEventImages.length;
+  const navigateImage = (direction: "prev" | "next") => {
+    if (direction === "prev") {
+      const newIndex =
+        (currentImageIndex - 1 + currentEventImages.length) %
+        currentEventImages.length;
       setCurrentImageIndex(newIndex);
       setSelectedImage(currentEventImages[newIndex]);
     } else {
@@ -326,7 +355,7 @@ export default function KheladhulaClient() {
       <section className="py-20 px-4">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mb-4"></div>
-          <p className="text-xl text-slate-600">{t('kheladhula.loading')}</p>
+          <p className="text-xl text-slate-600">{t("kheladhula.loading")}</p>
         </div>
       </section>
     );
@@ -336,12 +365,14 @@ export default function KheladhulaClient() {
     return (
       <section className="py-20 px-4">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xl text-red-600 mb-4">{t('kheladhula.error')} {error}</p>
+          <p className="text-xl text-red-600 mb-4">
+            {t("kheladhula.error")} {error}
+          </p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
           >
-            {t('kheladhula.tryAgain')}
+            {t("kheladhula.tryAgain")}
           </button>
         </div>
       </section>
@@ -353,7 +384,7 @@ export default function KheladhulaClient() {
     return (
       <section className="py-20 px-4">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xl text-slate-600">{t('kheladhula.noEvents')}</p>
+          <p className="text-xl text-slate-600">{t("kheladhula.noEvents")}</p>
         </div>
       </section>
     );
@@ -368,20 +399,24 @@ export default function KheladhulaClient() {
             <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-200">
               <div className="flex items-center gap-2 text-amber-700 font-bold mb-6 text-lg">
                 <FaFilter />
-                <span>{t('kheladhula.filterOptions')}</span>
+                <span>{t("kheladhula.filterOptions")}</span>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {/* Title Filter */}
                 <div>
                   <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    {t('kheladhula.titleFilter')}
+                    {t("kheladhula.titleFilter")}
                   </label>
                   <input
                     type="text"
                     value={titleFilter}
                     onChange={(e) => setTitleFilter(e.target.value)}
-                    placeholder={language === 'bd' ? 'শিরোনাম অনুসন্ধান করুন...' : 'Search by title...'}
+                    placeholder={
+                      language === "bd"
+                        ? "শিরোনাম অনুসন্ধান করুন..."
+                        : "Search by title..."
+                    }
                     className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
                   />
                 </div>
@@ -389,13 +424,17 @@ export default function KheladhulaClient() {
                 {/* Date Filter - Text input for Bengali dates */}
                 <div>
                   <label className="block text-slate-700 font-bold mb-2 text-sm">
-                    {t('kheladhula.dateFilter')}
+                    {t("kheladhula.dateFilter")}
                   </label>
                   <input
                     type="text"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    placeholder={language === 'bd' ? 'তারিখ অনুসন্ধান করুন (যেমন: জানুয়ারি, ২০২৬)' : 'Search by date...'}
+                    placeholder={
+                      language === "bd"
+                        ? "তারিখ অনুসন্ধান করুন (যেমন: জানুয়ারি, ২০২৬)"
+                        : "Search by date..."
+                    }
                     className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-amber-500 focus:outline-none shadow-lg text-slate-700"
                   />
                 </div>
@@ -404,179 +443,215 @@ export default function KheladhulaClient() {
               {/* Filter Summary and Clear Button */}
               <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
                 <div className="text-sm text-slate-600 font-medium">
-                  {language === 'bd' ? toBengaliNumber(filteredEvents.length) : filteredEvents.length} {t('kheladhula.eventsFound')}
-                  {titleFilter && ` (${t('kheladhula.title')}: ${titleFilter})`}
-                  {selectedDate && ` (${t('kheladhula.date')}: ${selectedDate})`}
-                  {dataFilter && ` (${t('kheladhula.description')}: ${dataFilter})`}
+                  {language === "bd"
+                    ? toBengaliNumber(filteredEvents.length)
+                    : filteredEvents.length}{" "}
+                  {t("kheladhula.eventsFound")}
+                  {titleFilter && ` (${t("kheladhula.title")}: ${titleFilter})`}
+                  {selectedDate &&
+                    ` (${t("kheladhula.date")}: ${selectedDate})`}
+                  {dataFilter &&
+                    ` (${t("kheladhula.description")}: ${dataFilter})`}
                 </div>
                 {(selectedDate || titleFilter || dataFilter) && (
                   <button
                     onClick={() => {
-                      setSelectedDate('');
-                      setTitleFilter('');
-                      setDataFilter('');
+                      setSelectedDate("");
+                      setTitleFilter("");
+                      setDataFilter("");
                     }}
                     className="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition-all shadow-lg"
                   >
-                    {t('kheladhula.clearAllFilters')}
+                    {t("kheladhula.clearAllFilters")}
                   </button>
                 )}
               </div>
             </div>
           </div>
 
-          {events.length > 0 ? (
-            events.map((event, idx) => (
-            <motion.div
-              key={`${event.uuid || event.id}-${currentPage}`}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="relative"
-            >
-              <div className={`absolute inset-0 rounded-3xl blur-2xl opacity-20`}></div>
-              <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
-                {/* Event Header */}
-                <div className="mb-8">
-                  <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
-                    {event.name}
-                  </h2>
-                  <div className="flex flex-wrap items-center gap-4 mb-4">
-                    <div className="flex items-center gap-2 text-slate-700">
-                      <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
-                        <FaCalendarAlt className="text-white" />
+          {events.length > 0
+            ? events.map((event, idx) => (
+                <motion.div
+                  key={`${event.uuid || event.id}-${currentPage}`}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="relative"
+                >
+                  <div
+                    className={`absolute inset-0 rounded-3xl blur-2xl opacity-20`}
+                  ></div>
+                  <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-slate-200">
+                    {/* Event Header */}
+                    <div className="mb-8">
+                      <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
+                        {event.name}
+                      </h2>
+                      <div className="flex flex-wrap items-center gap-4 mb-4">
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <div
+                            className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}
+                          >
+                            <FaCalendarAlt className="text-white" />
+                          </div>
+                          <span className="font-bold">
+                            {formatDate(event.originalDate || event.date)}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <div
+                            className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}
+                          >
+                            <FaMapMarkerAlt className="text-white" />
+                          </div>
+                          <span>{event.location}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <div
+                            className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}
+                          >
+                            <FaImages className="text-white" />
+                          </div>
+                          <span>
+                            {language === "bd"
+                              ? toBengaliNumber(event.images.length)
+                              : event.images.length}{" "}
+                            {t("kheladhula.photos")}
+                          </span>
+                        </div>
                       </div>
-                      <span className="font-bold">{formatDate(event.originalDate || event.date)}</span>
+                      <p className="text-slate-600 text-lg leading-relaxed mt-4">
+                        {event.description}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-700">
-                      <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
-                        <FaMapMarkerAlt className="text-white" />
-                      </div>
-                      <span>{event.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-700">
-                      <div className={`p-2 bg-gradient-to-r ${event.color} rounded-lg`}>
-                        <FaImages className="text-white" />
-                      </div>
-                      <span>{language === 'bd' ? toBengaliNumber(event.images.length) : event.images.length} {t('kheladhula.photos')}</span>
+
+                    {/* Images Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {event.images.map((image, imageIdx) => (
+                        <motion.div
+                          key={imageIdx}
+                          whileHover={{ scale: 1.05 }}
+                          onClick={() => openLightbox(image, event.images)}
+                          className="group relative cursor-pointer rounded-xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all"
+                        >
+                          <div
+                            className={`absolute inset-0 opacity-0 group-hover:opacity-75 transition-all z-10`}
+                          ></div>
+                          <Image
+                            src={image}
+                            alt={`${event.name} - ${t("kheladhula.image")} ${language === "bd" ? toBengaliNumber(imageIdx + 1) : imageIdx + 1}`}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20">
+                            <FaImages className="text-4xl text-white" />
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
-                  <p className="text-slate-600 text-lg leading-relaxed mt-4">
-                    {event.description}
+                </motion.div>
+              ))
+            : !loading &&
+              filteredEvents.length > 0 && (
+                <div className="text-center py-20">
+                  <p className="text-xl text-slate-600">
+                    {t("kheladhula.noEventsOnPage")}
                   </p>
                 </div>
-
-                {/* Images Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {event.images.map((image, imageIdx) => (
-                    <motion.div
-                      key={imageIdx}
-                      whileHover={{ scale: 1.05 }}
-                      onClick={() => openLightbox(image, event.images)}
-                      className="group relative cursor-pointer rounded-xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all"
-                    >
-                      <div className={`absolute inset-0 opacity-0 group-hover:opacity-75 transition-all z-10`}></div>
-                      <Image
-                        src={image}
-                        alt={`${event.name} - ${t('kheladhula.image')} ${language === 'bd' ? toBengaliNumber(imageIdx + 1) : imageIdx + 1}`}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-20">
-                        <FaImages className="text-4xl text-white" />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-            ))
-          ) : (
-            !loading && filteredEvents.length > 0 && (
+              )}
+          {!loading &&
+            filteredEvents.length === 0 &&
+            allEvents.length > 0 &&
+            (selectedDate || titleFilter || dataFilter) && (
               <div className="text-center py-20">
-                <p className="text-xl text-slate-600">{t('kheladhula.noEventsOnPage')}</p>
+                <p className="text-xl text-slate-600">
+                  {t("kheladhula.noEventsForFilter")}
+                </p>
+                <button
+                  onClick={() => {
+                    setSelectedDate("");
+                    setTitleFilter("");
+                    setDataFilter("");
+                  }}
+                  className="mt-4 px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
+                >
+                  {t("kheladhula.clearAllFilters")}
+                </button>
               </div>
-            )
-          )}
-          {!loading && filteredEvents.length === 0 && allEvents.length > 0 && (selectedDate || titleFilter || dataFilter) && (
-            <div className="text-center py-20">
-              <p className="text-xl text-slate-600">{t('kheladhula.noEventsForFilter')}</p>
-              <button
-                onClick={() => {
-                  setSelectedDate('');
-                  setTitleFilter('');
-                  setDataFilter('');
-                }}
-                className="mt-4 px-6 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all"
-              >
-                {t('kheladhula.clearAllFilters')}
-              </button>
-            </div>
-          )}
+            )}
 
           {/* Pagination - Only show if there are more than 5 filtered events */}
-          {paginationMeta && paginationMeta.total > 5 && paginationMeta.last_page > 1 && (
-            <div className="mt-16 flex items-center justify-center gap-2">
-            {/* Previous Button */}
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
-            >
-              <FaAngleLeft />
-              {t('kheladhula.previous')}
-            </button>
+          {paginationMeta &&
+            paginationMeta.total > 5 &&
+            paginationMeta.last_page > 1 && (
+              <div className="mt-16 flex items-center justify-center gap-2">
+                {/* Previous Button */}
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
+                >
+                  <FaAngleLeft />
+                  {t("kheladhula.previous")}
+                </button>
 
-            {/* Page Numbers */}
-            <div className="flex items-center gap-2">
-              {Array.from({ length: paginationMeta.last_page }, (_, i) => i + 1).map((page) => {
-                // Show first page, last page, current page, and pages around current
-                const showPage =
-                  page === 1 ||
-                  page === paginationMeta.last_page ||
-                  (page >= currentPage - 1 && page <= currentPage + 1);
+                {/* Page Numbers */}
+                <div className="flex items-center gap-2">
+                  {Array.from(
+                    { length: paginationMeta.last_page },
+                    (_, i) => i + 1,
+                  ).map((page) => {
+                    // Show first page, last page, current page, and pages around current
+                    const showPage =
+                      page === 1 ||
+                      page === paginationMeta.last_page ||
+                      (page >= currentPage - 1 && page <= currentPage + 1);
 
-                if (!showPage) {
-                  // Show ellipsis
-                  if (page === currentPage - 2 || page === currentPage + 2) {
+                    if (!showPage) {
+                      // Show ellipsis
+                      if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                      ) {
+                        return (
+                          <span key={page} className="px-2 text-slate-400">
+                            ...
+                          </span>
+                        );
+                      }
+                      return null;
+                    }
+
                     return (
-                      <span key={page} className="px-2 text-slate-400">
-                        ...
-                      </span>
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                          currentPage === page
+                            ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg"
+                            : "bg-white border border-slate-300 hover:bg-slate-50 text-slate-700"
+                        }`}
+                      >
+                        {language === "bd" ? toBengaliNumber(page) : page}
+                      </button>
                     );
-                  }
-                  return null;
-                }
+                  })}
+                </div>
 
-                return (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                      currentPage === page
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg'
-                        : 'bg-white border border-slate-300 hover:bg-slate-50 text-slate-700'
-                    }`}
-                  >
-                    {language === 'bd' ? toBengaliNumber(page) : page}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Next Button */}
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === paginationMeta.last_page}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
-            >
-              {t('kheladhula.next')}
-              <FaAngleRight />
-            </button>
-          </div>
-          )}
+                {/* Next Button */}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === paginationMeta.last_page}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
+                >
+                  {t("kheladhula.next")}
+                  <FaAngleRight />
+                </button>
+              </div>
+            )}
         </div>
       </section>
 

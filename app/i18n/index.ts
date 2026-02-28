@@ -2,7 +2,7 @@
 export { I18nProvider, useTranslation, useT } from './I18nProvider';
 
 // Server-side exports
-export { getServerLang } from './getServerLang';
+export { getServerLang, syncBackendLanguage } from './getServerLang';
 export { getDictionary, getDictionarySync, getTranslation } from './getDictionary';
 
 // Types

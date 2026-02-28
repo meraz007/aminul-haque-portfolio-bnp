@@ -1,10 +1,11 @@
 "use client";
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { FaQuoteLeft } from 'react-icons/fa';
-import { useTranslation } from '../i18n/I18nProvider';
-import { fetchCmsPage, type CmsPage } from '@/lib/api';
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { FaQuoteLeft } from "react-icons/fa";
+import { useTranslation } from "../i18n/I18nProvider";
+import { fetchCmsPage, type CmsPage } from "@/lib/api";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface Quote {
   id: number;
@@ -20,15 +21,17 @@ export default function InspirationSection() {
   const [quotesLoading, setQuotesLoading] = useState(true);
 
   useEffect(() => {
-    fetchCmsPage('home', 'inspiration').then(setCmsData);
+    fetchCmsPage("home", "inspiration").then(setCmsData);
   }, []);
 
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-        const response = await fetch(`${apiBaseUrl}/quotes`, {
-          cache: 'no-store',
+        const apiBaseUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://admin.aminul-haque.com/api/v1";
+        const response = await syncedFetch(`${apiBaseUrl}/quotes`, {
+          cache: "no-store",
         });
 
         if (response.ok) {
@@ -42,13 +45,13 @@ export default function InspirationSection() {
           }
 
           const activeQuotes = quotesData.filter(
-            (quote: Quote) => quote.status === 'active'
+            (quote: Quote) => quote.status === "active",
           );
 
           setQuotes(activeQuotes);
         }
       } catch (err) {
-        console.error('Error fetching quotes:', err);
+        console.error("Error fetching quotes:", err);
       } finally {
         setQuotesLoading(false);
       }
@@ -57,9 +60,9 @@ export default function InspirationSection() {
     fetchQuotes();
   }, []);
 
-  const sectionTitle = cmsData?.title || t('home.quotesTitle');
-  const sectionDesc = cmsData?.description || t('home.quotesDesc');
-  const sectionImage = cmsData?.title_image || '/aminul Haque/quotes.jpeg';
+  const sectionTitle = cmsData?.title || t("home.quotesTitle");
+  const sectionDesc = cmsData?.description || t("home.quotesDesc");
+  const sectionImage = cmsData?.title_image || "/aminul Haque/quotes.jpeg";
 
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
@@ -71,7 +74,7 @@ export default function InspirationSection() {
           className="text-center mb-16"
         >
           <span className="inline-block px-6 py-2 bg-indigo-100 text-indigo-700 rounded-full font-bold text-sm uppercase tracking-wider mb-4">
-            {t('home.inspiration')}
+            {t("home.inspiration")}
           </span>
           <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
             {sectionTitle}
@@ -94,7 +97,7 @@ export default function InspirationSection() {
               <div className="relative aspect-[3/4]">
                 <Image
                   src={sectionImage}
-                  alt={sectionTitle || t('hero.title')}
+                  alt={sectionTitle || t("hero.title")}
                   fill
                   className="object-cover"
                   loading="lazy"
@@ -115,7 +118,7 @@ export default function InspirationSection() {
             {quotesLoading ? (
               <div className="text-center py-10">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mb-4"></div>
-                <p className="text-slate-600">{t('common.loading')}</p>
+                <p className="text-slate-600">{t("common.loading")}</p>
               </div>
             ) : quotes.length > 0 ? (
               quotes.map((quote, idx) => (
@@ -143,7 +146,7 @@ export default function InspirationSection() {
               ))
             ) : (
               <div className="text-center py-10">
-                <p className="text-slate-600">{t('home.noQuotesFound')}</p>
+                <p className="text-slate-600">{t("home.noQuotesFound")}</p>
               </div>
             )}
           </motion.div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { FaClipboardList, FaArrowRight } from 'react-icons/fa';
-import Image from 'next/image';
-import { useTranslation } from '../i18n/I18nProvider';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { FaClipboardList, FaArrowRight } from "react-icons/fa";
+import Image from "next/image";
+import { useTranslation } from "../i18n/I18nProvider";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface Survey {
   id: number;
@@ -27,8 +28,10 @@ export default function SurveysPage() {
     const fetchSurveys = async () => {
       try {
         setLoading(true);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-        
+        const apiBaseUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://admin.aminul-haque.com/api/v1";
+
         // Try different endpoint variations
         let response: Response | null = null;
         const endpoints = [
@@ -36,16 +39,16 @@ export default function SurveysPage() {
           `${apiBaseUrl}/survey`,
           `${apiBaseUrl}/surveys/list`,
         ];
-        
+
         for (const url of endpoints) {
           try {
-            response = await fetch(url, {
-              cache: 'no-store',
+            response = await syncedFetch(url, {
+              cache: "no-store",
               headers: {
-                'Accept': 'application/json',
+                Accept: "application/json",
               },
             });
-            
+
             if (response.ok) {
               console.log(`Successfully fetched from: ${url}`);
               break;
@@ -58,19 +61,19 @@ export default function SurveysPage() {
             continue;
           }
         }
-        
+
         if (!response) {
-          throw new Error('Failed to fetch from any endpoint');
+          throw new Error("Failed to fetch from any endpoint");
         }
 
         if (!response || !response.ok) {
-          let errorMessage = `Failed to fetch surveys (${response?.status || 'unknown'}): ${response?.statusText || 'Unknown error'}`;
-          
+          let errorMessage = `Failed to fetch surveys (${response?.status || "unknown"}): ${response?.statusText || "Unknown error"}`;
+
           if (response) {
             try {
               const errorText = await response.text();
-              console.error('API Error Response:', errorText);
-              
+              console.error("API Error Response:", errorText);
+
               if (errorText) {
                 try {
                   const errorData = JSON.parse(errorText);
@@ -86,18 +89,18 @@ export default function SurveysPage() {
                 }
               }
             } catch (parseError) {
-              console.error('Error parsing error response:', parseError);
+              console.error("Error parsing error response:", parseError);
             }
           }
-          
+
           console.error(errorMessage);
           setSurveys([]);
           return;
         }
 
         const data = await response.json();
-        console.log('Surveys API Response:', data);
-        
+        console.log("Surveys API Response:", data);
+
         // Handle the API response structure
         let surveysData: Survey[] = [];
         if (data.success && data.data && Array.isArray(data.data)) {
@@ -109,11 +112,13 @@ export default function SurveysPage() {
         }
 
         // Filter only active surveys
-        const activeSurveys = surveysData.filter((survey: Survey) => survey.status === 'active');
-        
+        const activeSurveys = surveysData.filter(
+          (survey: Survey) => survey.status === "active",
+        );
+
         setSurveys(activeSurveys);
       } catch (error) {
-        console.error('Error loading surveys:', error);
+        console.error("Error loading surveys:", error);
         setSurveys([]);
       } finally {
         setLoading(false);
@@ -129,7 +134,9 @@ export default function SurveysPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-            <p className="text-slate-600 font-bold">{t('surveysPage.loading')}</p>
+            <p className="text-slate-600 font-bold">
+              {t("surveysPage.loading")}
+            </p>
           </div>
         </div>
       </main>
@@ -148,15 +155,15 @@ export default function SurveysPage() {
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaClipboardList className="inline mr-2" />
-              {t('surveysPage.heroTag')}
+              {t("surveysPage.heroTag")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {t('surveysPage.heroTitle')}
+                {t("surveysPage.heroTitle")}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {t('surveysPage.heroSubtitle')}
+              {t("surveysPage.heroSubtitle")}
             </p>
           </motion.div>
         </div>
@@ -169,11 +176,9 @@ export default function SurveysPage() {
             <div className="text-center py-20">
               <FaClipboardList className="text-6xl text-slate-300 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-slate-700 mb-2">
-                {t('surveysPage.noSurveys')}
+                {t("surveysPage.noSurveys")}
               </h3>
-              <p className="text-slate-500">
-                {t('surveysPage.noSurveysDesc')}
-              </p>
+              <p className="text-slate-500">{t("surveysPage.noSurveysDesc")}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -201,7 +206,7 @@ export default function SurveysPage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                       </div>
                     )}
-                    
+
                     {/* Content */}
                     <div className="p-6 flex-1 flex flex-col">
                       <h3 className="text-2xl font-black text-slate-900 mb-3 line-clamp-2">
@@ -210,12 +215,12 @@ export default function SurveysPage() {
                       <p className="text-slate-600 leading-relaxed mb-6 flex-1 line-clamp-3">
                         {survey.description}
                       </p>
-                      
+
                       <Link
                         href={`/surveys/${survey.uuid || survey.id}`}
                         className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all transform hover:scale-105 group-hover:gap-3"
                       >
-                        {t('surveysPage.viewSurvey')} <FaArrowRight />
+                        {t("surveysPage.viewSurvey")} <FaArrowRight />
                       </Link>
                     </div>
                   </div>
@@ -238,17 +243,17 @@ export default function SurveysPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl blur-2xl opacity-20"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {t('surveysPage.ctaTitle')}
+                {t("surveysPage.ctaTitle")}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {t('surveysPage.ctaText')}
+                {t("surveysPage.ctaText")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/contact"
                   className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
                 >
-                  {t('surveysPage.contactUs')}
+                  {t("surveysPage.contactUs")}
                 </Link>
               </div>
             </div>

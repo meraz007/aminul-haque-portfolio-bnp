@@ -1,9 +1,19 @@
 "use client";
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { useTranslation } from '../i18n/I18nProvider';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaTrophy, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaExternalLinkAlt, FaTimes, FaSpinner } from 'react-icons/fa';
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useTranslation } from "../i18n/I18nProvider";
+import { syncedFetch } from "@/lib/languageSync";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaTrophy,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaUsers,
+  FaClock,
+  FaExternalLinkAlt,
+  FaTimes,
+  FaSpinner,
+} from "react-icons/fa";
 
 interface Tournament {
   id: number;
@@ -48,7 +58,8 @@ interface TournamentApiResponse {
 
 export default function TournamentClient() {
   const { t, language } = useTranslation();
-  const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
+  const [selectedTournament, setSelectedTournament] =
+    useState<Tournament | null>(null);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,20 +69,22 @@ export default function TournamentClient() {
       setLoading(true);
       setError(null);
       try {
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-        const response = await fetch(`${apiBaseUrl}/tournaments`);
+        const apiBaseUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://admin.aminul-haque.com/api/v1";
+        const response = await syncedFetch(`${apiBaseUrl}/tournaments`);
         if (!response.ok) {
-          throw new Error('Failed to fetch tournaments');
+          throw new Error("Failed to fetch tournaments");
         }
         const data: TournamentApiResponse = await response.json();
         if (data.success) {
           setTournaments(data.data.data);
         } else {
-          throw new Error(data.message || 'Failed to fetch tournaments');
+          throw new Error(data.message || "Failed to fetch tournaments");
         }
       } catch (err) {
-        console.error('Error fetching tournaments:', err);
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.error("Error fetching tournaments:", err);
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -93,7 +106,7 @@ export default function TournamentClient() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-              {t('tournament.activeTournaments')}
+              {t("tournament.activeTournaments")}
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-green-600 mx-auto rounded-full"></div>
           </motion.div>
@@ -105,7 +118,7 @@ export default function TournamentClient() {
               className="text-center py-16"
             >
               <FaSpinner className="text-5xl text-emerald-500 mx-auto mb-4 animate-spin" />
-              <p className="text-xl text-slate-500">{t('common.loading')}</p>
+              <p className="text-xl text-slate-500">{t("common.loading")}</p>
             </motion.div>
           ) : error ? (
             <motion.div
@@ -123,7 +136,9 @@ export default function TournamentClient() {
               className="text-center py-16"
             >
               <FaTrophy className="text-6xl text-slate-300 mx-auto mb-4" />
-              <p className="text-xl text-slate-500">{t('tournament.noTournaments')}</p>
+              <p className="text-xl text-slate-500">
+                {t("tournament.noTournaments")}
+              </p>
             </motion.div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -194,7 +209,9 @@ export default function TournamentClient() {
                             <FaCalendarAlt className="text-emerald-600 text-sm" />
                           </div>
                           <div>
-                            <span className="text-xs text-slate-400 block">{t('tournament.startDate')}</span>
+                            <span className="text-xs text-slate-400 block">
+                              {t("tournament.startDate")}
+                            </span>
                             <span className="font-semibold text-slate-700">
                               {tournament.start_date}
                             </span>
@@ -206,7 +223,9 @@ export default function TournamentClient() {
                             <FaClock className="text-red-600 text-sm" />
                           </div>
                           <div>
-                            <span className="text-xs text-slate-400 block">{t('tournament.registrationDeadline')}</span>
+                            <span className="text-xs text-slate-400 block">
+                              {t("tournament.registrationDeadline")}
+                            </span>
                             <span className="font-semibold text-red-600">
                               {tournament.registration_deadline}
                             </span>
@@ -218,7 +237,9 @@ export default function TournamentClient() {
                             <FaMapMarkerAlt className="text-blue-600 text-sm" />
                           </div>
                           <div>
-                            <span className="text-xs text-slate-400 block">{t('tournament.location')}</span>
+                            <span className="text-xs text-slate-400 block">
+                              {t("tournament.location")}
+                            </span>
                             <span className="font-semibold text-slate-700">
                               {tournament.location}
                             </span>
@@ -230,7 +251,9 @@ export default function TournamentClient() {
                             <FaUsers className="text-purple-600 text-sm" />
                           </div>
                           <div>
-                            <span className="text-xs text-slate-400 block">{t('tournament.participants')}</span>
+                            <span className="text-xs text-slate-400 block">
+                              {t("tournament.participants")}
+                            </span>
                             <span className="font-semibold text-slate-700">
                               {tournament.participant}
                             </span>
@@ -244,7 +267,7 @@ export default function TournamentClient() {
                         className="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-2 group"
                       >
                         <FaTrophy className="group-hover:rotate-12 transition-transform" />
-                        {t('tournament.joinNow')}
+                        {t("tournament.joinNow")}
                       </button>
                     </div>
                   </div>
@@ -269,7 +292,7 @@ export default function TournamentClient() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
@@ -294,7 +317,7 @@ export default function TournamentClient() {
                     {selectedTournament.title}
                   </h3>
                   <p className="text-white/80 text-sm mt-1">
-                    {t('tournament.registerViaForm')}
+                    {t("tournament.registerViaForm")}
                   </p>
                 </div>
               </div>
@@ -311,7 +334,9 @@ export default function TournamentClient() {
                   <div className="bg-emerald-50 rounded-xl p-4">
                     <div className="flex items-center gap-2 text-emerald-600 mb-1">
                       <FaCalendarAlt />
-                      <span className="text-xs font-medium">{t('tournament.startDate')}</span>
+                      <span className="text-xs font-medium">
+                        {t("tournament.startDate")}
+                      </span>
                     </div>
                     <span className="font-bold text-slate-800">
                       {selectedTournament.start_date}
@@ -320,7 +345,9 @@ export default function TournamentClient() {
                   <div className="bg-red-50 rounded-xl p-4">
                     <div className="flex items-center gap-2 text-red-600 mb-1">
                       <FaClock />
-                      <span className="text-xs font-medium">{t('tournament.registrationDeadline')}</span>
+                      <span className="text-xs font-medium">
+                        {t("tournament.registrationDeadline")}
+                      </span>
                     </div>
                     <span className="font-bold text-red-600">
                       {selectedTournament.registration_deadline}
@@ -332,7 +359,9 @@ export default function TournamentClient() {
                   <div className="bg-blue-50 rounded-xl p-4">
                     <div className="flex items-center gap-2 text-blue-600 mb-1">
                       <FaMapMarkerAlt />
-                      <span className="text-xs font-medium">{t('tournament.location')}</span>
+                      <span className="text-xs font-medium">
+                        {t("tournament.location")}
+                      </span>
                     </div>
                     <span className="font-bold text-slate-800">
                       {selectedTournament.location}
@@ -341,7 +370,9 @@ export default function TournamentClient() {
                   <div className="bg-purple-50 rounded-xl p-4">
                     <div className="flex items-center gap-2 text-purple-600 mb-1">
                       <FaUsers />
-                      <span className="text-xs font-medium">{t('tournament.participants')}</span>
+                      <span className="text-xs font-medium">
+                        {t("tournament.participants")}
+                      </span>
                     </div>
                     <span className="font-bold text-slate-800">
                       {selectedTournament.participant}
@@ -358,14 +389,14 @@ export default function TournamentClient() {
                     className="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-3"
                   >
                     <FaExternalLinkAlt />
-                    {t('tournament.joinNow')}
+                    {t("tournament.joinNow")}
                   </a>
                 )}
 
                 <p className="text-center text-slate-400 text-sm mt-4">
-                  {language === 'bd'
-                    ? 'গুগল ফর্ম নতুন ট্যাবে খুলবে'
-                    : 'Google Form will open in a new tab'}
+                  {language === "bd"
+                    ? "গুগল ফর্ম নতুন ট্যাবে খুলবে"
+                    : "Google Form will open in a new tab"}
                 </p>
               </div>
             </motion.div>

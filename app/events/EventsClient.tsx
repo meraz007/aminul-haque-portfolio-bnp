@@ -1,27 +1,39 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import EventCard from '../components/EventCard';
-import { FaCalendarAlt, FaFilter } from 'react-icons/fa';
-import { toBanglaNumber } from '@/lib/utils';
-import { useTranslation } from '../i18n/I18nProvider';
-import { fetchCmsPage, type CmsPage } from '@/lib/api';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import EventCard from "../components/EventCard";
+import { FaCalendarAlt, FaFilter } from "react-icons/fa";
+import { toBanglaNumber } from "@/lib/utils";
+import { useTranslation } from "../i18n/I18nProvider";
+import { fetchCmsPage, type CmsPage } from "@/lib/api";
+import { syncedFetch } from "@/lib/languageSync";
 
 // Convert Bengali numerals to English numerals
 function convertBengaliToEnglish(bengaliStr: string): string {
   const bengaliToEnglish: { [key: string]: string } = {
-    '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
-    '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+    "০": "0",
+    "১": "1",
+    "২": "2",
+    "৩": "3",
+    "৪": "4",
+    "৫": "5",
+    "৬": "6",
+    "৭": "7",
+    "৮": "8",
+    "৯": "9",
   };
-  
-  return bengaliStr.split('').map(char => bengaliToEnglish[char] || char).join('');
+
+  return bengaliStr
+    .split("")
+    .map((char) => bengaliToEnglish[char] || char)
+    .join("");
 }
 
 function parseBengaliDate(dateStr: string): Date {
   const englishDateStr = convertBengaliToEnglish(dateStr);
-  
-  const cleaned = englishDateStr.replace(/\s+/g, ' ').trim();
+
+  const cleaned = englishDateStr.replace(/\s+/g, " ").trim();
   return new Date(cleaned);
 }
 
@@ -43,20 +55,25 @@ interface EventsClientProps {
   pastEvents: Event[];
 }
 
-export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pastEvents: initialPastEvents }: EventsClientProps) {
+export default function EventsClient({
+  upcomingEvents: initialUpcomingEvents,
+  pastEvents: initialPastEvents,
+}: EventsClientProps) {
   const { t, language } = useTranslation();
-  const [filter, setFilter] = useState<'upcoming' | 'past'>('upcoming');
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>(initialUpcomingEvents);
+  const [filter, setFilter] = useState<"upcoming" | "past">("upcoming");
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>(
+    initialUpcomingEvents,
+  );
   const [pastEvents, setPastEvents] = useState<Event[]>(initialPastEvents);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [titleFilter, setTitleFilter] = useState<string>('');
-  const [dateFilter, setDateFilter] = useState<string>('');
+  const [titleFilter, setTitleFilter] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState<string>("");
   const [cmsData, setCmsData] = useState<CmsPage | null>(null);
   const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
 
   useEffect(() => {
-    fetchCmsPage('events', 'our-activities').then(setCmsData);
-    fetchCmsPage('events', 'end-section').then(setEndCmsData);
+    fetchCmsPage("events", "our-activities").then(setCmsData);
+    fetchCmsPage("events", "end-section").then(setEndCmsData);
   }, []);
 
   // Poll for updates every 10 seconds
@@ -64,9 +81,11 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
     const fetchEvents = async () => {
       try {
         setIsRefreshing(true);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-        const response = await fetch(`${apiBaseUrl}/events`, {
-          cache: 'no-store', // Always fetch fresh data
+        const apiBaseUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://admin.aminul-haque.com/api/v1";
+        const response = await syncedFetch(`${apiBaseUrl}/events`, {
+          cache: "no-store", // Always fetch fresh data
         });
 
         if (!response.ok) {
@@ -81,16 +100,22 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
           eventsData = data;
         } else if (data.data && Array.isArray(data.data)) {
           eventsData = data.data;
-        } else if (data.data && data.data.data && Array.isArray(data.data.data)) {
+        } else if (
+          data.data &&
+          data.data.data &&
+          Array.isArray(data.data.data)
+        ) {
           eventsData = data.data.data;
         } else if (data.events && Array.isArray(data.events)) {
           eventsData = data.events;
         } else {
-          console.error('Invalid API response format:', data);
+          console.error("Invalid API response format:", data);
           return;
         }
 
-        const activeEvents = eventsData.filter((event: any) => event.status === 'active' || !event.status);
+        const activeEvents = eventsData.filter(
+          (event: any) => event.status === "active" || !event.status,
+        );
         const now = new Date();
 
         const upcoming: Event[] = [];
@@ -109,7 +134,7 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             event_date_time: event.event_date_time,
             event_date_time_formatted: event.event_date_time_formatted,
             address: event.address,
-            description: event.description || '',
+            description: event.description || "",
             image: event.image,
             map_embed: event.map_embed,
             status: event.status,
@@ -140,7 +165,7 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
         setUpcomingEvents(upcoming);
         setPastEvents(past);
       } catch (err) {
-        console.error('Error fetching events:', err);
+        console.error("Error fetching events:", err);
       } finally {
         setIsRefreshing(false);
       }
@@ -155,12 +180,12 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
 
   // Helper function to extract date and time from formatted string
   const parseDateTime = (formatted: string) => {
-    if (!formatted) return { date: '', time: '' };
-    
+    if (!formatted) return { date: "", time: "" };
+
     // Format: "13 Jan, 2026 01:00 PM" or "06 Jan, 2026 11:00 AM"
     // Try to parse the formatted string
     try {
-      const parts = formatted.trim().split(' ');
+      const parts = formatted.trim().split(" ");
       if (parts.length >= 5) {
         // Format: "13 Jan, 2026 01:00 PM"
         const date = `${parts[0]} ${parts[1]} ${parts[2]}`; // "13 Jan, 2026" (removing comma)
@@ -168,30 +193,64 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
         return { date, time };
       } else if (parts.length >= 3) {
         // Fallback: just return the formatted string as date
-        return { date: formatted, time: '' };
+        return { date: formatted, time: "" };
       }
     } catch (e) {
-      console.error('Error parsing date:', e);
+      console.error("Error parsing date:", e);
     }
-    return { date: formatted, time: '' };
+    return { date: formatted, time: "" };
   };
 
   // Helper function to strip HTML tags for description preview
   const stripHtml = (html: string) => {
-    if (!html) return '';
-    return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    if (!html) return "";
+    return html
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .trim();
   };
 
   // Format date input value (YYYY-MM-DD) to Bengali format
   const formatDateInputToBengali = (dateString: string): string => {
     try {
       const date = new Date(dateString);
-      const months = language === 'bd' 
-        ? ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর']
-        : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const day = language === 'bd' ? toBanglaNumber(date.getDate()) : date.getDate();
+      const months =
+        language === "bd"
+          ? [
+              "জানুয়ারি",
+              "ফেব্রুয়ারি",
+              "মার্চ",
+              "এপ্রিল",
+              "মে",
+              "জুন",
+              "জুলাই",
+              "আগস্ট",
+              "সেপ্টেম্বর",
+              "অক্টোবর",
+              "নভেম্বর",
+              "ডিসেম্বর",
+            ]
+          : [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+      const day =
+        language === "bd" ? toBanglaNumber(date.getDate()) : date.getDate();
       const month = months[date.getMonth()];
-      const year = language === 'bd' ? toBanglaNumber(date.getFullYear()) : date.getFullYear();
+      const year =
+        language === "bd"
+          ? toBanglaNumber(date.getFullYear())
+          : date.getFullYear();
       return `${day} ${month} ${year}`;
     } catch (error) {
       return dateString;
@@ -200,7 +259,7 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
 
   // Filter events by title and date
   const filteredEvents = (() => {
-    let events = filter === 'upcoming' ? upcomingEvents : pastEvents;
+    let events = filter === "upcoming" ? upcomingEvents : pastEvents;
 
     // Filter by title
     if (titleFilter.trim()) {
@@ -213,15 +272,30 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
     // Filter by date
     if (dateFilter) {
       const filterDate = new Date(dateFilter);
-      const filterDateStart = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate());
-      const filterDateEnd = new Date(filterDate.getFullYear(), filterDate.getMonth(), filterDate.getDate(), 23, 59, 59);
+      const filterDateStart = new Date(
+        filterDate.getFullYear(),
+        filterDate.getMonth(),
+        filterDate.getDate(),
+      );
+      const filterDateEnd = new Date(
+        filterDate.getFullYear(),
+        filterDate.getMonth(),
+        filterDate.getDate(),
+        23,
+        59,
+        59,
+      );
 
       events = events.filter((event) => {
         if (!event.event_date_time) return false;
         const eventDateTime = parseBengaliDate(event.event_date_time);
         if (isNaN(eventDateTime.getTime())) return false;
-        
-        const eventDate = new Date(eventDateTime.getFullYear(), eventDateTime.getMonth(), eventDateTime.getDate());
+
+        const eventDate = new Date(
+          eventDateTime.getFullYear(),
+          eventDateTime.getMonth(),
+          eventDateTime.getDate(),
+        );
         return eventDate >= filterDateStart && eventDate <= filterDateEnd;
       });
     }
@@ -232,7 +306,7 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
   const displayEvents = filteredEvents;
 
   const getEventCount = (count: number) => {
-    return language === 'bd' ? toBanglaNumber(count) : count;
+    return language === "bd" ? toBanglaNumber(count) : count;
   };
 
   return (
@@ -247,15 +321,15 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
           >
             <span className="inline-block px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaCalendarAlt className="inline mr-2" />
-              {t('events.ourActivities')}
+              {t("events.ourActivities")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                {cmsData?.title || t('events.allEvents')}
+                {cmsData?.title || t("events.allEvents")}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {cmsData?.description || t('events.viewAllEvents')}
+              {cmsData?.description || t("events.viewAllEvents")}
             </p>
           </motion.div>
         </div>
@@ -272,24 +346,24 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             className="flex flex-wrap justify-center gap-3 mb-8"
           >
             <button
-              onClick={() => setFilter('upcoming')}
+              onClick={() => setFilter("upcoming")}
               className={`px-8 py-3 rounded-xl font-bold transition-all transform hover:scale-105 ${
-                filter === 'upcoming'
-                  ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-xl'
-                  : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-emerald-500 hover:text-emerald-600 shadow-lg'
+                filter === "upcoming"
+                  ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-xl"
+                  : "bg-white text-slate-700 border-2 border-slate-200 hover:border-emerald-500 hover:text-emerald-600 shadow-lg"
               }`}
             >
-              {t('events.upcoming')} ({getEventCount(upcomingEvents.length)})
+              {t("events.upcoming")} ({getEventCount(upcomingEvents.length)})
             </button>
             <button
-              onClick={() => setFilter('past')}
+              onClick={() => setFilter("past")}
               className={`px-8 py-3 rounded-xl font-bold transition-all transform hover:scale-105 ${
-                filter === 'past'
-                  ? 'bg-gradient-to-r from-slate-600 to-slate-700 text-white shadow-xl'
-                  : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-slate-500 hover:text-slate-600 shadow-lg'
+                filter === "past"
+                  ? "bg-gradient-to-r from-slate-600 to-slate-700 text-white shadow-xl"
+                  : "bg-white text-slate-700 border-2 border-slate-200 hover:border-slate-500 hover:text-slate-600 shadow-lg"
               }`}
             >
-              {t('events.past')} ({getEventCount(pastEvents.length)})
+              {t("events.past")} ({getEventCount(pastEvents.length)})
             </button>
           </motion.div>
 
@@ -302,20 +376,20 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
           >
             <div className="flex items-center gap-2 text-emerald-700 font-bold mb-6 text-lg">
               <FaFilter />
-              <span>{t('events.filterOptions')}</span>
+              <span>{t("events.filterOptions")}</span>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               {/* Title Filter */}
               <div>
                 <label className="block text-slate-700 font-bold mb-2 text-sm">
-                  {t('events.titleFilter')}
+                  {t("events.titleFilter")}
                 </label>
                 <input
                   type="text"
                   value={titleFilter}
                   onChange={(e) => setTitleFilter(e.target.value)}
-                  placeholder={t('events.searchEventTitle')}
+                  placeholder={t("events.searchEventTitle")}
                   className="w-full px-4 py-2 rounded-xl font-bold border-2 border-slate-300 focus:border-emerald-500 focus:outline-none shadow-lg text-slate-700"
                 />
               </div>
@@ -323,7 +397,7 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
               {/* Date Filter */}
               <div>
                 <label className="block text-slate-700 font-bold mb-2 text-sm">
-                  {t('events.dateFilter')}
+                  {t("events.dateFilter")}
                 </label>
                 <input
                   type="date"
@@ -337,19 +411,20 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             {/* Filter Summary and Clear Button */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
               <div className="text-sm text-slate-600 font-medium">
-                {getEventCount(filteredEvents.length)} {t('events.eventsFound')}
-                {dateFilter && ` (${t('events.dateFilter')}: ${formatDateInputToBengali(dateFilter)})`}
-                {titleFilter && ` (${t('events.titleFilter')}: ${titleFilter})`}
+                {getEventCount(filteredEvents.length)} {t("events.eventsFound")}
+                {dateFilter &&
+                  ` (${t("events.dateFilter")}: ${formatDateInputToBengali(dateFilter)})`}
+                {titleFilter && ` (${t("events.titleFilter")}: ${titleFilter})`}
               </div>
               {(titleFilter || dateFilter) && (
                 <button
                   onClick={() => {
-                    setTitleFilter('');
-                    setDateFilter('');
+                    setTitleFilter("");
+                    setDateFilter("");
                   }}
                   className="px-6 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition-all shadow-lg"
                 >
-                  {t('events.clearAllFilters')}
+                  {t("events.clearAllFilters")}
                 </button>
               )}
             </div>
@@ -362,9 +437,11 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayEvents.map((event, idx) => {
-              const { date, time } = parseDateTime(event.event_date_time_formatted);
+              const { date, time } = parseDateTime(
+                event.event_date_time_formatted,
+              );
               const description = stripHtml(event.description);
-              
+
               return (
                 <motion.div
                   key={event.uuid || event.id}
@@ -379,7 +456,7 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
                     location={event.address}
                     description={description}
                     slug={event.id.toString()}
-                    isPast={filter === 'past'}
+                    isPast={filter === "past"}
                     hasVideo={false}
                     image={event.image || undefined}
                   />
@@ -393,24 +470,24 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             <div className="text-center py-20">
               <FaCalendarAlt className="text-6xl text-slate-300 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-slate-700 mb-2">
-                {t('events.noEvents')}
+                {t("events.noEvents")}
               </h3>
               <p className="text-slate-500 mb-4">
-                {(titleFilter || dateFilter) 
-                  ? t('events.noEventsForFilter')
-                  : filter === 'upcoming' 
-                    ? t('events.upcomingEventsComingSoon')
-                    : t('events.noPastEvents')}
+                {titleFilter || dateFilter
+                  ? t("events.noEventsForFilter")
+                  : filter === "upcoming"
+                    ? t("events.upcomingEventsComingSoon")
+                    : t("events.noPastEvents")}
               </p>
               {(titleFilter || dateFilter) && (
                 <button
                   onClick={() => {
-                    setTitleFilter('');
-                    setDateFilter('');
+                    setTitleFilter("");
+                    setDateFilter("");
                   }}
                   className="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all"
                 >
-                  {t('events.clearAllFilters')}
+                  {t("events.clearAllFilters")}
                 </button>
               )}
             </div>
@@ -430,17 +507,17 @@ export default function EventsClient({ upcomingEvents: initialUpcomingEvents, pa
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {endCmsData?.title || t('events.learnAboutEvents')}
+                {endCmsData?.title || t("events.learnAboutEvents")}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {endCmsData?.description || t('events.latestUpdates')}
+                {endCmsData?.description || t("events.latestUpdates")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/contact"
                   className="px-10 py-4 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-emerald-700 hover:to-green-700 transition-all transform hover:scale-105"
                 >
-                  {t('nav.contactUs')}
+                  {t("nav.contactUs")}
                 </a>
               </div>
             </div>

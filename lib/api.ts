@@ -1,4 +1,5 @@
 import { IconType } from "react-icons";
+import { waitForLanguageSync } from './languageSync';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
 
@@ -36,6 +37,7 @@ export interface SiteSettings {
  */
 export async function fetchSettings(): Promise<SiteSettings | null> {
   try {
+    await waitForLanguageSync();
     const response = await fetch(`${API_BASE_URL}/settings`, { cache: 'no-store' });
     if (!response.ok) return null;
 
@@ -69,6 +71,7 @@ export type ComplaintHearYourVoice = HearYourVoiceData;
  */
 export async function fetchHearYourVoice(endpoint: string): Promise<HearYourVoiceData | null> {
   try {
+    await waitForLanguageSync();
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, { cache: 'no-store' });
     if (!response.ok) return null;
 
@@ -137,6 +140,7 @@ export interface ManifestoCms {
  */
 export async function fetchManifestoCms(): Promise<ManifestoCms | null> {
   try {
+    await waitForLanguageSync();
     const response = await fetch(`${API_BASE_URL}/manifesto-cms`, { cache: 'no-store' });
     if (!response.ok) return null;
 
@@ -176,6 +180,7 @@ export interface ManifestoApi {
  */
 export async function fetchManifestos(): Promise<ManifestoApi[]> {
   try {
+    await waitForLanguageSync();
     const response = await fetch(`${API_BASE_URL}/manifestos`, { cache: 'no-store' });
     if (!response.ok) return [];
 
@@ -220,6 +225,7 @@ export interface CmsPage {
  */
 export async function fetchCmsPage(pageFor: string, slug: string): Promise<CmsPage | null> {
   try {
+    await waitForLanguageSync();
     const response = await fetch(
       `${API_BASE_URL}/cms-pages?page_for=${encodeURIComponent(pageFor)}&slug=${encodeURIComponent(slug)}`,
       { cache: 'no-store' }

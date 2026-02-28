@@ -22,7 +22,11 @@
     "complaints": "অভিযোগ/মতামত",
     "comments": "মন্তব্য",
     "contact": "যোগাযোগ",
-    "contactUs": "যোগাযোগ করুন"
+    "contactUs": "যোগাযোগ করুন",
+    "login": "লগইন",
+    "logout": "লগআউট",
+    "profile": "প্রোফাইল",
+    "volunteerTasks": "স্বেচ্ছাসেবক কাজ"
   },
   "hero": {
     "title": "আমিনুল হক",

@@ -22,7 +22,11 @@
     "complaints": "Complain/Opinion",
     "comments": "Comments",
     "contact": "Contact",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "volunteerTasks": "Volunteer Tasks"
   },
   "hero": {
     "title": "Aminul Haque",

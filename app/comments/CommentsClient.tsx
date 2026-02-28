@@ -1,12 +1,24 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaComment, FaUser, FaPaperPlane, FaClock, FaHeart } from 'react-icons/fa';
-import Image from 'next/image';
-import { toBanglaNumber } from '@/lib/utils';
-import { useTranslation } from '../i18n/I18nProvider';
-import { fetchCmsPage, type CmsPage, fetchCommentsWeHearYou, type HearYourVoiceData } from '@/lib/api';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  FaComment,
+  FaUser,
+  FaPaperPlane,
+  FaClock,
+  FaHeart,
+} from "react-icons/fa";
+import Image from "next/image";
+import { toBanglaNumber } from "@/lib/utils";
+import { useTranslation } from "../i18n/I18nProvider";
+import {
+  fetchCmsPage,
+  type CmsPage,
+  fetchCommentsWeHearYou,
+  type HearYourVoiceData,
+} from "@/lib/api";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface Comment {
   id: number;
@@ -24,12 +36,14 @@ interface CommentsClientProps {
   initialComments: Comment[];
 }
 
-export default function CommentsClient({ initialComments }: CommentsClientProps) {
+export default function CommentsClient({
+  initialComments,
+}: CommentsClientProps) {
   const { t, language } = useTranslation();
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [formData, setFormData] = useState({
-    name: '',
-    text: ''
+    name: "",
+    text: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,11 +51,13 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [cmsData, setCmsData] = useState<CmsPage | null>(null);
   const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
-  const [hearYouData, setHearYouData] = useState<HearYourVoiceData | null>(null);
+  const [hearYouData, setHearYouData] = useState<HearYourVoiceData | null>(
+    null,
+  );
 
   useEffect(() => {
-    fetchCmsPage('comments', 'your-opinion').then(setCmsData);
-    fetchCmsPage('comments', 'end-section').then(setEndCmsData);
+    fetchCmsPage("comments", "your-opinion").then(setCmsData);
+    fetchCmsPage("comments", "end-section").then(setEndCmsData);
     fetchCommentsWeHearYou().then(setHearYouData);
   }, []);
 
@@ -50,9 +66,11 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
     const fetchComments = async () => {
       try {
         setIsRefreshing(true);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-        const response = await fetch(`${apiBaseUrl}/comments`, {
-          cache: 'no-store', // Always fetch fresh data
+        const apiBaseUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://admin.aminul-haque.com/api/v1";
+        const response = await syncedFetch(`${apiBaseUrl}/comments`, {
+          cache: "no-store",
         });
 
         if (!response.ok) {
@@ -67,37 +85,46 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
           commentsData = data;
         } else if (data.data && Array.isArray(data.data)) {
           commentsData = data.data;
-        } else if (data.data && data.data.data && Array.isArray(data.data.data)) {
+        } else if (
+          data.data &&
+          data.data.data &&
+          Array.isArray(data.data.data)
+        ) {
           commentsData = data.data.data;
         } else if (data.comments && Array.isArray(data.comments)) {
           commentsData = data.comments;
         } else {
-          console.error('Invalid API response format:', data);
+          console.error("Invalid API response format:", data);
           return;
         }
 
         const formatDate = (dateString?: string) => {
-          if (!dateString) return '';
+          if (!dateString) return "";
           try {
             const date = new Date(dateString);
-            return date.toLocaleDateString(language === 'bd' ? 'bn-BD' : 'en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            });
+            return date.toLocaleDateString(
+              language === "bd" ? "bn-BD" : "en-US",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              },
+            );
           } catch {
             return dateString;
           }
         };
 
         const mappedComments: Comment[] = commentsData
-          .filter((comment: any) => comment.status === 'active' || !comment.status)
+          .filter(
+            (comment: any) => comment.status === "active" || !comment.status,
+          )
           .map((comment: any) => ({
             id: comment.id,
             uuid: comment.uuid,
-            name: comment.name || t('comments.anonymous'),
-            text: comment.text || comment.message || '',
-            message: comment.text || comment.message || '',
+            name: comment.name || t("comments.anonymous"),
+            text: comment.text || comment.message || "",
+            message: comment.text || comment.message || "",
             created_at: comment.created_at,
             date: formatDate(comment.created_at),
             likes: comment.likes || 0,
@@ -105,14 +132,17 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
           }))
           .sort((a, b) => {
             if (a.created_at && b.created_at) {
-              return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+              return (
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+              );
             }
             return 0;
           });
 
         setComments(mappedComments);
       } catch (err) {
-        console.error('Error fetching comments:', err);
+        console.error("Error fetching comments:", err);
       } finally {
         setIsRefreshing(false);
       }
@@ -126,13 +156,13 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
   }, [language, t]);
 
   const formatDate = (dateString?: string) => {
-    if (!dateString) return '';
+    if (!dateString) return "";
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString(language === 'bd' ? 'bn-BD' : 'en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      return date.toLocaleDateString(language === "bd" ? "bn-BD" : "en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       });
     } catch {
       return dateString;
@@ -141,37 +171,42 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.text.trim()) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
+      const apiBaseUrl =
+        process.env.NEXT_PUBLIC_API_BASE_URL ||
+        "https://admin.aminul-haque.com/api/v1";
       const response = await fetch(`${apiBaseUrl}/comments`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.name.trim() || t('comments.anonymous'),
+          name: formData.name.trim() || t("comments.anonymous"),
           text: formData.text.trim(),
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to submit comment: ${response.statusText}`);
+        throw new Error(
+          errorData.message ||
+            `Failed to submit comment: ${response.statusText}`,
+        );
       }
 
       const result = await response.json();
-      
+
       if (result.success && result.data) {
         const newComment: Comment = {
           id: result.data.id,
           uuid: result.data.uuid,
-          name: result.data.name || t('comments.anonymous'),
+          name: result.data.name || t("comments.anonymous"),
           text: result.data.text,
           message: result.data.text, // For backward compatibility
           created_at: result.data.created_at,
@@ -181,30 +216,36 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
         };
 
         setComments([newComment, ...comments]);
-        setFormData({ name: '', text: '' });
+        setFormData({ name: "", text: "" });
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 3000);
       } else {
-        throw new Error('Invalid response from server');
+        throw new Error("Invalid response from server");
       }
     } catch (err) {
-      console.error('Error submitting comment:', err);
-      setError(err instanceof Error ? err.message : 'Failed to submit comment. Please try again.');
+      console.error("Error submitting comment:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to submit comment. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleLike = (id: number) => {
-    setComments(comments.map(comment => 
-      comment.id === id 
-        ? { ...comment, likes: (comment.likes || 0) + 1 }
-        : comment
-    ));
+    setComments(
+      comments.map((comment) =>
+        comment.id === id
+          ? { ...comment, likes: (comment.likes || 0) + 1 }
+          : comment,
+      ),
+    );
   };
 
   const getCount = (count: number) => {
-    return language === 'bd' ? toBanglaNumber(count) : count;
+    return language === "bd" ? toBanglaNumber(count) : count;
   };
 
   return (
@@ -219,15 +260,15 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
           >
             <span className="inline-block px-6 py-2 bg-pink-100 text-pink-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaComment className="inline mr-2" />
-              {t('comments.yourOpinion')}
+              {t("comments.yourOpinion")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-                {cmsData?.title || t('comments.title')}
+                {cmsData?.title || t("comments.title")}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {cmsData?.description || t('comments.subtitle')}
+              {cmsData?.description || t("comments.subtitle")}
             </p>
           </motion.div>
         </div>
@@ -249,7 +290,7 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
                   src={hearYouData?.main_image || "/aminul Haque/complain.jpeg"}
-                  alt={hearYouData?.title || t('hero.title')}
+                  alt={hearYouData?.title || t("hero.title")}
                   width={600}
                   height={800}
                   className="w-full h-auto"
@@ -266,9 +307,11 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="text-pink-600 font-bold text-sm uppercase tracking-wider">{t('comments.hearYou')}</span>
+              <span className="text-pink-600 font-bold text-sm uppercase tracking-wider">
+                {t("comments.hearYou")}
+              </span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3 mb-6">
-                {hearYouData?.title || t('comments.opinionIsStrength')}
+                {hearYouData?.title || t("comments.opinionIsStrength")}
               </h2>
               {hearYouData?.content ? (
                 <div
@@ -277,8 +320,8 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                 />
               ) : (
                 <div className="space-y-4 text-lg text-slate-700 leading-relaxed text-justify">
-                  <p>{t('comments.welcomeText1')}</p>
-                  <p>{t('comments.welcomeText2')}</p>
+                  <p>{t("comments.welcomeText1")}</p>
+                  <p>{t("comments.welcomeText2")}</p>
                 </div>
               )}
               {hearYouData?.subtitle ? (
@@ -287,12 +330,19 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                 </p>
               ) : (
                 <p className="font-semibold text-pink-700 mt-4">
-                  {t('comments.smallCommentBigChange')}
+                  {t("comments.smallCommentBigChange")}
                 </p>
               )}
               <div className="mt-6 p-6 bg-pink-50 rounded-2xl border-l-4 border-pink-600">
                 <p className="text-slate-700">
-                  {hearYouData?.quotes || (<><strong className="text-pink-700">{t('comments.myPromise')}:</strong> {t('comments.promiseText')}</>)}
+                  {hearYouData?.quotes || (
+                    <>
+                      <strong className="text-pink-700">
+                        {t("comments.myPromise")}:
+                      </strong>{" "}
+                      {t("comments.promiseText")}
+                    </>
+                  )}
                 </p>
               </div>
             </motion.div>
@@ -322,13 +372,13 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                         <FaPaperPlane className="text-white text-xl" />
                       </div>
                       <h2 className="text-2xl font-black text-slate-900">
-                        {t('comments.newComment')}
+                        {t("comments.newComment")}
                       </h2>
                     </div>
 
                     {submitted && (
                       <div className="mb-4 p-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-xl text-center font-semibold shadow-lg">
-                        ✓ {t('comments.commentAdded')}
+                        ✓ {t("comments.commentAdded")}
                       </div>
                     )}
 
@@ -341,31 +391,36 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">
-                          {t('comments.yourName')}
+                          {t("comments.yourName")}
                         </label>
                         <input
                           type="text"
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          placeholder={t('comments.namePlaceholder')}
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
+                          placeholder={t("comments.namePlaceholder")}
                           className="w-full px-4 py-3 rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-pink-500 focus:outline-none transition-all"
                           disabled={loading}
                         />
                         <p className="text-xs text-slate-500 mt-1">
-                          {t('comments.nameHint')}
+                          {t("comments.nameHint")}
                         </p>
                       </div>
 
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">
-                          {t('comments.yourComment')} <span className="text-red-500">*</span>
+                          {t("comments.yourComment")}{" "}
+                          <span className="text-red-500">*</span>
                         </label>
                         <textarea
                           value={formData.text}
-                          onChange={(e) => setFormData({ ...formData, text: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({ ...formData, text: e.target.value })
+                          }
                           required
                           rows={6}
-                          placeholder={t('comments.commentPlaceholder')}
+                          placeholder={t("comments.commentPlaceholder")}
                           className="w-full px-4 py-3 rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-pink-500 focus:outline-none transition-all resize-none"
                           disabled={loading}
                         />
@@ -379,12 +434,12 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                         {loading ? (
                           <>
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                            <span>{t('comments.sending')}</span>
+                            <span>{t("comments.sending")}</span>
                           </>
                         ) : (
                           <>
                             <FaPaperPlane />
-                            {t('comments.sendComment')}
+                            {t("comments.sendComment")}
                           </>
                         )}
                       </button>
@@ -398,17 +453,19 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             <div className="lg:col-span-2">
               <div className="mb-8">
                 <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">
-                  {t('comments.allComments')}
+                  {t("comments.allComments")}
                 </h2>
                 <p className="text-slate-600">
-                  {getCount(comments.length)} {t('comments.commentsFound')}
+                  {getCount(comments.length)} {t("comments.commentsFound")}
                 </p>
               </div>
 
               <div className="space-y-6">
                 {comments.length === 0 ? (
                   <div className="text-center py-12 bg-white rounded-2xl border border-slate-200">
-                    <p className="text-slate-600 text-lg">{t('comments.noComments')}</p>
+                    <p className="text-slate-600 text-lg">
+                      {t("comments.noComments")}
+                    </p>
                   </div>
                 ) : (
                   comments.map((comment, idx) => (
@@ -426,17 +483,19 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
                           <div className="flex items-center gap-3">
                             <div>
                               <h3 className="font-bold text-slate-900 text-lg">
-                                {comment.name || t('comments.anonymous')}
+                                {comment.name || t("comments.anonymous")}
                               </h3>
                               <div className="flex items-center gap-2 text-sm text-slate-500">
                                 <FaClock className="text-xs" />
-                                {comment.date || formatDate(comment.created_at) || t('comments.noDate')}
+                                {comment.date ||
+                                  formatDate(comment.created_at) ||
+                                  t("comments.noDate")}
                               </div>
                             </div>
                           </div>
                         </div>
                         <p className="text-slate-700 text-lg leading-relaxed">
-                          {comment.text || comment.message || ''}
+                          {comment.text || comment.message || ""}
                         </p>
                       </div>
                     </motion.div>
@@ -460,10 +519,10 @@ export default function CommentsClient({ initialComments }: CommentsClientProps)
             <div className="absolute inset-0 rounded-3xl blur-2xl opacity-30"></div>
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {endCmsData?.title || t('comments.opinionImportant')}
+                {endCmsData?.title || t("comments.opinionImportant")}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {endCmsData?.description || t('comments.ctaText')}
+                {endCmsData?.description || t("comments.ctaText")}
               </p>
             </div>
           </motion.div>

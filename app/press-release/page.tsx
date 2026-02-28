@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import PressReleaseCard from '../components/PressReleaseCard';
-import { FaNewspaper, FaBullhorn } from 'react-icons/fa';
-import { useTranslation } from '../i18n/I18nProvider';
-import { fetchCmsPage, type CmsPage } from '@/lib/api';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import PressReleaseCard from "../components/PressReleaseCard";
+import { FaNewspaper, FaBullhorn } from "react-icons/fa";
+import { useTranslation } from "../i18n/I18nProvider";
+import { fetchCmsPage, type CmsPage } from "@/lib/api";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface NewsDetail {
   id: number;
@@ -45,8 +46,8 @@ export default function PressReleasePage() {
   const [endCmsData, setEndCmsData] = useState<CmsPage | null>(null);
 
   useEffect(() => {
-    fetchCmsPage('press-release', 'latest-news').then(setCmsData);
-    fetchCmsPage('press-release', 'end-section').then(setEndCmsData);
+    fetchCmsPage("press-release", "latest-news").then(setCmsData);
+    fetchCmsPage("press-release", "end-section").then(setEndCmsData);
   }, []);
 
   useEffect(() => {
@@ -54,9 +55,11 @@ export default function PressReleasePage() {
       try {
         setLoading(true);
         setError(null);
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com/api/v1';
-        const response = await fetch(`${apiBaseUrl}/news`, {
-          cache: 'no-store',
+        const apiBaseUrl =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://admin.aminul-haque.com/api/v1";
+        const response = await syncedFetch(`${apiBaseUrl}/news`, {
+          cache: "no-store",
         });
 
         if (!response.ok) {
@@ -64,8 +67,8 @@ export default function PressReleasePage() {
         }
 
         const data = await response.json();
-        console.log('News API Response:', data);
-        
+        console.log("News API Response:", data);
+
         // Handle the API response structure - new format: data.data.data
         let newsData: News[] = [];
         if (data.success && data.data) {
@@ -82,14 +85,14 @@ export default function PressReleasePage() {
         }
 
         // Filter only active and published news
-        const activeNews = newsData.filter((item: News) => 
-          item.status === 'active' && item.is_published === 1
+        const activeNews = newsData.filter(
+          (item: News) => item.status === "active" && item.is_published === 1,
         );
-        
+
         setNews(activeNews);
       } catch (err) {
-        console.error('Error fetching news:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch news');
+        console.error("Error fetching news:", err);
+        setError(err instanceof Error ? err.message : "Failed to fetch news");
       } finally {
         setLoading(false);
       }
@@ -100,52 +103,55 @@ export default function PressReleasePage() {
 
   // Map news to press release format
   const pressReleases = news.map((item) => {
-    const firstDetail = item.details && item.details.length > 0 ? item.details[0] : null;
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.aminul-haque.com';
-    
+    const firstDetail =
+      item.details && item.details.length > 0 ? item.details[0] : null;
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL || "https://admin.aminul-haque.com";
+
     // Build image URL - check if it's already a full URL or needs base URL
-    let imageUrl = '/aminul_haque.jpg'; // Fallback image
+    let imageUrl = "/aminul_haque.jpg"; // Fallback image
     if (firstDetail?.image_large) {
-      imageUrl = firstDetail.image_large.startsWith('http') 
-        ? firstDetail.image_large 
+      imageUrl = firstDetail.image_large.startsWith("http")
+        ? firstDetail.image_large
         : `${apiBaseUrl}/${firstDetail.image_large}`;
     } else if (firstDetail?.image_medium) {
-      imageUrl = firstDetail.image_medium.startsWith('http')
+      imageUrl = firstDetail.image_medium.startsWith("http")
         ? firstDetail.image_medium
         : `${apiBaseUrl}/${firstDetail.image_medium}`;
     } else if (firstDetail?.image_original) {
-      imageUrl = firstDetail.image_original.startsWith('http')
+      imageUrl = firstDetail.image_original.startsWith("http")
         ? firstDetail.image_original
         : `${apiBaseUrl}/${firstDetail.image_original}`;
     } else if (firstDetail?.image_small) {
-      imageUrl = firstDetail.image_small.startsWith('http')
+      imageUrl = firstDetail.image_small.startsWith("http")
         ? firstDetail.image_small
         : `${apiBaseUrl}/${firstDetail.image_small}`;
     }
-    
+
     // Extract text from HTML description and create summary
-    const descriptionText = firstDetail?.description 
-      ? firstDetail.description.replace(/<[^>]*>/g, '').trim()
-      : '';
-    const summary = descriptionText.length > 150 
-      ? descriptionText.substring(0, 150) + '...'
-      : descriptionText || t('pressRelease.newsDescription');
-    
+    const descriptionText = firstDetail?.description
+      ? firstDetail.description.replace(/<[^>]*>/g, "").trim()
+      : "";
+    const summary =
+      descriptionText.length > 150
+        ? descriptionText.substring(0, 150) + "..."
+        : descriptionText || t("pressRelease.newsDescription");
+
     // Use 'name' from main item as title (new API structure)
-    const title = item.name || firstDetail?.title || t('pressRelease.news');
-    
+    const title = item.name || firstDetail?.title || t("pressRelease.news");
+
     // Check if news has video/audio type
-    const hasVideo = item.news_type === 'audio' || item.news_type === 'video';
-    
+    const hasVideo = item.news_type === "audio" || item.news_type === "video";
+
     return {
       title: title,
       summary: summary,
-      date: item.news_datetime || '',
+      date: item.news_datetime || "",
       slug: item.slug || item.uuid,
       image: imageUrl,
       hasVideo: hasVideo,
       categories: item.categories || [],
-      newsType: item.news_type || 'text',
+      newsType: item.news_type || "text",
     };
   });
 
@@ -161,15 +167,15 @@ export default function PressReleasePage() {
           >
             <span className="inline-block px-6 py-2 bg-blue-100 text-blue-700 rounded-full font-bold text-sm uppercase tracking-wider mb-6">
               <FaBullhorn className="inline mr-2" />
-              {t('pressRelease.latestNews')}
+              {t("pressRelease.latestNews")}
             </span>
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                {cmsData?.title || t('pressRelease.title')}
+                {cmsData?.title || t("pressRelease.title")}
               </span>
             </h1>
             <p className="text-2xl md:text-3xl text-slate-600 max-w-3xl mx-auto">
-              {cmsData?.description || t('pressRelease.subtitle')}
+              {cmsData?.description || t("pressRelease.subtitle")}
             </p>
           </motion.div>
         </div>
@@ -181,26 +187,28 @@ export default function PressReleasePage() {
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-              <p className="text-xl text-slate-600">{t('common.loading')}</p>
+              <p className="text-xl text-slate-600">{t("common.loading")}</p>
             </div>
           ) : error ? (
             <div className="text-center py-20">
-              <p className="text-xl text-red-600 mb-4">{t('common.error')}: {error}</p>
+              <p className="text-xl text-red-600 mb-4">
+                {t("common.error")}: {error}
+              </p>
               <button
                 onClick={() => window.location.reload()}
                 className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all"
               >
-                {t('common.retry')}
+                {t("common.retry")}
               </button>
             </div>
           ) : pressReleases.length === 0 ? (
             <div className="text-center py-20">
               <FaNewspaper className="text-6xl text-slate-300 mx-auto mb-4" />
               <h3 className="text-2xl font-bold text-slate-700 mb-2">
-                {t('pressRelease.noNews')}
+                {t("pressRelease.noNews")}
               </h3>
               <p className="text-slate-500">
-                {t('pressRelease.newsSoonAdded')}
+                {t("pressRelease.newsSoonAdded")}
               </p>
             </div>
           ) : (
@@ -212,7 +220,7 @@ export default function PressReleasePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                 >
-                  <PressReleaseCard 
+                  <PressReleaseCard
                     title={release.title}
                     summary={release.summary}
                     date={release.date}
@@ -240,23 +248,23 @@ export default function PressReleasePage() {
             <div className="relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center border border-slate-200">
               <FaNewspaper className="text-5xl text-blue-600 mx-auto mb-6" />
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                {endCmsData?.title || t('pressRelease.mediaContact')}
+                {endCmsData?.title || t("pressRelease.mediaContact")}
               </h2>
               <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                {endCmsData?.description || t('pressRelease.mediaContactDesc')}
+                {endCmsData?.description || t("pressRelease.mediaContactDesc")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="mailto:press@aminulhaque.com"
                   className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:from-blue-700 hover:to-cyan-700 transition-all transform hover:scale-105"
                 >
-                  {t('pressRelease.sendEmail')}
+                  {t("pressRelease.sendEmail")}
                 </a>
                 <a
                   href="/contact"
                   className="px-10 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-xl hover:shadow-2xl border-2 border-blue-600 hover:bg-blue-50 transition-all transform hover:scale-105"
                 >
-                  {t('pressRelease.contactForm')}
+                  {t("pressRelease.contactForm")}
                 </a>
               </div>
             </div>

@@ -15,6 +15,7 @@ import Image from "next/image";
 import { toBanglaNumber, toEnglishNumber } from "@/lib/utils";
 import { useTranslation } from "../i18n/I18nProvider";
 import { fetchCmsPage, type CmsPage } from "@/lib/api";
+import { syncedFetch } from "@/lib/languageSync";
 
 interface Voter {
   id: number;
@@ -62,7 +63,6 @@ interface VoterApiResponse {
   };
 }
 
-
 export default function VoterCenterPage() {
   const { t, language } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
@@ -87,9 +87,9 @@ export default function VoterCenterPage() {
   const [serviceCmsData, setServiceCmsData] = useState<CmsPage | null>(null);
   console.log(serviceCmsData);
   useEffect(() => {
-    fetchCmsPage('voter-center', 'voter-service').then(setCmsData);
-    fetchCmsPage('voter-center', 'end-section').then(setEndCmsData);
-    fetchCmsPage('voter-center', 'at-your-service').then(setServiceCmsData);
+    fetchCmsPage("voter-center", "voter-service").then(setCmsData);
+    fetchCmsPage("voter-center", "end-section").then(setEndCmsData);
+    fetchCmsPage("voter-center", "at-your-service").then(setServiceCmsData);
   }, []);
 
   const filterDropdownRef = useRef<HTMLDivElement>(null);
@@ -115,7 +115,6 @@ export default function VoterCenterPage() {
     };
   }, [showFilterDropdown]);
 
-
   const buildSearchUrl = (page: number = 1) => {
     const params = new URLSearchParams();
     if (searchQuery) params.append("search", searchQuery);
@@ -136,7 +135,7 @@ export default function VoterCenterPage() {
     setSearchResults([]);
 
     try {
-      const response = await fetch(buildSearchUrl(1));
+      const response = await syncedFetch(buildSearchUrl(1));
       const data: VoterApiResponse = await response.json();
 
       if (data.success && data.data.data.length > 0) {
@@ -173,7 +172,7 @@ export default function VoterCenterPage() {
     const nextPage = currentPage + 1;
 
     try {
-      const response = await fetch(buildSearchUrl(nextPage));
+      const response = await syncedFetch(buildSearchUrl(nextPage));
       const data: VoterApiResponse = await response.json();
 
       if (data.success && data.data.data.length > 0) {
@@ -376,25 +375,26 @@ export default function VoterCenterPage() {
     areas();
     wards();
   }, []);
-  const areas = function() {
-    const areaApi = process.env.NEXT_PUBLIC_API_BASE_URL + '/voters/voter-areas';
+  const areas = function () {
+    const areaApi =
+      process.env.NEXT_PUBLIC_API_BASE_URL + "/voters/voter-areas";
 
-    fetch(areaApi)
+    syncedFetch(areaApi)
       .then((res) => res.json())
       .then((data) => {
         setVoterAreas(data.data);
       });
-  }
+  };
 
-  const wards = function(){
-    const wardApi = process.env.NEXT_PUBLIC_API_BASE_URL + '/voters/wards';
+  const wards = function () {
+    const wardApi = process.env.NEXT_PUBLIC_API_BASE_URL + "/voters/wards";
 
-    fetch(wardApi)
+    syncedFetch(wardApi)
       .then((res) => res.json())
       .then((data) => {
         setApiWards(data.data);
       });
-  }
+  };
 
   return (
     <main className="bg-gradient-to-b from-slate-50 via-white to-slate-50">
@@ -516,17 +516,19 @@ export default function VoterCenterPage() {
                           </label>
                           <div className="relative">
                             <select
-                                value={voterAreaQuery}
-                                onChange={(e) =>
-                                    setVoterArea(e.target.value)
-                                }
-                                className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all appearance-none"
+                              value={voterAreaQuery}
+                              onChange={(e) => setVoterArea(e.target.value)}
+                              className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all appearance-none"
                             >
-                              <option value="">{language === "bd" ? "ভোটার এলাকা নির্বাচন করুন" : "Select Voter Area"}</option>
+                              <option value="">
+                                {language === "bd"
+                                  ? "ভোটার এলাকা নির্বাচন করুন"
+                                  : "Select Voter Area"}
+                              </option>
                               {voterAreas.map((area, index) => (
-                                  <option key={index} value={area}>
-                                    {area}
-                                  </option>
+                                <option key={index} value={area}>
+                                  {area}
+                                </option>
                               ))}
                             </select>
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
@@ -545,17 +547,19 @@ export default function VoterCenterPage() {
                           </label>
                           <div className="relative">
                             <select
-                                value={wardQuery}
-                                onChange={(e) =>
-                                    setWardQuery(e.target.value)
-                                }
-                                className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all appearance-none"
+                              value={wardQuery}
+                              onChange={(e) => setWardQuery(e.target.value)}
+                              className="w-full px-6 py-3 bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all appearance-none"
                             >
-                              <option value="">{language === "bd" ? "ওয়ার্ড নির্বাচন করুন" : "Select Ward"}</option>
+                              <option value="">
+                                {language === "bd"
+                                  ? "ওয়ার্ড নির্বাচন করুন"
+                                  : "Select Ward"}
+                              </option>
                               {apiWards.map((ward, index) => (
-                                  <option key={index} value={ward}>
-                                    {ward}
-                                  </option>
+                                <option key={index} value={ward}>
+                                  {ward}
+                                </option>
                               ))}
                             </select>
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
@@ -606,7 +610,10 @@ export default function VoterCenterPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <Image
-                  src={serviceCmsData?.main_image || '/aminul Haque/voter-center.jpeg'}
+                  src={
+                    serviceCmsData?.main_image ||
+                    "/aminul Haque/voter-center.jpeg"
+                  }
                   alt={language === "bd" ? "আমিনুল হক" : "Aminul Haque"}
                   width={600}
                   height={800}
@@ -742,8 +749,8 @@ export default function VoterCenterPage() {
                                 </p>
                                 <p className="text-lg font-bold text-slate-900">
                                   {language === "bd"
-                                      ? toBanglaNumber(voter.serial_number)
-                                      : voter.serial_number}
+                                    ? toBanglaNumber(voter.serial_number)
+                                    : voter.serial_number}
                                 </p>
                               </div>
                             )}
